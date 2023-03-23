@@ -13,22 +13,24 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Validator\Constraints\File;
-
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Email;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 class UtilisateurType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('nom')
-            ->add('prenom')
-            ->add('cin')
+            ->add('nom',TextType::class)
+            ->add('prenom',TextType::class)
+            ->add('cin',TextType::class)
             ->add('dateNaiss', DateType::class, [
                 'widget' => 'single_text',
                 // this is actually the default format for single_text
                 'format' => 'yyyy-MM-dd',
             ])
-            ->add('age')
             ->add('numPermis')
             ->add('ville',ChoiceType::class,[
                 'choices'=>[
@@ -59,7 +61,7 @@ class UtilisateurType extends AbstractType
                 ]
             ])
             ->add('numTel')
-            ->add('login')
+            ->add('login', EmailType::class)
             ->add('mdp', PasswordType::class)
             ->add('photoPersonel',FileType::class,[ 'mapped' => false,
             'required' => false,

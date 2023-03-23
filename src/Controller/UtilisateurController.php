@@ -13,7 +13,6 @@ use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Doctrine\Persistence\ManagerRegistry;
-use App\Repository\UtilisateurRepository;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 class UtilisateurController extends AbstractController
 {
@@ -33,7 +32,6 @@ class UtilisateurController extends AbstractController
             $formData = $form->getData();
             $user=$doctrine->getRepository(Utilisateur::class)->findOneBy(['login' => $formData->getLogin()]);
             if($user && password_verify($formData->getMdp(), $user->getMdp())){
-               //    $session=new SessionController($this->session);
                $this->session->start();
                $this->session->set('user_id', $user->getId());
                 return $this->redirectToRoute('signup');
@@ -45,9 +43,17 @@ class UtilisateurController extends AbstractController
     }
     #[Route('/profile', name: 'profile_page')]
     public function profile(Request $request,ManagerRegistry $doctrine): Response
-    {$user = new Utilisateur();
+    {
+        $user=new Utilisateur();
+        $user->setNom('skander');
+        //$user = $doctrine->getRepository(Utilisateur::class)->find($this->session->get('user_id'));
         $form = $this->createForm(ProfileType::class, $user);
+        $form->setData($user);
         $form->handleRequest($request);
+        if($form->isSubmitted()&&$form->isValid()){
+            $formData=$form->getData();
+
+        }
         return $this->render('utilisateur/profile.html.twig', [
             'controller_name' => 'UtilisateurController', 'form' => $form->createView(),
         ]);
@@ -63,7 +69,7 @@ class UtilisateurController extends AbstractController
         ]);
         
         $form->handleRequest($request);
-        if ($form->isSubmitted()){
+        if ($form->isSubmitted()&&$form->isValid()){
             $user = $form->getData();
            /* $nom=$request->query->get("nom"); 
             $prenom=$request->query->get("prenom");
@@ -79,25 +85,25 @@ class UtilisateurController extends AbstractController
             $photoPersonel=$request->query->get("photoPersonel");
             $photoPermis=$request->query->get("photoPermis");
 
-
+$photopermis->getClientOriginalName()
 */
 
             $photopersonnel = $form->get('photoPersonel')->getData();
             $photopermis = $form->get('photoPermis')->getData();
            if($photopersonnel && $photopermis){
-                $photopersonnelname = pathinfo($photopersonnel->getClientOriginalName(), PATHINFO_FILENAME);
-                $photopermisname =pathinfo($photopermis->getClientOriginalName(), PATHINFO_FILENAME);
+                $photopersonnelname = pathinfo($user->getLogin()+'personnel', PATHINFO_FILENAME);
+                $photopermisname =pathinfo($user->getLogin()+'permis', PATHINFO_FILENAME);
                 $safePersonnelname = $slugger->slug($photopersonnelname);
                 $safePermisname = $slugger->slug($photopermisname);
                 $newpersonnelname = $safePersonnelname.'-'.uniqid().'.'.$photopersonnel->guessExtension();
                 $newpermisname = $safePermisname.'-'.uniqid().'.'.$photopermis->guessExtension();
                 try {
                     $photopersonnel->move(
-                        $this->getParameter('photopersonnel'),
+                        $this->getParameter('personnel_directory'),
                         $newpersonnelname
                     );
                     $photopermis->move(
-                        $this->getParameter('photopermis'),
+                        $this->getParameter('permis_directory'),
                         $newpermisname
                     );
                 } catch (FileException $e) {

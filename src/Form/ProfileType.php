@@ -8,6 +8,7 @@ use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class ProfileType extends AbstractType
 {
@@ -16,7 +17,35 @@ class ProfileType extends AbstractType
         $builder
             ->add('nom')
             ->add('prenom')
-            ->add('ville')
+            ->add('ville',ChoiceType::class,[
+                'choices'=>[
+                    "Ariana"=>"Ariana",
+                    "Beja"=>"Beja",
+                    "Ben Arous"=>"Ben Arous",
+                    "Bizerte"=>"Bizerte",
+                    "Gabes"=>"Gabes",
+                    "Gafsa"=>"Gafsa",
+                    "Jendouba"=>"Jendouba",
+                    "Kairouan"=>"Kairouan",
+                    "Kasserine"=>"Kasserine",
+                    "Kebili"=>"Kebili",
+                    "Kef"=>"Kef",
+                    "Mahdia"=>"Mahdia",
+                    "Manouba"=>"Manouba",
+                    "Medenine"=>"Medenine",
+                    "Monastir"=>"Monastir",
+                    "Nabeul"=>"Nabeul",
+                    "Sfax"=>"Sfax",
+                    "Sidi Bou Zid"=>"Sidi Bou Zid",
+                    "Siliana"=>"Siliana",
+                    "Sousse"=>"Sousse",
+                    "Tataouine"=>"Tataouine",
+                    "Tozeur"=>"Tozeur",
+                    "Tunis"=>"Tunis",
+                    "Zaghouan"=>"Zaghouan",
+                ]
+               
+            ])
             ->add('numTel')
             ->add('login')
             ->add('mdp',RepeatedType::class, [

@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use App\Entity\Role;
+use Symfony\Component\Validator\Constraints As Assert;
 /**
  * Utilisateur
  *
@@ -26,13 +27,16 @@ class Utilisateur
      *
      * @ORM\Column(name="nom", type="string", length=35, nullable=false)
      */
+    #[Assert\NotBlank(message:"Ce champs est vide")]
+    //#[Assert\Length(min:4 , message : "Au minimum 4 caractéres{{limit}}")]
     private $nom;
-
     /**
      * @var string
      *
      * @ORM\Column(name="prenom", type="string", length=35, nullable=false)
      */
+    #[Assert\NotBlank(message:"Ce champs est vide")]
+    //#[Assert\Length(min:8,message:"Au minimum 8 caractéres.")]
     private $prenom;
 
     /**
@@ -40,6 +44,9 @@ class Utilisateur
      *
      * @ORM\Column(name="cin", type="string", length=12, nullable=false)
      */
+    #[Assert\NotBlank(message:"Ce champs est vide")]
+    //#[Assert\Length(exactly:8,message:"il faut 8 chiffres")]
+    #[Assert\Regex(pattern:"/^[0-9]+$/", message:"Contient seulement des chiffres.")]
     private $cin;
 
     /**
@@ -61,6 +68,9 @@ class Utilisateur
      *
      * @ORM\Column(name="num_permis", type="string", length=12, nullable=false)
      */
+    #[Assert\NotBlank(message:"Ce champs est vide")]
+    //#[Assert\Length(exactly:8, message:"il faut 8 chiffres")]
+    #[Assert\Regex(pattern:"/^[0-9]+$/", message:"Contient seulement des chiffres.")]
     private $numPermis;
 
     /**
@@ -75,6 +85,10 @@ class Utilisateur
      *
      * @ORM\Column(name="num_tel", type="string", length=12, nullable=false)
      */
+    #[Assert\NotBlank(message:"Ce champs est vide")]
+    //#[Assert\Length(exactly:8,message:"il faut 8 chiffres")]
+    #[Assert\Regex(pattern:"/^[0-9]+$/", message:"Contient seulement des chiffres.")]
+
     private $numTel;
 
     /**
@@ -82,6 +96,8 @@ class Utilisateur
      *
      * @ORM\Column(name="login", type="string", length=255, nullable=false)
      */
+    #[Assert\NotBlank(message:"Ce champs est vide")]
+    #[Assert\Email(message:"La format de l'email est non valide")]
     private $login;
 
     /**
@@ -89,6 +105,7 @@ class Utilisateur
      *
      * @ORM\Column(name="mdp", type="string", length=255, nullable=false)
      */
+   // #[Assert\Length(min:10,message:"Votre mot de passe ne contient pas 10 caractères.")]
     private $mdp;
 
     /**

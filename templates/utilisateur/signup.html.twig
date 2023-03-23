@@ -31,58 +31,55 @@
 		<div class="container-login100">
 			<div class="wrap-login100">
 				<form class="login100-form validate-form">
-                {{ form_start(form,{ 'method': 'POST'}) }}
+                {{ form_start(form,{'attr':{'novalidate': 'novalidate','method': 'POST'} }) }}
 					<span class="login100-form-title p-b-43">
 						Inscription
 					</span>
 					
 					
-					<div class="wrap-input100 validate-input" data-validate = "Valid email is required: ex@abc.xyz">
+					<div class="wrap-input100 validate-input" >
 						{{ form_widget(form.nom,{'attr':{class:'input100'}}) }}
+						 {{ form_errors(form.nom) }}
 						<span class="focus-input100"></span>
 						<span class="label-input100">nom</span>
 					</div>
-                    <div class="wrap-input100 validate-input" data-validate = "Valid email is required: ex@abc.xyz">
+                    <div class="wrap-input100 validate-input" >
 						{{ form_widget(form.prenom,{'attr':{class:'input100'}}) }}
 						<span class="focus-input100"></span>
 						<span class="label-input100">prénom</span>
 					</div>
-                    <div class="wrap-input100 validate-input" data-validate = "Valid email is required: ex@abc.xyz">
+                    <div class="wrap-input100 validate-input">
 						{{ form_widget(form.login,{'attr':{class:'input100'}}) }}
+						 {{ form_errors(form.login) }}
 						<span class="focus-input100"></span>
 						<span class="label-input100">Email</span>
 					</div>
-                    <div class="wrap-input100 validate-input" data-validate="Password is required">
+                    <div class="wrap-input100 validate-input">
 						{{ form_widget(form.mdp,{'attr':{class:'input100'}}) }}
 						<span class="focus-input100"></span>
 						<span class="label-input100">Password</span>
 					</div>
-                    <div class="wrap-input100 validate-input" data-validate = "Valid email is required: ex@abc.xyz">
+                    <div class="wrap-input100 validate-input" >
 						{{ form_widget(form.cin,{'attr':{class:'input100'}}) }}
 						<span class="focus-input100"></span>
 						<span class="label-input100">cin</span>
 					</div>
-                    <div class="wrap-input100 validate-input" data-validate = "Valid email is required: ex@abc.xyz">
+                    <div class="wrap-input100 validate-input" >
 						{{ form_widget(form.numPermis,{'attr':{class:'input100'}}) }}
 						<span class="focus-input100"></span>
 						<span class="label-input100">numéro permis</span>
 					</div>
-                    <div class="wrap-input100 validate-input" data-validate = "Valid email is required: ex@abc.xyz">
+                    <div class="wrap-input100 validate-input" >
 						{{ form_widget(form.numTel,{'attr':{class:'input100'}}) }}
 						<span class="focus-input100"></span>
 						<span class="label-input100">numéro de téléphone</span>
 					</div>
-                    <div class="wrap-input100 validate-input" data-validate = "Valid email is required: ex@abc.xyz">
+                    <div class="wrap-input100 validate-input">
 						{{ form_widget(form.dateNaiss,{'attr':{class:'input100'}}) }}
 						<span class="focus-input100"></span>
 						
 					</div>
-                    <div class="wrap-input100 validate-input" data-validate = "Valid email is required: ex@abc.xyz">
-						{{ form_widget(form.age,{'attr':{class:'input100'}}) }}
-						<span class="focus-input100"></span>
-						<span class="label-input100">age</span>
-					</div>
-                     <div class="wrap-input100 validate-input" data-validate = "Valid email is required: ex@abc.xyz">
+                     <div class="wrap-input100 validate-input">
 						{{ form_widget(form.ville,{'attr':{class:'input100'}}) }}
 						<span class="focus-input100"></span>
 						<span class="label-input100">ville</span>
