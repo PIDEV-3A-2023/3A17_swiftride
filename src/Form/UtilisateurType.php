@@ -2,9 +2,10 @@
 
 namespace App\Form;
 
+use AgeCalculation;
 use App\Entity\Role;
 use App\Entity\Utilisateur;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use DateTime;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -15,9 +16,8 @@ use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Validator\Constraints\File;
-use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Validator\Constraints\LessThan;
 class UtilisateurType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -29,7 +29,7 @@ class UtilisateurType extends AbstractType
             ->add('dateNaiss', DateType::class, [
                 'widget' => 'single_text',
                 // this is actually the default format for single_text
-                'format' => 'yyyy-MM-dd',
+                
             ])
             ->add('numPermis')
             ->add('ville',ChoiceType::class,[
@@ -90,7 +90,6 @@ class UtilisateurType extends AbstractType
                 ])]])
             
             ->add('submit', SubmitType::class)
-            ->setMethod('POST')
         ;
     }
 

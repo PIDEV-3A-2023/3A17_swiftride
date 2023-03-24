@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use App\Entity\Role;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Validator\Constraints As Assert;
 /**
  * Utilisateur
@@ -50,9 +51,9 @@ class Utilisateur
     private $cin;
 
     /**
-     * @var string
+     * @var \DateTime
      *
-     * @ORM\Column(name="date_naiss", type="string", length=255, nullable=false)
+     * @ORM\Column(name="date_naiss", type="date", length=255, nullable=false)
      */
     private $dateNaiss;
 
@@ -123,7 +124,7 @@ class Utilisateur
     private $photoPermis;
 
     /**
-     * @var int
+     * @var Role
      *
      * @ORM\OneToOne(targetEntity="Role")
      * @ORM\JoinColumns({
@@ -178,12 +179,12 @@ public function setId(int $id){
         return $this;
     }
 
-    public function getDateNaiss(): ?string
+    public function getDateNaiss(): ?\DateTimeInterface
     {
         return $this->dateNaiss;
     }
 
-    public function setDateNaiss(string $dateNaiss): self
+    public function setDateNaiss(\DateTimeInterface $dateNaiss): self
     {
         $this->dateNaiss = $dateNaiss;
 
@@ -286,13 +287,13 @@ public function setId(int $id){
         return $this;
     }
 
-    public function getIdrole(): ?int
+    public function getIdrole(): ?Role
     {
        
         return $this->idrole;
     }
 
-    public function setIdrole(?int $idrole): self
+    public function setIdrole(?Role $idrole): self
     {
         $this->idrole = $idrole;
 

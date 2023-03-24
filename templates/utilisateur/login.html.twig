@@ -32,21 +32,20 @@
 	<div class="limiter">
 		<div class="container-login100">
 			<div class="wrap-login100">
-				<form class="login100-form validate-form">
-				 {{ form_start(form,{action:path('loginspace'), 'method': 'POST'}) }}
+                {{ form_start(form,{'attr' : {'class' : 'login100-form'}}) }}
 					<span class="login100-form-title p-b-43">
-						Login to continue
+						Bienvenue
 					</span>
 					
 					
-					   <div class="wrap-input100 validate-input" data-validate = "Valid email is required: ex@abc.xyz">
+					   <div class="wrap-input100 validate-input">
 						{{ form_widget(form.login,{'attr':{class:'input100'}}) }}
 						<span class="focus-input100"></span>
 						<span class="label-input100">Email</span>
 					</div>
 					
 					
-					<div class="wrap-input100 validate-input" data-validate="Password is required">
+					<div class="wrap-input100 validate-input" >
 						{{ form_widget(form.mdp,{'attr':{class:'input100'}}) }}
 						<span class="focus-input100"></span>
 						<span class="label-input100">Password</span>
@@ -77,7 +76,7 @@
 					
 					<div class="text-center p-t-46 p-b-20">
 						<span class="txt2">
-							<a href='{{path('signup')}}'>or sign up using</a>
+							<a href='{{path('signup')}}'>Pas de compte?</a>
 						</span>
 					</div>
 
@@ -92,7 +91,7 @@
 					</div>
 					                    {{ form_end(form) }}
 
-				</form>
+
 
 				<div class="login100-more" style="background-image: url('images/bg-01.jpg');">
 				</div>

@@ -30,8 +30,7 @@
 	<div class="limiter">
 		<div class="container-login100">
 			<div class="wrap-login100">
-				<form class="login100-form validate-form">
-                {{ form_start(form,{'attr':{'novalidate': 'novalidate','method': 'POST'} }) }}
+                {{ form_start(form,{'attr' : {'class' : 'login100-form'}}) }}
 					<span class="login100-form-title p-b-43">
 						Inscription
 					</span>
@@ -124,7 +123,7 @@
 					
 					<div class="text-center p-t-46 p-b-20">
 						<span class="txt2">
-							or sign up using
+							<a href='{{path('loginspace')}}'>Déja un compte?</a>
 						</span>
 					</div>
 
@@ -138,7 +137,6 @@
 						</a>
 					</div>
                     {{ form_end(form) }}
-				</form>
                 
 
 				<div class="login100-more" style="background-image: url('images/bg-01.jpg');">
