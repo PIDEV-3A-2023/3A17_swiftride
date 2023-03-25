@@ -1,5 +1,5 @@
-<!DOCTYPE html>
-<html>
+
+{% block head %}
     <head>
         <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,44 +7,30 @@
     <meta name="description" content="">
     <meta name="author" content="">
         <title>{% block title %}Welcome!{% endblock %}</title>
+        {% block css %}
         <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
         {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
-        {% block stylesheets %}
+
+
    <link href="{{asset('admin/vendor/fontawesome-free/css/all.min.css')}}" rel="stylesheet" type="text/css">
     <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+        href="{{asset('https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i')}}" rel="stylesheet">
 
- 
+  <link href="{{asset('admin/vendor/fontawesome-free/css/all.min.css')}}" rel="stylesheet" type="text/css">
 
     <!-- Custom styles for this page -->
     <link href="{{asset('admin/vendor/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet">
         <!-- Custom fonts for this template -->
     <link href="{{asset("admin/vendor/fontawesome-free/css/all.min.css")}}" rel="stylesheet" type="text/css">
     <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        href="{{asset('https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i')}}"
         rel="stylesheet">
 
-        {% endblock %}
 
-        {% block javascripts %}
-            <!-- Bootstrap core JavaScript-->
-    <script src="{{asset('admin/vendor/jquery/jquery.min.js')}}"></script>
-    <script src="{{asset('admin/vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
-
-    <!-- Core plugin JavaScript-->
-    <script src="{{asset('admin/vendor/jquery-easing/jquery.easing.min.js')}}"></script>
-
-    <!-- Custom scripts for all pages-->
-    <script src="{{asset("admin/js/sb-admin-2.min.js")}}"></script>
-
-    <!-- Page level plugins -->
-    <script src="{{asset("admin/vendor/datatables/jquery.dataTables.min.js")}}"></script>
-    <script src="{{asset("admin/vendor/datatables/dataTables.bootstrap4.min.js")}}"></script>
-
-    <!-- Page level custom scripts -->
-    <script src="{{asset("admin/js/demo/datatables-demo.js")}}"></script>
-        {% endblock %}
+<link href="css/sb-admin-2.min.css" rel="stylesheet">
+ {% endblock %}
     </head>
+     {% endblock %} 
     <body>
         {% block body %}
         <!-- Sidebar -->
@@ -164,5 +150,41 @@
 
         </ul>
         <!-- End of Sidebar -->{% endblock %}
+        {% block content %}
+        {% endblock %}
+           {% block js %}
+                   <!-- Bootstrap core JavaScript-->
+    <script src="{{asset('admin/vendor/jquery/jquery.min.js')}}"></script>
+    <script src="{{asset('admin/vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="{{asset('admin/vendor/jquery-easing/jquery.easing.min.js')}}"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="{{asset('admin/js/sb-admin-2.min.js')}}"></script>
+
+    <!-- Page level plugins -->
+    <script src="{{asset('admin/vendor/datatables/jquery.dataTables.min.js')}}"></script>
+    <script src="{{asset('admin/vendor/datatables/dataTables.bootstrap4.min.js')}}"></script>
+
+    <!-- Page level custom scripts -->
+    <script src="{{asset('admin/js/demo/datatables-demo.js')}}"></script>
+      <!-- Bootstrap core JavaScript-->
+    <script src="{{asset('admin/vendor/jquery/jquery.min.js')}}"></script>
+    <script src="{{asset('admin/vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="{{asset('admin/vendor/jquery-easing/jquery.easing.min.js')}}"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="{{asset('admin/js/sb-admin-2.min.js')}}"></script>
+
+    <!-- Page level plugins -->
+    <script src="{{asset('admin/vendor/chart.js/Chart.min.js')}}"></script>
+
+    <!-- Page level custom scripts -->
+    <script src="{{asset('admin/js/demo/chart-area-demo.js')}}"></script>
+    <script src="{{asset('admin/js/demo/chart-pie-demo.js')}}"></script>
+    {% endblock %}
     </body>
 </html>

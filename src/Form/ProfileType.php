@@ -11,6 +11,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
@@ -50,8 +51,8 @@ class ProfileType extends AbstractType
                 ]
                
             ])
-            ->add('photo_personel',TextType::class)
-            ->add('photo_permis',TextType::class)
+            ->add('photo_personel',HiddenType::class)
+            ->add('photo_permis',HiddenType::class)
             ->add('num_tel')
             ->add('login')
             ->add('mdp',PasswordType::class)

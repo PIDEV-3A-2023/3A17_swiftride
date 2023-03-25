@@ -22,6 +22,7 @@ use Imagine\Image\ImageInterface;
 use Imagine\Image\ImagineInterface;
 use Imagine\Image\Point;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class UtilisateurController extends AbstractController
 {
@@ -57,21 +58,26 @@ class UtilisateurController extends AbstractController
         $form = $this->createForm(ProfileType::class, $user);
         $form->handleRequest($request);
        if($form->isSubmitted()&&$form->isValid()){
-       // if(password_verify($user->getMdp(), $form->get('mdp')->getData())){
-         //   $user->setMdp($form->get('newmdp')->getData());
+       if($user->getMdp()==$form->get('mdp')->getData()){
+        $user=$utilisateurRepository->find(7);
+        $user->setMdp($form->get('newmdp')->getData());
             $utilisateurRepository->save($user, true);
-            return $this->redirectToRoute('loginspace');
-       // }
+            return $this->redirectToRoute('profile_page');
+        
+        }
+        else{
+            return $this->redirectToRoute('profile_page');
+        }
         }
         return $this->render('utilisateur/profile.html.twig', [
-            'controller_name' => 'UtilisateurController', 'form' => $form->createView(),
+            'controller_name' => 'UtilisateurController', 'form' => $form->createView()
         ]);
     }
    
    
 
     #[Route('/signup', name: 'signup', methods: ['GET', 'POST'])]
-    public function signup(Request $request,SluggerInterface $slugger,UtilisateurRepository $utilisateurRepository,RoleRepository $roleRepository): Response
+    public function signup(Request $request,SluggerInterface $slugger,UtilisateurRepository $utilisateurRepository,RoleRepository $roleRepository, UserPasswordEncoderInterface $passwordEncoder): Response
     {
         $user = new Utilisateur();
         $form = $this->createForm(UtilisateurType::class, $user);
@@ -131,7 +137,7 @@ $permis_directory = $this->getParameter('permis_directory');
     #[Route('/listeUser', name: 'user_liste', methods: ['GET'])]
     public function liste(UtilisateurRepository $utilisateurRepository): Response
     {
-        return $this->render('utilisateur/tables.html.twig', [
+        return $this->render('admin/tables.html.twig', [
             'utilisateurs' => $utilisateurRepository->findAll()
         ]);
     }
