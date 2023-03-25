@@ -2,303 +2,248 @@
 
 namespace App\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Entity\Role;
+use App\Repository\UtilisateurRepository;
+use DateTime;
+use PhpParser\Node\Name;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Validator\Constraints As Assert;
-/**
- * Utilisateur
- *
- * @ORM\Table(name="utilisateur", indexes={@ORM\Index(name="fk", columns={"idrole"})})
- * @ORM\Entity(repositoryClass="App\Repository\UtilisateurRepository")
- */
+#[ORM\Entity(repositoryClass: UtilisateurRepository::class)]
 class Utilisateur
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\Column]
+    #[ORM\GeneratedValue()]
+    private ?int $id=null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="nom", type="string", length=35, nullable=false)
-     */
+
     #[Assert\NotBlank(message:"Ce champs est vide")]
     //#[Assert\Length(min:4 , message : "Au minimum 4 caractéres{{limit}}")]
-    private $nom;
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="prenom", type="string", length=35, nullable=false)
-     */
+    #[ORM\Column(length:50)]
+    private ?string $nom=null;
+
     #[Assert\NotBlank(message:"Ce champs est vide")]
     //#[Assert\Length(min:8,message:"Au minimum 8 caractéres.")]
-    private $prenom;
+    #[ORM\Column(length:50)]
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="cin", type="string", length=12, nullable=false)
-     */
+    private ?string $prenom=null;
+
     #[Assert\NotBlank(message:"Ce champs est vide")]
     //#[Assert\Length(exactly:8,message:"il faut 8 chiffres")]
     #[Assert\Regex(pattern:"/^[0-9]+$/", message:"Contient seulement des chiffres.")]
-    private $cin;
+    #[ORM\Column(length:50)]
+    private ?string $cin=null;
+    
+    #[Assert\NotBlank(message:"Ce champs est vide")]
+    #[ORM\Column(length:255)]
+    private ?\DateTime $date_naiss=null;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="date_naiss", type="date", length=255, nullable=false)
-     */
-    private $dateNaiss;
+    #[ORM\Column(length:50)]
+    private ?string $age=null; 
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="age", type="string", length=255, nullable=false)
-     */
-    private $age;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="num_permis", type="string", length=12, nullable=false)
-     */
     #[Assert\NotBlank(message:"Ce champs est vide")]
     //#[Assert\Length(exactly:8, message:"il faut 8 chiffres")]
     #[Assert\Regex(pattern:"/^[0-9]+$/", message:"Contient seulement des chiffres.")]
-    private $numPermis;
+    #[ORM\Column(length:50)]
+    private ?string $num_permis=null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="ville", type="string", length=40, nullable=false)
-     */
-    private $ville;
+    #[ORM\Column(length:50)]
+    private ?string $ville=null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="num_tel", type="string", length=12, nullable=false)
-     */
     #[Assert\NotBlank(message:"Ce champs est vide")]
     //#[Assert\Length(exactly:8,message:"il faut 8 chiffres")]
     #[Assert\Regex(pattern:"/^[0-9]+$/", message:"Contient seulement des chiffres.")]
 
-    private $numTel;
+    #[ORM\Column(length:50)]
+    private ?string $num_tel=null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="login", type="string", length=255, nullable=false)
-     */
     #[Assert\NotBlank(message:"Ce champs est vide")]
     #[Assert\Email(message:"La format de l'email est non valide")]
-    private $login;
+    #[ORM\Column(length:255)]
+    private ?string $login=null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="mdp", type="string", length=255, nullable=false)
-     */
    // #[Assert\Length(min:10,message:"Votre mot de passe ne contient pas 10 caractères.")]
-    private $mdp;
+   #[ORM\Column(length:50)]
+   private ?string $mdp=null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="photo_personel", type="string", length=255, nullable=false)
-     */
-    private $photoPersonel;
+    #[ORM\Column(length:50)]
+    private ?string $photo_personel=null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="photo_permis", type="string", length=255, nullable=false)
-     */
-    private $photoPermis;
-
-    /**
-     * @var Role
-     *
-     * @ORM\OneToOne(targetEntity="Role")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="idrole", referencedColumnName="id")
-     * })
-     */
-    #[ORM\OneToOne(mappedBy: 'id', targetEntity: Role::class)]
-    private $idrole;
+    #[ORM\Column(length:50)]
+    private ?string $photo_permis=null;
+    #[ORM\JoinColumn(name: 'idrole', referencedColumnName: 'id')]
+    #[ORM\OneToOne(targetEntity: Role::class )]
+    private ?Role $idrole = null;
     
 public function setId(int $id){
     $this->id = $id;
     return $this;
 }
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
 
-    public function getNom(): ?string
-    {
-        return $this->nom;
-    }
+public function getId(): ?int
+{
+    return $this->id;
+}
 
-    public function setNom(string $nom): self
-    {
-        $this->nom = $nom;
+public function getNom(): ?string
+{
+    return $this->nom;
+}
 
-        return $this;
-    }
+public function setNom(string $nom): self
+{
+    $this->nom = $nom;
 
-    public function getPrenom(): ?string
-    {
-        return $this->prenom;
-    }
+    return $this;
+}
 
-    public function setPrenom(string $prenom): self
-    {
-        $this->prenom = $prenom;
+public function getPrenom(): ?string
+{
+    return $this->prenom;
+}
 
-        return $this;
-    }
+public function setPrenom(string $prenom): self
+{
+    $this->prenom = $prenom;
 
-    public function getCin(): ?string
-    {
-        return $this->cin;
-    }
+    return $this;
+}
 
-    public function setCin(string $cin): self
-    {
-        $this->cin = $cin;
+public function getCin(): ?string
+{
+    return $this->cin;
+}
 
-        return $this;
-    }
+public function setCin(string $cin): self
+{
+    $this->cin = $cin;
 
-    public function getDateNaiss(): ?\DateTimeInterface
-    {
-        return $this->dateNaiss;
-    }
+    return $this;
+}
 
-    public function setDateNaiss(\DateTimeInterface $dateNaiss): self
-    {
-        $this->dateNaiss = $dateNaiss;
+public function getDateNaiss(): ?\DateTimeInterface
+{
+    return $this->date_naiss;
+}
 
-        return $this;
-    }
+public function setDateNaiss(\DateTimeInterface $date_naiss): self
+{
+    $this->date_naiss = $date_naiss;
 
-    public function getAge(): ?string
-    {
-        return $this->age;
-    }
+    return $this;
+}
 
-    public function setAge(string $age): self
-    {
-        $this->age = $age;
+public function getAge(): ?string
+{
+    return $this->age;
+}
 
-        return $this;
-    }
+public function setAge(string $age): self
+{
+    $this->age = $age;
 
-    public function getNumPermis(): ?string
-    {
-        return $this->numPermis;
-    }
+    return $this;
+}
 
-    public function setNumPermis(string $numPermis): self
-    {
-        $this->numPermis = $numPermis;
+public function getNumPermis(): ?string
+{
+    return $this->num_permis;
+}
 
-        return $this;
-    }
+public function setNumPermis(string $num_permis): self
+{
+    $this->num_permis = $num_permis;
 
-    public function getVille(): ?string
-    {
-        return $this->ville;
-    }
+    return $this;
+}
 
-    public function setVille(string $ville): self
-    {
-        $this->ville = $ville;
+public function getVille(): ?string
+{
+    return $this->ville;
+}
 
-        return $this;
-    }
+public function setVille(string $ville): self
+{
+    $this->ville = $ville;
 
-    public function getNumTel(): ?string
-    {
-        return $this->numTel;
-    }
+    return $this;
+}
 
-    public function setNumTel(string $numTel): self
-    {
-        $this->numTel = $numTel;
+public function getNumTel(): ?string
+{
+    return $this->num_tel;
+}
 
-        return $this;
-    }
+public function setNumTel(string $num_tel): self
+{
+    $this->num_tel = $num_tel;
 
-    public function getLogin(): ?string
-    {
-        return $this->login;
-    }
+    return $this;
+}
 
-    public function setLogin(string $login): self
-    {
-        $this->login = $login;
+public function getLogin(): ?string
+{
+    return $this->login;
+}
 
-        return $this;
-    }
+public function setLogin(string $login): self
+{
+    $this->login = $login;
 
-    public function getMdp(): ?string
-    {
-        return $this->mdp;
-    }
+    return $this;
+}
 
-    public function setMdp(string $mdp): self
-    {
-        $this->mdp = $mdp;
+public function getMdp(): ?string
+{
+    return $this->mdp;
+}
 
-        return $this;
-    }
+public function setMdp(string $mdp): self
+{
+    $this->mdp = $mdp;
 
-    public function getPhotoPersonel(): ?string
-    {
-        return $this->photoPersonel;
-    }
+    return $this;
+}
 
-    public function setPhotoPersonel(string $photoPersonel): self
-    {
-        $this->photoPersonel = $photoPersonel;
+public function getPhotoPersonel(): ?string
+{
+    return $this->photo_personel;
+}
 
-        return $this;
-    }
+public function setPhotoPersonel(string $photo_personel): self
+{
+    $this->photo_personel = $photo_personel;
 
-    public function getPhotoPermis(): ?string
-    {
-        return $this->photoPermis;
-    }
+    return $this;
+}
 
-    public function setPhotoPermis(string $photoPermis): self
-    {
-        $this->photoPermis = $photoPermis;
+public function getPhotoPermis(): ?string
+{
+    return $this->photo_permis;
+}
 
-        return $this;
-    }
+public function setPhotoPermis(string $photo_permis): self
+{
+    $this->photo_permis = $photo_permis;
 
-    public function getIdrole(): ?Role
-    {
-       
-        return $this->idrole;
-    }
+    return $this;
+}
 
-    public function setIdrole(?Role $idrole): self
-    {
-        $this->idrole = $idrole;
+public function getIdrole(): ?Role
+{
+    return $this->idrole;
+}
 
-        return $this;
-    }
+public function setIdrole(?Role $idrole): self
+{
+    $this->idrole = $idrole;
+
+    return $this;
+}
+
 
 
 }

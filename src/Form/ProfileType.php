@@ -50,9 +50,9 @@ class ProfileType extends AbstractType
                 ]
                
             ])
-            ->add('photoPersonel',TextType::class)
-            ->add('photoPermis',TextType::class)
-            ->add('numTel')
+            ->add('photo_personel',TextType::class)
+            ->add('photo_permis',TextType::class)
+            ->add('num_tel')
             ->add('login')
             ->add('mdp',PasswordType::class)
             ->add('newmdp',PasswordType::class, [

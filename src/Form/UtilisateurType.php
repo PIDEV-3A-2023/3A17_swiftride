@@ -5,7 +5,6 @@ namespace App\Form;
 use AgeCalculation;
 use App\Entity\Role;
 use App\Entity\Utilisateur;
-use DateTime;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -18,6 +17,8 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Validator\Constraints\LessThan;
+use Symfony\Component\Validator\Constraints\GreaterThan;
+
 class UtilisateurType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -26,12 +27,16 @@ class UtilisateurType extends AbstractType
             ->add('nom',TextType::class)
             ->add('prenom',TextType::class)
             ->add('cin',TextType::class)
-            ->add('dateNaiss', DateType::class, [
+            ->add('date_naiss', DateType::class, [
                 'widget' => 'single_text',
+                'format' => 'yyyy-MM-dd',
+                'constraints' => [
+                    new LessThan(['value' => 'today']),
+                    new GreaterThan(['value' => '-18 years']),
+                ],
                 // this is actually the default format for single_text
-                
             ])
-            ->add('numPermis')
+            ->add('num_permis')
             ->add('ville',ChoiceType::class,[
                 'choices'=>[
                     "Ariana"=>"Ariana",
@@ -60,10 +65,10 @@ class UtilisateurType extends AbstractType
                     "Zaghouan"=>"Zaghouan",
                 ]
             ])
-            ->add('numTel')
+            ->add('num_tel')
             ->add('login', EmailType::class)
             ->add('mdp', PasswordType::class)
-            ->add('photoPersonel',FileType::class,[ 'mapped' => false,
+            ->add('photo_personel',FileType::class,[ 'mapped' => false,
             'required' => false,
             'constraints' => [
                 new File([
@@ -75,7 +80,7 @@ class UtilisateurType extends AbstractType
                     ],
                     'mimeTypesMessage' => 'Please upload a valid image',
                 ])]])
-            ->add('photoPermis',FileType::class,['label' => 'Choisi une photo de permis',
+            ->add('photo_permis',FileType::class,['label' => 'Choisi une photo de permis',
              'mapped' => false,
             'required' => false,
             'constraints' => [

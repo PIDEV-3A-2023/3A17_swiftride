@@ -1,32 +1,19 @@
 <?php
 
 namespace App\Entity;
-
+use App\Entity\Utilisateur;
+use App\Repository\RoleRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * Role
- *
- * @ORM\Table(name="role")
- * @ORM\Entity
- */
+#[ORM\Entity(repositoryClass: RoleRepository::class)]
 class Role
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="type", type="string", length=255, nullable=false)
-     */
-    private $type;
+    #[ORM\Id]
+    #[ORM\Column]
+    #[ORM\GeneratedValue()]
+    private ?int $id=null;
+    #[ORM\Column(length:50)]
+    private ?string $type=null;
 
     public function getId(): ?int
     {

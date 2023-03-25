@@ -21,6 +21,7 @@ use Imagine\Image\Box;
 use Imagine\Image\ImageInterface;
 use Imagine\Image\ImagineInterface;
 use Imagine\Image\Point;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 
 class UtilisateurController extends AbstractController
 {
@@ -50,17 +51,17 @@ class UtilisateurController extends AbstractController
     }
     #[Route('/profile', name: 'profile_page' ,methods: ['GET', 'POST'])]
     public function profile(Request $request,UtilisateurRepository $utilisateurRepository): Response
-    {$user=$utilisateurRepository->find(19);
+    {$user=$utilisateurRepository->find(7);
 
         //$user = $doctrine->getRepository(Utilisateur::class)->find($this->session->get('user_id'));
         $form = $this->createForm(ProfileType::class, $user);
         $form->handleRequest($request);
        if($form->isSubmitted()&&$form->isValid()){
-        if(password_verify($user->getMdp(), $form->get('mdp')->getData())){
-            $user->setMdp($form->get('newmdp')->getData());
+       // if(password_verify($user->getMdp(), $form->get('mdp')->getData())){
+         //   $user->setMdp($form->get('newmdp')->getData());
             $utilisateurRepository->save($user, true);
             return $this->redirectToRoute('loginspace');
-        }
+       // }
         }
         return $this->render('utilisateur/profile.html.twig', [
             'controller_name' => 'UtilisateurController', 'form' => $form->createView(),
@@ -78,14 +79,14 @@ class UtilisateurController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()){
-            $today = new \DateTime();
+           $today = new \DateTime();
         $diff = $today->diff($user->getDateNaiss());
         $user->setAge($diff->format('%y'));
 $personnel_directory = $this->getParameter('personnel_directory');
 $permis_directory = $this->getParameter('permis_directory');
 
-          $photopersonnel = $form->get('photoPersonel')->getData();
-            $photopermis = $form->get('photoPermis')->getData();
+          $photopersonnel = $form->get('photo_personel')->getData();
+            $photopermis = $form->get('photo_permis')->getData();
             
            if($photopersonnel && $photopermis){
             try {
@@ -115,20 +116,32 @@ $permis_directory = $this->getParameter('permis_directory');
             }
             $user->setPhotoPersonel($newpersonnelname);
             $user->setPhotoPermis($newpermisname);
-$role=$roleRepository->find(2);
-$user->setIdrole($role);
-          
-            
+            $user->setIdrole($roleRepository->find(2));
             $utilisateurRepository->save($user, true);
             return $this->redirectToRoute('loginspace');
            
         }
        return $this->render('utilisateur/signup.html.twig', [      
-           'form' => $form->createView(),
+           'form' => $form->createView(),'roleid'=>$roleRepository->find(2),'user'=>$user->setIdrole($roleRepository->find(2))
          
        ]);
      
 
     }
-   
+    #[Route('/listeUser', name: 'user_liste', methods: ['GET'])]
+    public function liste(UtilisateurRepository $utilisateurRepository): Response
+    {
+        return $this->render('utilisateur/tables.html.twig', [
+            'utilisateurs' => $utilisateurRepository->findAll()
+        ]);
+    }
+    #[Route('/{id}', name: 'user_delete', methods: ['POST'])]
+    public function delete(Request $request, Utilisateur $utilisateur,UtilisateurRepository $utilisateurRepository): Response
+    {
+        if ($this->isCsrfTokenValid('delete'.$utilisateur->getId(), $request->request->get('_token'))) {
+            $utilisateurRepository->remove($utilisateur, true);
+        }
+
+        return $this->redirectToRoute('user_liste', [], Response::HTTP_SEE_OTHER);
+    }
 }

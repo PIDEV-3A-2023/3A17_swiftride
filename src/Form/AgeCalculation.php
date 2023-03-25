@@ -1,5 +1,6 @@
 <?php
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 
@@ -12,18 +13,18 @@ class AgeCalculation implements EventSubscriberInterface
         ];
     }
 
-    public function preSetData(FormEvent $event): void
+    /* public function preSetData(FormEvent $event): void
     {
         $form = $event->getForm();
         $data = $event->getData();
-        $age = $this->calculateAge($form->get('dateNaiss')->getData());
+        $age = $this->calculateAge($form->get('date_naiss')->getData());
         $form->get('age')->setData($age);
     }
 
-    private function calculateAge(\DateTime $birthdate): int
+  private function calculateAge(DateTime $birthdate): int
     {  
         $today = new \DateTime();
         $diff = $today->diff($birthdate);
         return $diff->y;
-    }
+    }*/
 }

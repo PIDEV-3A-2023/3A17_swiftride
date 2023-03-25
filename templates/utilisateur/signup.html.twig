@@ -64,17 +64,17 @@
 						<span class="label-input100">cin</span>
 					</div>
                     <div class="wrap-input100 validate-input" >
-						{{ form_widget(form.numPermis,{'attr':{class:'input100'}}) }}
+						{{ form_widget(form.num_permis,{'attr':{class:'input100'}}) }}
 						<span class="focus-input100"></span>
 						<span class="label-input100">numéro permis</span>
 					</div>
                     <div class="wrap-input100 validate-input" >
-						{{ form_widget(form.numTel,{'attr':{class:'input100'}}) }}
+						{{ form_widget(form.num_tel,{'attr':{class:'input100'}}) }}
 						<span class="focus-input100"></span>
 						<span class="label-input100">numéro de téléphone</span>
 					</div>
                     <div class="wrap-input100 validate-input">
-						{{ form_widget(form.dateNaiss,{'attr':{class:'input100'}}) }}
+						{{ form_widget(form.date_naiss,{'attr':{class:'input100'}}) }}
 						<span class="focus-input100"></span>
 						
 					</div>
@@ -105,13 +105,13 @@
 			
 	<div class="container-login100-form-btn">
 					<button class="login100-form-btn">
-							{{ form_widget(form.photoPersonel,{'attr':{class:'login100-form-btn'}}) }}
+							{{ form_widget(form.photo_personel,{'attr':{class:'login100-form-btn'}}) }}
 						</button>
                         
 					</div><br>
                     <div class="container-login100-form-btn">
 						<button class="login100-form-btn">
-							{{ form_widget(form.photoPermis,{'attr':{class:'login100-form-btn'}}) }}                       
+							{{ form_widget(form.photo_permis,{'attr':{class:'login100-form-btn'}}) }}                       
 						</button>
 					</div><br>
 					<div class="container-login100-form-btn">
@@ -124,6 +124,10 @@
 					<div class="text-center p-t-46 p-b-20">
 						<span class="txt2">
 							<a href='{{path('loginspace')}}'>Déja un compte?</a>
+							{{roleid.id}}
+							{{roleid.type}}
+							{{user.idrole.id}}
+							{{user.idrole.type}}
 						</span>
 					</div>
 

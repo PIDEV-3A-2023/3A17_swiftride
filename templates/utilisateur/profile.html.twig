@@ -26,7 +26,7 @@
                     <div class="col-md-6"><label class="labels">Prénom</label>{{ form_widget(form.prenom    ,{'attr':{class:'form-control'}}) }}</div>
                 </div>
                 <div class="row mt-3">
-                    <div class="col-md-12"><label class="labels">Numérod de téléphone</label>{{ form_widget(form.numTel,{'attr':{class:'form-control'}}) }}</div>
+                    <div class="col-md-12"><label class="labels">Numérod de téléphone</label>{{ form_widget(form.num_tel,{'attr':{class:'form-control'}}) }}</div>
                     <div class="col-md-12"><label class="labels">Ville</label>{{ form_widget(form.ville,{'attr':{class:'form-control'}}) }}</div>
                     <div class="col-md-12"><label class="labels">email</label>{{ form_widget(form.login,{'attr':{class:'form-control'}}) }}</div>
                 </div>
@@ -39,11 +39,11 @@
         </div>
         <div class="col-md-4">
             <div class="p-3 py-5">
-{% if form.photoPersonel.vars.value %}
-    <img src="{{ form.photoPersonel.vars.value | replace({'\\': '/'}) | raw }}" alt="Photo personel">
+{% if form.photo_personel.vars.value %}
+    <img src="{{ form.photo_personel.vars.value | replace({'\\': '/'}) | raw }}" alt="Photo personel">
 {% endif %}     <br>
-{% if form.photoPermis.vars.value %}
-    <img src="{{ form.photoPermis.vars.value | replace({'\\': '/'}) | raw }}" alt="Photo permis">
+{% if form.photo_permis.vars.value %}
+    <img src="{{ form.photo_permis.vars.value | replace({'\\': '/'}) | raw }}" alt="Photo permis">
 {% endif %}   </div>
     </div>
 
