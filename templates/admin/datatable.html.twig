@@ -1,0 +1,67 @@
+
+
+{% extends 'adminbase.html.twig' %}
+{% block title %}Clients{% endblock %}
+ {% block content %}
+<body>
+ 
+            <div class="main-content-inner">
+                <div class="row">
+                    <!-- Dark table start -->
+                    <div class="col-12 mt-5">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="header-title">Liste des clients</h4>
+                                <div class="data-tables datatable-dark">
+                                    <table id="dataTable3" class="text-center">
+                                        <thead class="text-capitalize">
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Prenom</th>
+                                                <th>cin</th>
+                                                <th>Date de naissance</th>
+                                                <th>Age</th>
+                                                <th>Numéro de permis</th>
+                                                <th>Ville</th>
+                                                <th>Numéro tel</th>
+                                                <th>Email</th>
+                                               
+                                                
+                                            </tr>
+                                        </thead>
+                                         
+                                           <tbody>
+               {% for utilisateur in utilisateurs %}
+            <tr>
+                <td>{{ utilisateur.nom }}</td>
+                 <td>{{ utilisateur.prenom }}</td>
+                   <td>{{ utilisateur.cin }}</td>
+                   <td>{{ utilisateur.getDateNaiss()|date('Y-m-d')  }}</td>
+                   <td>{{ utilisateur.age }}</td>
+                   <td>{{ utilisateur.getNumPermis() }}</td>
+                   <td>{{ utilisateur.ville }}</td>
+                   <td>{{ utilisateur.getNumTel() }}</td>
+                   <td>{{ utilisateur.login }}</td>
+                   <td>   <a href="{{ path('user_delete',{'id':utilisateur.id}) }}" class="text-danger"><i class="ti-trash"></i></a>
+            </tr>
+            
+
+            {% endfor %}
+        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Dark table end -->
+                </div>
+            </div>
+        </div>
+        <!-- main content area end -->
+        <!-- footer area start-->
+      
+    <!-- offset area end -->
+  
+</body>
+{% endblock %}
+

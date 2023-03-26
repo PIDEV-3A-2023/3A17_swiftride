@@ -52,14 +52,13 @@ class UtilisateurController extends AbstractController
     }
     #[Route('/profile', name: 'profile_page' ,methods: ['GET', 'POST'])]
     public function profile(Request $request,UtilisateurRepository $utilisateurRepository): Response
-    {$user=$utilisateurRepository->find(7);
+    {$user=$utilisateurRepository->find(12);
 
         //$user = $doctrine->getRepository(Utilisateur::class)->find($this->session->get('user_id'));
         $form = $this->createForm(ProfileType::class, $user);
         $form->handleRequest($request);
        if($form->isSubmitted()&&$form->isValid()){
        if($user->getMdp()==$form->get('mdp')->getData()){
-        $user=$utilisateurRepository->find(7);
         $user->setMdp($form->get('newmdp')->getData());
             $utilisateurRepository->save($user, true);
             return $this->redirectToRoute('profile_page');
@@ -77,7 +76,7 @@ class UtilisateurController extends AbstractController
    
 
     #[Route('/signup', name: 'signup', methods: ['GET', 'POST'])]
-    public function signup(Request $request,SluggerInterface $slugger,UtilisateurRepository $utilisateurRepository,RoleRepository $roleRepository, UserPasswordEncoderInterface $passwordEncoder): Response
+    public function signup(Request $request,SluggerInterface $slugger,UtilisateurRepository $utilisateurRepository,RoleRepository $roleRepository): Response
     {
         $user = new Utilisateur();
         $form = $this->createForm(UtilisateurType::class, $user);
@@ -128,26 +127,27 @@ $permis_directory = $this->getParameter('permis_directory');
            
         }
        return $this->render('utilisateur/signup.html.twig', [      
-           'form' => $form->createView(),'roleid'=>$roleRepository->find(2),'user'=>$user->setIdrole($roleRepository->find(2))
+           'form' => $form->createView()
          
        ]);
      
 
     }
     #[Route('/listeUser', name: 'user_liste', methods: ['GET'])]
-    public function liste(UtilisateurRepository $utilisateurRepository): Response
+    public function liste(UtilisateurRepository $utilisateurRepository,RoleRepository $roleRepository): Response
     {
-        return $this->render('admin/tables.html.twig', [
-            'utilisateurs' => $utilisateurRepository->findAll()
+
+        return $this->render('admin/datatable.html.twig', [
+            'utilisateurs' => $utilisateurRepository->findByRoleId($roleRepository->find(2))
         ]);
     }
-    #[Route('/{id}', name: 'user_delete', methods: ['POST'])]
-    public function delete(Request $request, Utilisateur $utilisateur,UtilisateurRepository $utilisateurRepository): Response
+    #[Route('/{id}', name: 'user_delete', methods: ['GET','POST'])]
+    public function delete(Request $request, Utilisateur $utilisateur,UtilisateurRepository $utilisateurRepository,$id): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$utilisateur->getId(), $request->request->get('_token'))) {
-            $utilisateurRepository->remove($utilisateur, true);
-        }
+        //if ($this->isCsrfTokenValid('delete'.$utilisateur->getId(), $request->request->get('_token'))) {
+            $utilisateurRepository->remove($utilisateurRepository->find($id), true);
+      //  }
 
-        return $this->redirectToRoute('user_liste', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('user_liste');
     }
 }

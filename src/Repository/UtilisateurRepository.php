@@ -29,7 +29,14 @@ class UtilisateurRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
-
+    public function findByRoleId($roleId)
+    {
+        return $this->createQueryBuilder('u')
+            ->andWhere('u.idrole = :roleId')
+            ->setParameter('roleId', $roleId)
+            ->getQuery()
+            ->getResult();
+    }
     public function remove(Utilisateur $entity, bool $flush = false): void
     {
         $this->getEntityManager()->remove($entity);

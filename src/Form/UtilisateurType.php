@@ -30,10 +30,10 @@ class UtilisateurType extends AbstractType
             ->add('date_naiss', DateType::class, [
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
-                'constraints' => [
-                    new LessThan(['value' => 'today']),
-                    new GreaterThan(['value' => '-18 years']),
-                ],
+              /*  'invalid_range' => [
+                    'start' => '-18 years',
+                    'end' => 'today',
+                ],*/
                 // this is actually the default format for single_text
             ])
             ->add('num_permis')

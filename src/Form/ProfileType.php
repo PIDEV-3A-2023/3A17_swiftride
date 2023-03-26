@@ -10,6 +10,7 @@ use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -54,7 +55,7 @@ class ProfileType extends AbstractType
             ->add('photo_personel',HiddenType::class)
             ->add('photo_permis',HiddenType::class)
             ->add('num_tel')
-            ->add('login')
+            ->add('login' ,EmailType::class)
             ->add('mdp',PasswordType::class)
             ->add('newmdp',PasswordType::class, [
                 'mapped' => false,
