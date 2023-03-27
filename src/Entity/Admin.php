@@ -2,24 +2,18 @@
 
 namespace App\Entity;
 
-use Doctrine\DBAL\Types\Types;
+use App\Repository\AdminRepository;
 use Doctrine\ORM\Mapping as ORM;
-use App\Entity\Role;
-use App\Repository\UtilisateurRepository;
-use DateTime;
-use PhpParser\Node\Name;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints As Assert;
-#[ORM\Entity(repositoryClass: UtilisateurRepository::class)]
-class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
+#[ORM\Entity(repositoryClass: AdminRepository::class)]
+class Admin implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
+    #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[ORM\GeneratedValue()]
-    private ?int $id=null;
-
+    private ?int $id = null;
 
     #[Assert\Length(min:3,minMessage:'contient au minimum 3 caratéres')]
     #[ORM\Column(length:50)]
@@ -58,6 +52,7 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     #[Assert\NotBlank(message:"Ce champs est vide")]
     #[Assert\Length(exactly:8,exactMessage: 'Doit etre composé de 8 chiffres')]
     #[Assert\Regex(pattern:"/^[0-9]+$/", message:"Contient seulement des chiffres.")]
+
     #[ORM\Column(length:50)]
     private ?string $num_tel=null;
 
@@ -210,20 +205,7 @@ public function setMdp(string $mdp): self
 
     return $this;
 }
-  /**
-     * @see PasswordAuthenticatedUserInterface
-     */
-    public function getPassword(): string
-    {
-        return $this->mdp;
-    }
 
-    public function setPassword(string $password): self
-    {
-        $this->mdp = $password;
-
-        return $this;
-    }
 
 public function getPhotoPersonel(): ?string
 {
@@ -261,7 +243,20 @@ public function setRole(?Role $role): self
     return $this;
 }
 
-  
+    /**
+     * @see PasswordAuthenticatedUserInterface
+     */
+    public function getPassword(): string
+    {
+        return $this->mdp;
+    }
+
+    public function setPassword(string $password): self
+    {
+        $this->mdp = $password;
+
+        return $this;
+    }
 
 /**
      * The public representation of the user (e.g. a username, an email address, etc.)

@@ -15,6 +15,9 @@ use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\NotNull;
 
 class ProfileType extends AbstractType
 {
@@ -59,8 +62,24 @@ class ProfileType extends AbstractType
             ->add('mdp',PasswordType::class)
             ->add('newmdp',PasswordType::class, [
                 'mapped' => false,
+                'constraints'=>[
+                    new NotBlank([
+                        'message'=>'Ce champs est vide'
+                    ]),
+                    new NotNull([
+                        'message'=>'Ce champs est vide'
+                    ]),
+                    new Length([
+                        'min'=>6,
+                        'max'=>20,
+                        'minMessage'=>'contient 6 caractéres au minimum',
+                        'maxMessage'=>'contient 20 caractéres au maximum'
+                    ])
+                ]
             ])
-            ->add('submit', SubmitType::class);
+            ->add('submit', SubmitType::class,[
+                'label'=>'Enregistrer'
+            ]);
             
         
     }

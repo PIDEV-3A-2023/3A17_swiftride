@@ -8,17 +8,47 @@ security:
     # used to reload user from session & other features (e.g. switch_user) 
         app_user_provider:                    
             entity: 
-                class: App\Entity\Utilisateur 
-                property: id
+                class: App\Entity\Utilisateur
+        app_admin_provider:                    
+            entity: 
+                class: App\Entity\Admin
         users_in_memory: { memory: null }
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
-        main:
+        admin:
+            pattern: ^/admin
             lazy: true
-            provider: users_in_memory
-
+            provider: app_admin_provider
+            form_login:
+                login_path: login_admin
+                check_path: login_admin
+                default_target_path: liste_admin
+                enable_csrf: true
+            remember_me:
+                secret:   '%kernel.secret%' # required
+                lifetime: 604800 # 1 week in seconds
+            logout:
+                path: logout_admin
+                target: login_admin
+        main:
+            pattern: ^/
+            lazy: true
+            provider: app_user_provider
+            form_login:
+                # "app_login" is the name of the route created previously
+                login_path: loginspace
+                check_path: loginspace
+                default_target_path: profile_page
+                enable_csrf: true
+            remember_me:
+                secret:   '%kernel.secret%' # required
+                lifetime: 604800 # 1 week in seconds
+            logout:
+                path: logout
+                target: loginspace
+            
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
 
@@ -28,8 +58,9 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        # - { path: ^/admin, roles: ROLE_ADMIN }
-        # - { path: ^/profile, roles: ROLE_USER }
+        - { path: ^/admin/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/admin, roles: [IS_AUTHENTICATED_FULLY, ADMIN] }
+        - { path: ^/profile, roles: [IS_AUTHENTICATED_FULLY, USER] }
 
 when@test:
     security:

@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Utilisateur;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;
 
 /**
  * @extends ServiceEntityRepository<Utilisateur>
@@ -14,13 +15,13 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Utilisateur[]    findAll()
  * @method Utilisateur[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class UtilisateurRepository extends ServiceEntityRepository
+class UtilisateurRepository extends ServiceEntityRepository  implements UserLoaderInterface
 {
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Utilisateur::class);
     }
-
+ 
     public function save(Utilisateur $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
@@ -32,8 +33,32 @@ class UtilisateurRepository extends ServiceEntityRepository
     public function findByRoleId($roleId)
     {
         return $this->createQueryBuilder('u')
-            ->andWhere('u.idrole = :roleId')
+            ->andWhere('u.role = :roleId')
             ->setParameter('roleId', $roleId)
+            ->getQuery()
+            ->getResult();
+    }
+    public function findByemail($email)
+    {
+        return $this->createQueryBuilder('u')
+            ->andWhere('u.login = :email')
+            ->setParameter('email', $email)
+            ->getQuery()
+            ->getResult();
+    }
+    public function findBycin($cin)
+    {
+        return $this->createQueryBuilder('u')
+            ->andWhere('u.cin = :cin')
+            ->setParameter('cin', $cin)
+            ->getQuery()
+            ->getResult();
+    }
+    public function findBynumpermis($permis)
+    {
+        return $this->createQueryBuilder('u')
+            ->andWhere('u.num_permis = :permis')
+            ->setParameter('permis', $permis)
             ->getQuery()
             ->getResult();
     }
@@ -45,6 +70,16 @@ class UtilisateurRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+    public function loadUserByUsername(string $usernameOrEmail): ?Utilisateur
+    {
+        return $this->createQueryBuilder('u')
+            ->where('u.login = :query')
+            ->andWhere('u.role = 2')
+            ->setParameter('query', $usernameOrEmail)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+   
 
 //    /**
 //     * @return Utilisateur[] Returns an array of Utilisateur objects

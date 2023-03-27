@@ -18,6 +18,7 @@ use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Validator\Constraints\LessThan;
 use Symfony\Component\Validator\Constraints\GreaterThan;
+use Symfony\Component\Validator\Constraints\Range;
 
 class UtilisateurType extends AbstractType
 {
@@ -26,10 +27,16 @@ class UtilisateurType extends AbstractType
         $builder
             ->add('nom',TextType::class)
             ->add('prenom',TextType::class)
-            ->add('cin',TextType::class)
+            ->add('cin')
             ->add('date_naiss', DateType::class, [
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
+                'constraints'=>[
+                    new Range([
+                        'min' => new \DateTime('-18 years'),
+                        'minMessage' => 'vous devez avoir au minimum 18 ans ',
+                    ]),
+                ]
               /*  'invalid_range' => [
                     'start' => '-18 years',
                     'end' => 'today',
@@ -80,7 +87,8 @@ class UtilisateurType extends AbstractType
                     ],
                     'mimeTypesMessage' => 'Please upload a valid image',
                 ])]])
-            ->add('photo_permis',FileType::class,['label' => 'Choisi une photo de permis',
+            ->add('photo_permis',FileType::class,[
+                'label' => 'Choisi une photo de permis',
              'mapped' => false,
             'required' => false,
             'constraints' => [
@@ -94,7 +102,9 @@ class UtilisateurType extends AbstractType
                     'mimeTypesMessage' => 'Please upload a valid image',
                 ])]])
             
-            ->add('submit', SubmitType::class)
+            ->add('submit', SubmitType::class,[
+                'label'=>'Valider'
+            ])
         ;
     }
 

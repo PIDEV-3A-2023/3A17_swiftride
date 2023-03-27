@@ -21,92 +21,114 @@ use Imagine\Image\Box;
 use Imagine\Image\ImageInterface;
 use Imagine\Image\ImagineInterface;
 use Imagine\Image\Point;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use Symfony\Component\String\Slugger\AsciiSlugger;
 
 class UtilisateurController extends AbstractController
 {
-    private $session;
+    private $roleRepository;
 
-    public function __construct(SessionInterface $session)
+    public function __construct(RoleRepository $roleRepository)
     {
-        $this->session = $session;
+        $this->roleRepository = $roleRepository;
     }
+
     #[Route('/login', name: 'loginspace' , methods: ['GET', 'POST'])]
-    public function index(Request $request,UtilisateurRepository $doctrine): Response
-    { 
-        $user = new Utilisateur();
-        $form = $this->createForm(LoginType::class, $user);
-        $form->handleRequest($request);
-        if($form->isSubmitted() && $form->isValid()){
-            $usertest=$doctrine->findOneBy(['login' => $user->getLogin()]);
-            if($usertest && password_verify($user->getMdp(), $usertest->getMdp())){
-               $this->session->start();
-               $this->session->set('user_id', $user->getId());
-                return $this->redirectToRoute('profile_page');
-            };
-        }
+    public function index(AuthenticationUtils $authenticationUtils): Response
+    {
+        // get the login error if there is one
+        $error = $authenticationUtils->getLastAuthenticationError();
+    
+        // last username entered by the user
+        $lastUsername = $authenticationUtils->getLastUsername();
+    
         return $this->render('utilisateur/login.html.twig', [
-            'controller_name' => 'UtilisateurController', 'form' => $form->createView(),
+            'last_username' => $lastUsername,
+            'error' => $error,
         ]);
     }
     #[Route('/profile', name: 'profile_page' ,methods: ['GET', 'POST'])]
-    public function profile(Request $request,UtilisateurRepository $utilisateurRepository): Response
-    {$user=$utilisateurRepository->find(12);
-
-        //$user = $doctrine->getRepository(Utilisateur::class)->find($this->session->get('user_id'));
+    public function profile(Request $request,UtilisateurRepository $utilisateurRepository ,UserPasswordHasherInterface $userPasswordHasher): Response
+    {
+        $user = $this->getUser();        //$user = $doctrine->getRepository(Utilisateur::class)->find($this->session->get('user_id'));
         $form = $this->createForm(ProfileType::class, $user);
         $form->handleRequest($request);
-       if($form->isSubmitted()&&$form->isValid()){
-       if($user->getMdp()==$form->get('mdp')->getData()){
-        $user->setMdp($form->get('newmdp')->getData());
-            $utilisateurRepository->save($user, true);
-            return $this->redirectToRoute('profile_page');
-        
-        }
-        else{
-            return $this->redirectToRoute('profile_page');
-        }
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            if ($user->getPassword() == $form->get('mdp')->getData()) {
+    
+                $user->setPassword(
+                    $userPasswordHasher->hashPassword(
+                        $user,
+                        $form->get('newmdp')->getData()
+                    )
+                );
+    
+                $utilisateurRepository->save($user, true);
+                return $this->redirectToRoute('profile_page');
+    
+            } else {
+                return $this->redirectToRoute('profile_page');
+            }
         }
         return $this->render('utilisateur/profile.html.twig', [
-            'controller_name' => 'UtilisateurController', 'form' => $form->createView()
+            'controller_name' => 'UtilisateurController', 'form' => $form->createView(),
         ]);
     }
    
    
 
     #[Route('/signup', name: 'signup', methods: ['GET', 'POST'])]
-    public function signup(Request $request,SluggerInterface $slugger,UtilisateurRepository $utilisateurRepository,RoleRepository $roleRepository): Response
+    public function signup(Request $request,SluggerInterface $slugger,UtilisateurRepository $utilisateurRepository,UserPasswordHasherInterface $userPasswordHasher ): Response
     {
+        $message='';
+        $message1='';
+        $message2='';
         $user = new Utilisateur();
         $form = $this->createForm(UtilisateurType::class, $user);
-        
         $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()){
-           $today = new \DateTime();
-        $diff = $today->diff($user->getDateNaiss());
-        $user->setAge($diff->format('%y'));
-$personnel_directory = $this->getParameter('personnel_directory');
-$permis_directory = $this->getParameter('permis_directory');
-
-          $photopersonnel = $form->get('photo_personel')->getData();
+    
+        if ($form->isSubmitted() && $form->isValid()) {
+            // encode the plain password
+            $user->setPassword(
+                $userPasswordHasher->hashPassword(
+                    $user,
+                    $form->get('mdp')->getData()
+                )
+            );
+    
+            $today = new \DateTime();
+            $diff = $today->diff($user->getDateNaiss());
+            $user->setAge($diff->format('%y'));
+    
+            $personelDirectory = $this->getParameter('personnel_directory');
+            $permisDirectory = $this->getParameter('permis_directory');
+    
+            $photopersonnel = $form->get('photo_personel')->getData();
             $photopermis = $form->get('photo_permis')->getData();
-            
-           if($photopersonnel && $photopermis){
-            try {
-                if ((!file_exists($personnel_directory))){
-                    mkdir($personnel_directory, 0777, true);
-                }
-                if ((!file_exists($permis_directory))){
-                    mkdir($permis_directory, 0777, true);
-                }
-                $photopersonnelname = pathinfo($photopersonnel->getClientOriginalName(), PATHINFO_FILENAME);
-                $photopermisname =pathinfo($photopermis->getClientOriginalName(), PATHINFO_FILENAME);
-                $safePersonnelname = $slugger->slug($photopersonnelname);
-                $safePermisname = $slugger->slug($photopermisname);
-                $newpersonnelname = 'personnel_directory'.'/'.$safePersonnelname.'-'.uniqid().'.'.$photopersonnel->guessExtension();
-                $newpermisname = 'permis_directory'.'/'.$safePermisname.'-'.uniqid().'.'.$photopermis->guessExtension();
+    
+            if ($photopersonnel && $photopermis) {
+    
+                try {
+                    if ((!file_exists($personelDirectory))) {
+                        mkdir($personelDirectory, 0777, true);
+                    }
+    
+                    if ((!file_exists($permisDirectory))) {
+                        mkdir($permisDirectory, 0777, true);
+                    }
+    
+                    $photopersonnelname = pathinfo($photopersonnel->getClientOriginalName(), PATHINFO_FILENAME);
+                    $photopermisname = pathinfo($photopermis->getClientOriginalName(), PATHINFO_FILENAME);
+                    $slugger = new AsciiSlugger();
+                    $safePersonnelname = $slugger->slug($photopersonnelname);
+                    $safePermisname = $slugger->slug($photopermisname);
+                    $newpersonnelname = 'personnel_directory' . '/' . $safePersonnelname . '-' . uniqid() . '.' . $photopersonnel->guessExtension();
+                    $newpermisname = 'permis_directory' . '/' . $safePermisname . '-' . uniqid() . '.' . $photopermis->guessExtension();
                     $photopersonnel->move(
                         $this->getParameter('personnel_directory'),
                         $newpersonnelname
@@ -119,19 +141,37 @@ $permis_directory = $this->getParameter('permis_directory');
                     echo $e;
                 }
             }
-            $user->setPhotoPersonel($newpersonnelname);
-            $user->setPhotoPermis($newpermisname);
-            $user->setIdrole($roleRepository->find(2));
+            $user->setPhotoPersonel($newpersonnelname ?? "");
+            $user->setPhotoPermis($newpermisname ?? "");
+            $user->setRole($this->roleRepository->find(2));
+            if($utilisateurRepository->findByemail($user->getLogin())){
+                $message='email déja utilisé';
+            }
+            else if($utilisateurRepository->findBycin($user->getCin())){
+                $message1='cin déja utilisé';
+            }
+            else if($utilisateurRepository->findBynumpermis($user->getNumPermis())){
+                $message2='numéro de permis déja utilisé';
+            }
+            else {
             $utilisateurRepository->save($user, true);
             return $this->redirectToRoute('loginspace');
-           
+            }
         }
        return $this->render('utilisateur/signup.html.twig', [      
-           'form' => $form->createView()
+           'form' => $form->createView(),'message'=>$message,'message1'=>$message1,'message2'=>$message2
          
        ]);
      
 
+    }   #[Route('/delete/{id}', name: 'user_delete', methods: ['GET','POST'])]
+    public function delete(Request $request, Utilisateur $utilisateur,UtilisateurRepository $utilisateurRepository,$id): Response
+    {
+        //if ($this->isCsrfTokenValid('delete'.$utilisateur->getId(), $request->request->get('_token'))) {
+            $utilisateurRepository->remove($utilisateurRepository->find($id), true);
+      //  }
+
+        return $this->redirectToRoute('user_liste');
     }
     #[Route('/listeUser', name: 'user_liste', methods: ['GET'])]
     public function liste(UtilisateurRepository $utilisateurRepository,RoleRepository $roleRepository): Response
@@ -141,13 +181,6 @@ $permis_directory = $this->getParameter('permis_directory');
             'utilisateurs' => $utilisateurRepository->findByRoleId($roleRepository->find(2))
         ]);
     }
-    #[Route('/{id}', name: 'user_delete', methods: ['GET','POST'])]
-    public function delete(Request $request, Utilisateur $utilisateur,UtilisateurRepository $utilisateurRepository,$id): Response
-    {
-        //if ($this->isCsrfTokenValid('delete'.$utilisateur->getId(), $request->request->get('_token'))) {
-            $utilisateurRepository->remove($utilisateurRepository->find($id), true);
-      //  }
-
-        return $this->redirectToRoute('user_liste');
-    }
+ 
+    
 }

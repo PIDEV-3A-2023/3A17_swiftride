@@ -2,9 +2,13 @@
 
 namespace App\Controller;
 
+use App\Repository\RoleRepository;
+use App\Repository\UtilisateurRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+
 #[Route('/admin')]
 class AdminController extends AbstractController
 {
@@ -16,15 +20,23 @@ class AdminController extends AbstractController
         ]);
     }
     #[Route('/login', name: 'login_admin')]
-    public function login(): Response
-    {
+    function login(AuthenticationUtils $authenticationUtils): Response
+        {
+        // get the login error if there is one
+        $error = $authenticationUtils->getLastAuthenticationError();
+    
+        // last username entered by the user
+        $lastUsername = $authenticationUtils->getLastUsername();
         return $this->render('admin/login.html.twig', [
-            'controller_name' => 'AdminController',
+            'last_username' => $lastUsername,
+            'error' => $error,
         ]);
     }
     #[Route('/listeUser', name: 'liste_admin')]
-    public function liste(): Response
+    public function liste(UtilisateurRepository $utilisateurRepository, RoleRepository $roleRepository): Response
     {
-        return $this->redirectToRoute('user_liste');
-    }
+    return $this->render('admin/datatable.html.twig', [
+        'utilisateurs' => $utilisateurRepository->findByRoleId($roleRepository->find(2)),
+    ]);
+}
 }
