@@ -6,6 +6,8 @@ use AgeCalculation;
 use App\Entity\Role;
 use App\Entity\Utilisateur;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ButtonType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -31,6 +33,7 @@ class UtilisateurType extends AbstractType
             ->add('date_naiss', DateType::class, [
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
+                'data'=> new \DateTime("-18 years"),
                 'constraints'=>[
                     new Range([
                         'min' => new \DateTime('-18 years'),
@@ -104,6 +107,18 @@ class UtilisateurType extends AbstractType
             
             ->add('submit', SubmitType::class,[
                 'label'=>'Valider'
+            ])
+            ->add('showPassword', CheckboxType::class, [
+                'label' => false,
+                'required' => false,
+                'mapped' => false, // this field doesn't map to an entity property
+                'label_attr' => [
+                    'class' => 'checkbox-inline', // add a class to the label element
+                    'for' => 'agree_terms', // add a "for" attribute to the label element
+                ],
+            ])
+            ->add('generatedPass',TextType::class,[
+                'mapped' => false, // this field doesn't map to an entity property
             ])
         ;
     }

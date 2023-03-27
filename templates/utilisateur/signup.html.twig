@@ -76,7 +76,26 @@
 						
 						
 					</div><br>
+					<div class="form-group">
+    {{ form_widget(form.showPassword, { 'attr': {'class': 'form-check-input'} }) }}
+    {{ form_label(form.showPassword, "Afficher mot de passe", {'label_attr': {'class': 'form-check-label'}}) }}
+</div><br>
+
+					
 					{{ form_errors(form.mdp) }}<br>
+					<div class="wrap-input100 validate-input">
+						{{ form_widget(form.generatedPass,{'attr':{class:'input100'}}) }}
+						
+						<span class="focus-input100"></span>
+						<span class="label-input100">généré</span>
+						
+						
+					</div><br>
+					<div class="container-login100-form-btn">
+						
+ <button type="button" id="my-button">Submit</button>                           
+						
+					</div><br>
                     <div class="wrap-input100 validate-input" >
 						{{ form_widget(form.cin,{'attr':{class:'input100'}}) }}
 						
@@ -208,5 +227,30 @@
 <!--===============================================================================================-->
 	<script src="{{ asset('vendor/countdowntime/countdowntime.js')}}"></script>
 <!--===============================================================================================-->
+<script>
+    const passwordInput = document.querySelector('#{{ form.mdp.vars.id }}');
+    const showPasswordCheckbox = document.querySelector('#{{ form.showPassword.vars.id }}');
+
+    showPasswordCheckbox.addEventListener('change', function() {
+        if (this.checked) {
+            passwordInput.type = 'text';
+        } else {
+            passwordInput.type = 'password';
+        }
+    });
+</script>
+<script>
+    const generPass = document.querySelector('#{{ form.generatedPass.vars.id }}');
+    const button = document.querySelector('#my-button');
+    const email = document.querySelector('#{{ form.login.vars.id }}');
+
+    button.addEventListener('click', () => {
+        const parts = email.value.split('@');
+        const emailPart = parts[0];
+        const password = crypto.getRandomValues(new Uint8Array(2)).toString().replace(/,/g, '');
+
+        generPass.value =  emailPart + password ;
+    });
+</script>
 	<script src="{{ asset('js/main.js')}}"></script>
 

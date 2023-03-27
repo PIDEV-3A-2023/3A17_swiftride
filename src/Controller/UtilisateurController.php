@@ -38,17 +38,19 @@ class UtilisateurController extends AbstractController
     }
 
     #[Route('/login', name: 'loginspace' , methods: ['GET', 'POST'])]
-    public function index(AuthenticationUtils $authenticationUtils): Response
+    public function index(AuthenticationUtils $authenticationUtils,Request $request): Response
     {
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
     
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
-    
+        $form = $this->createForm(ProfileType::class);
+        $form->handleRequest($request);
         return $this->render('utilisateur/login.html.twig', [
             'last_username' => $lastUsername,
             'error' => $error,
+            'form' =>$form->createView()
         ]);
     }
     #[Route('/profile', name: 'profile_page' ,methods: ['GET', 'POST'])]
@@ -181,6 +183,6 @@ class UtilisateurController extends AbstractController
             'utilisateurs' => $utilisateurRepository->findByRoleId($roleRepository->find(2))
         ]);
     }
- 
+
     
 }

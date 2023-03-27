@@ -67,7 +67,6 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $login=null;
 
    #[Assert\NotBlank(message:"Ce champs est vide")]
-   #[Assert\NotNull(message:"Ce champs est vide")]
    #[Assert\Length(min:6,max:20,minMessage:'contient au minimum 6 caratéres',maxMessage:'contient 20 caractéres au maximum')]
    #[ORM\Column(length:50)]
    private ?string $mdp=null;
