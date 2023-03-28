@@ -2,19 +2,88 @@
 
 namespace App\Controller;
 
+use App\Entity\Garage;
+use App\Entity\Materiel;
 use App\Form\GarageType;
+use App\Form\MaterielType;
+use Doctrine\Persistence\ManagerRegistry;
+use SebastianBergmann\Environment\Console;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class GarageController extends AbstractController
 {
     #[Route('/garage', name: 'app_garage')]
-    public function index(): Response
+    public function index(ManagerRegistry $doctrine , Request $req): Response
     {
-        $form = $this->createForm(GarageType::class);
+        $em=$doctrine->getManager();
+        $garage = new Garage();
+
+        $form = $this->createForm(GarageType::class , $garage);
+        $forms = $this->createForm(GarageType::class);
+        
+        $form->handleRequest($req);
+
+        $garages=$doctrine->getRepository(Garage::class)->findAll();
+
+        if($form->isSubmitted() && $form->isValid()){
+
+            $em->persist($garage);
+
+            $em->flush();
+
+            return  $this->redirectToRoute('materiel_g',['id'=>$garage->getId()]);
+        }
         return $this->render('garage/index.html.twig', [
             'form' => $form->createView(),
+            'forms' => $forms->createView(),
+            'garages'=>$garages
         ]);
     }
+
+
+    #[Route('/deleteGarage/{id}', name:'app_deleteg')]
+    public function deleteGarage($id , ManagerRegistry $mngr){
+
+        $garage = $mngr->getRepository(Garage::class)->find($id);
+
+        $em=$mngr->getManager();
+
+        $em->remove($garage);
+
+        $em->flush();
+
+        return $this->redirectToRoute('app_garage');
+
+    }
+
+   #[Route('/update/{id}', name:'app_updateg')]
+    public function udpateGarage($id , ManagerRegistry $mngr , Request $req) : Response
+    {
+        $garage = $mngr->getRepository(Garage::class)->find($id);
+
+        $forms=$this->createForm(GarageType::class,$garage);
+        $forms->handleRequest($req);
+
+        $data=$req->request->all();
+
+        if($forms->isSubmitted() && $forms->isValid()){
+            $garage->setMatriculeGarage($data['matriculeGarge']);
+            $garage->setSurface($data['surface']);
+            $garage->setLocalisation($data['localisation']);
+
+            $em = $mngr->getManager();
+            $em->flush();
+
+            return $this->json([
+                'message'=>'good'
+            ]);
+        }
+        return $this->json([
+            'message'=>'not good'
+        ]);
+    }
+
 }

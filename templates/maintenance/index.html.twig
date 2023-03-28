@@ -21,13 +21,12 @@
                                                 <div class="col-sm-3 my-1" id="example-datetime-local-input">
                                                    {{ form_widget(form.date_debut,{'attr':{'class':'form-control' , 'placeholder': 'Matricule'}}) }}
 
-                                                    
                                                 </div>
                                                  <div class="col-sm-3 my-1" >
                                                    {{ form_widget(form.date_fin,{'attr':{'class':'form-control','placeholder': 'Surface en m²'}}) }}
                                                 </div>
-                                                <div class="col-sm-3 custom-control custom-radio " id="customRadio1">
-                                                  {{ form_widget(form.type,{'attr':{'class':'custom-radio','placeholder': 'Localisation'}}) }}
+                                                <div class="col-sm-3 custom-control custom-radio " id="customRadio1" style={ "margin-left": 200px}>
+                                                  {{ form_widget(form.type,{'attr':{'class':'custom-radio'}}) }}
                                                 </div>
                                                 <div class="col-auto my-1">
                                                   {{ form_widget(form.ajouter,{'attr':{'class':'btn btn-primary'}}) }}
