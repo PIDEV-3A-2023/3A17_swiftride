@@ -59,31 +59,28 @@ class GarageController extends AbstractController
 
     }
 
-   #[Route('/update/{id}', name:'app_updateg')]
+   #[Route('/updateGarage/{id}', name:'app_updateg')]
     public function udpateGarage($id , ManagerRegistry $mngr , Request $req) : Response
     {
         $garage = $mngr->getRepository(Garage::class)->find($id);
 
-        $forms=$this->createForm(GarageType::class,$garage);
-        $forms->handleRequest($req);
+        $form=$this->createForm(GarageType::class,$garage);
+        $form->handleRequest($req);
 
-        $data=$req->request->all();
 
-        if($forms->isSubmitted() && $forms->isValid()){
-            $garage->setMatriculeGarage($data['matriculeGarge']);
-            $garage->setSurface($data['surface']);
-            $garage->setLocalisation($data['localisation']);
-
+        if($form->isSubmitted() && $form->isValid()){
             $em = $mngr->getManager();
             $em->flush();
 
-            return $this->json([
-                'message'=>'good'
-            ]);
+            return $this->redirectToRoute('app_garage');
         }
-        return $this->json([
-            'message'=>'not good'
+
+        return $this->render('garage/updateGarage.html.twig', [
+            'form' => $form->createView(),
+            'g'=>$garage
         ]);
+       
     }
+
 
 }
