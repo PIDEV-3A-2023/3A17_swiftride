@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Garage;
 use App\Entity\Materiel;
 use App\Form\MaterielType;
+use App\Form\UpdateMaterielType;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -89,7 +90,15 @@ class MaterielController extends AbstractController
     {
 
         $materiel=$doctrine->getRepository(Materiel::class)->find($id);
-        $form=$this->createForm(MaterielType::class);
+
+        $form=$this->createForm(UpdateMaterielType::class,$materiel);
+        $form->handleRequest($req);
+
+        if($form->isSubmitted() && $form->isValid()){
+            $em=$doctrine->getManager();
+            $em->flush();
+            return $this->redirectToRoute('app_materiel');
+        }
 
         return $this->render('materiel/updateMateriel.html.twig',[
             'form'=>$form->createView(),
