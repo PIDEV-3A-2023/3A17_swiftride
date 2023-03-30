@@ -34,12 +34,12 @@ class UtilisateurType extends AbstractType
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
                 'data'=> new \DateTime("-18 years"),
-                'constraints'=>[
-                    new Range([
-                        'min' => new \DateTime('-18 years'),
-                        'minMessage' => 'vous devez avoir au minimum 18 ans ',
-                    ]),
-                ]
+               /* 'constraints'=>[
+                    new LessThan([
+                        'now' => new \DateTime('-18 years'),
+                        'nowMessage' => 'vous devez avoir au minimum 18 ans ',
+                    ]),*/
+
               /*  'invalid_range' => [
                     'start' => '-18 years',
                     'end' => 'today',

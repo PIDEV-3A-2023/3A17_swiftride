@@ -62,23 +62,12 @@ class ProfileType extends AbstractType
             ->add('mdp',PasswordType::class)
             ->add('newmdp',PasswordType::class, [
                 'mapped' => false,
-                'constraints'=>[
-                    new NotBlank([
-                        'message'=>'Ce champs est vide'
-                    ]),
-                    new NotNull([
-                        'message'=>'Ce champs est vide'
-                    ]),
-                    new Length([
-                        'min'=>6,
-                        'max'=>20,
-                        'minMessage'=>'contient 6 caractéres au minimum',
-                        'maxMessage'=>'contient 20 caractéres au maximum'
-                    ])
-                ]
             ])
             ->add('submit', SubmitType::class,[
                 'label'=>'Enregistrer'
+            ])
+            ->add('delete',SubmitType::class,[
+                'label'=>'Supprimer mon compte'
             ]);
             
         

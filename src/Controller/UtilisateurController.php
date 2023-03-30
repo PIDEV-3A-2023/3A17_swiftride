@@ -1,10 +1,9 @@
 <?php
 
 namespace App\Controller;
-use App\Controller\SessionController;
 use App\Entity\Utilisateur;
+use App\Form\ForgetPassType;
 use App\Form\UtilisateurType;
-use App\Form\LoginType;
 use App\Form\ProfileType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -12,28 +11,26 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\String\Slugger\SluggerInterface;
-use Doctrine\Persistence\ManagerRegistry;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use App\Repository\UtilisateurRepository;
 use App\Repository\RoleRepository;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Imagine\Image\Box;
-use Imagine\Image\ImageInterface;
-use Imagine\Image\ImagineInterface;
-use Imagine\Image\Point;
-use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
+use App\Service\MailerService;
+use App\Service\QrCodeGenerator;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\String\Slugger\AsciiSlugger;
 
 class UtilisateurController extends AbstractController
 {
     private $roleRepository;
-
-    public function __construct(RoleRepository $roleRepository)
-    {
+    private $utilisateurRepository;
+    private $mailer;
+    private $generetaQr;
+    public function __construct(RoleRepository $roleRepository,UtilisateurRepository $utilisateurRepository,MailerService $mailer,QrCodeGenerator $generetaQr)
+    {   $this->generetaQr=$generetaQr;
+        $this->mailer = $mailer;
+        $this->utilisateurRepository = $utilisateurRepository;
         $this->roleRepository = $roleRepository;
     }
 
@@ -54,31 +51,54 @@ class UtilisateurController extends AbstractController
         ]);
     }
     #[Route('/profile', name: 'profile_page' ,methods: ['GET', 'POST'])]
-    public function profile(Request $request,UtilisateurRepository $utilisateurRepository ,UserPasswordHasherInterface $userPasswordHasher): Response
-    {
+    public function profile(Request $request,UtilisateurRepository $utilisateurRepository ,UserPasswordHasherInterface $userPasswordHasher,UserInterface $userInterface): Response
+    {$message='';
+      //  $qrCodes[]= $this->generetaQr->GenerateQrcode();
+        //$mmm='aaaaaa';
         $user = $this->getUser();        //$user = $doctrine->getRepository(Utilisateur::class)->find($this->session->get('user_id'));
         $form = $this->createForm(ProfileType::class, $user);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            if($form->getClickedButton() && 'submit' === $form->getClickedButton()->getName()) {
+          try{
 
-            if ($user->getPassword() == $form->get('mdp')->getData()) {
-    
-                $user->setPassword(
-                    $userPasswordHasher->hashPassword(
-                        $user,
-                        $form->get('newmdp')->getData()
-                    )
-                );
-    
-                $utilisateurRepository->save($user, true);
-                return $this->redirectToRoute('profile_page');
-    
-            } else {
-                return $this->redirectToRoute('profile_page');
-            }
+         if(  $form->get('newmdp')->getData()==null){
+            $user->setPassword(
+                $userPasswordHasher->hashPassword(
+                    $user,
+                    $form->get('mdp')->getData()
+                )
+            );
+            $utilisateurRepository->save($user, true);
+            return $this->redirectToRoute('profile_page');
+         }
+         else if($userPasswordHasher->isPasswordValid($userInterface, $form->get('mdp')->getData())){
+            $user->setPassword(
+                $userPasswordHasher->hashPassword(
+                    $user,
+                    $form->get('newmdp')->getData()
+                )
+            );
+$message='mot de passe changé';
+            $utilisateurRepository->save($user, true);
+            return $this->redirectToRoute('profile_page');
+         }
+
+           // if ($userPasswordHasher->isPasswordValid($userInterface, $form->get('mdp')->getData())) {
+            } 
+        
+      //  }
+        catch(AccessDeniedHttpException $ex){
+$message='mot de passe incorrect';
+        }
+    }
+    if($form->getClickedButton() && 'delete' === $form->getClickedButton()->getName()) {
+        $utilisateurRepository->remove($utilisateurRepository->findByemail($user->getUserIdentifier()), true);
+        return $this->redirectToRoute('loginspace');
+    }
         }
         return $this->render('utilisateur/profile.html.twig', [
-            'controller_name' => 'UtilisateurController', 'form' => $form->createView(),
+            'controller_name' => 'UtilisateurController', 'form' => $form->createView(),'user'=>$user,'message'=>$message
         ]);
     }
    
@@ -166,16 +186,51 @@ class UtilisateurController extends AbstractController
        ]);
      
 
-    }   #[Route('/delete/{id}', name: 'user_delete', methods: ['GET','POST'])]
-    public function delete(Request $request, Utilisateur $utilisateur,UtilisateurRepository $utilisateurRepository,$id): Response
-    {
-        //if ($this->isCsrfTokenValid('delete'.$utilisateur->getId(), $request->request->get('_token'))) {
-            $utilisateurRepository->remove($utilisateurRepository->find($id), true);
-      //  }
+    }  
 
-        return $this->redirectToRoute('user_liste');
+
+    #[Route('/delete/{id}', name: 'user_delete', methods: ['GET','POST'])]
+    public function delete(UtilisateurRepository $utilisateurRepository,$id,Request $request): Response
+    {
+       // if ($this->isCsrfTokenValid('delete'.$utilisateurRepository->find($id)->getId(), $request->request->get('_token'))) {
+            $utilisateurRepository->remove($utilisateurRepository->find($id), true);
+       //}
+
+        return $this->redirectToRoute('liste_admin');
     }
-    #[Route('/listeUser', name: 'user_liste', methods: ['GET'])]
+    #[Route('/forgetPass', name: 'forgetPass', methods: ['POST'])]
+    public function forget(Request $request): Response
+{
+    $email1='skan.nasri@gmail.com';
+    $email = $request->request->get('email');
+    //if($this->utilisateurRepository->findByemail($email1))
+          $this->mailer->sendEmail($email1);
+          return $this->render('utilisateur/forgetPassword.html.twig', [
+            'controller_name' => 'UtilisateurController'
+        ]);
+            
+    }
+
+    #[Route('/changePass', name: 'changePass', methods: ['GET','POST'])]
+    public function change(Request $request,UserPasswordHasherInterface $userPasswordHasher,UtilisateurRepository $utilisateurRepository): Response
+    {       //$user = $doctrine->getRepository(Utilisateur::class)->find($this->session->get('user_id'));
+        $user = new Utilisateur();
+            /*  $user->setPassword(
+                $userPasswordHasher->hashPassword(
+                    $user,
+                )
+            );
+                $utilisateurRepository->save($user, true);
+                return $this->redirectToRoute('loginspace');
+    */
+            
+        
+        return $this->render('utilisateur/forgetPassword.html.twig', [
+            'controller_name' => 'UtilisateurController'
+        ]);
+    }
+
+  /*  #[Route('/listeUser', name: 'user_liste', methods: ['GET'])]
     public function liste(UtilisateurRepository $utilisateurRepository,RoleRepository $roleRepository): Response
     {
 
@@ -183,6 +238,6 @@ class UtilisateurController extends AbstractController
             'utilisateurs' => $utilisateurRepository->findByRoleId($roleRepository->find(2))
         ]);
     }
-
+*/
     
 }

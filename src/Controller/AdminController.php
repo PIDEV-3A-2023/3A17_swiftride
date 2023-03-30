@@ -13,12 +13,12 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 class AdminController extends AbstractController
 {
     #[Route('/', name: 'app_admin')]
-    public function index(): Response
+    public function index(UtilisateurRepository $utilisateurRepository, RoleRepository $roleRepository): Response
     {
-        return $this->render('admin/index2.html.twig', [
-            'controller_name' => 'AdminController',
-        ]);
-    }
+    return $this->render('admin/datatable.html.twig', [
+        'utilisateurs' => $utilisateurRepository->findByRoleId($roleRepository->find(2)),
+    ]);
+}
     #[Route('/login', name: 'login_admin')]
     function login(AuthenticationUtils $authenticationUtils): Response
         {

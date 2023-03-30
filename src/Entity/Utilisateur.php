@@ -2,13 +2,9 @@
 
 namespace App\Entity;
 
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Entity\Role;
 use App\Repository\UtilisateurRepository;
-use DateTime;
-use PhpParser\Node\Name;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints As Assert;
@@ -39,6 +35,7 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $cin=null;
     
     #[Assert\NotBlank(message:"Ce champs est vide")]
+    #[Assert\LessThan('-18 years',message: 'vous devez avoir au minimum 18 ans ')]
     #[ORM\Column(length:255)]
     private ?\DateTime $date_naiss=null;
 
@@ -70,10 +67,9 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
    #[Assert\Length(min:6,max:20,minMessage:'contient au minimum 6 caratéres',maxMessage:'contient 20 caractéres au maximum')]
    #[ORM\Column(length:50)]
    private ?string $mdp=null;
-
+   
     #[ORM\Column(length:50)]
     private ?string $photo_personel=null;
-
     #[ORM\Column(length:50)]
     private ?string $photo_permis=null;
     #[ORM\JoinColumn(name: 'idrole', referencedColumnName: 'id')]
