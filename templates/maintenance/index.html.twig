@@ -19,20 +19,36 @@
 
                                             <div class="form-row align-items-center">
                                                 <div class="col-sm-3 my-1" id="example-datetime-local-input">
-                                                   {{ form_widget(form.date_debut,{'attr':{'class':'form-control' , 'placeholder': 'Matricule'}}) }}
-
+                                                   {{ form_widget(form.dateMaintenance,{'attr':{'class':'form-control'}}) }}
+                                                   <div class="form-control-feedback" style="color: red;" >
+                                                       {{ form_errors(form.dateMaintenance) }} 
+                                                       </div>
                                                 </div>
                                                  <div class="col-sm-3 my-1" >
-                                                   {{ form_widget(form.date_fin,{'attr':{'class':'form-control','placeholder': 'Surface en m²'}}) }}
+                                                   {{ form_widget(form.finMaintenance,{'attr':{'class':'form-control','placeholder': 'Surface en m²'}}) }}
+                                               <div class="form-control-feedback" style="color: red;" >
+                                                       {{ form_errors(form.finMaintenance) }} 
+                                                       </div>
                                                 </div>
-                                                <div class="col-sm-3 custom-control custom-radio " id="customRadio1" style={ "margin-left": 200px}>
+                                                <div class="col-auto my-1" id="customRadio1">
                                                   {{ form_widget(form.type,{'attr':{'class':'custom-radio'}}) }}
-                                                </div>
+                                                <div class="form-control-feedback" style="color: red;" >
+                                                       {{ form_errors(form.type) }} 
+                                                       </div> 
+                                                 </div>
+                                                <div class="col-sm-3 my-1" >
+                                                 {{ form_widget(form.idGarage,{'attr':{'class':'form-control'} }) }}
+                                                 </div>
+                                                  <div class="col-sm-3 my-1" >
+                                                 {{ form_widget(form.idVoiture,{'attr':{'class':'form-control'} }) }}
+                                                 </div>
+                                                 
+                                            </div>
+                                            <div class="row">
                                                 <div class="col-auto my-1">
                                                   {{ form_widget(form.ajouter,{'attr':{'class':'btn btn-primary'}}) }}
                                                 </div>
-                                            </div>
-                                            {{form_end(form)}}
+                                                </div>
                                             </div>
                                         </div>
                                         </div>
@@ -43,82 +59,38 @@
                                             <thead class="text-uppercase">
                                                 <tr>
                                                     <th scope="col">ID</th>
-                                                    <th scope="col">task</th>
-                                                    <th scope="col">Deadline</th>
-                                                    <th scope="col">Progress</th>
+                                                    <th scope="col">Type</th>
+                                                    <th scope="col">Date debut</th>
+                                                    <th scope="col">Date fin</th>
                                                     <th scope="col">status</th>
+                                                     <th scope="col">Garage / lieu</th>
+                                                     <th scope="col">Voitue / Marque</th>
                                                     <th scope="col">action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
+                                            {% for m in maintenances %}
+                                                
+                                            
                                                 <tr>
-                                                    <th scope="row">1</th>
-                                                    <td>Mark</td>
-                                                    <td>09 / 07 / 2018</td>
-                                                    <td>
-                                                        <div class="progress" style="height: 8px;">
-                                                            <div class="progress-bar" role="progressbar" style="width: 50%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-                                                        </div>
-                                                    </td>
+                                                    <th scope="row"> {{ m.id }} </th>
+                                                    <td> {{ m.type }} </td>
+                                                    <td> {{ m.dateMaintenance|date('Y-m-d H:i:s') }} </td>
+                                                    <td> {{ m.finMaintenance|date('Y-m-d H:i:s')}} </td>
+                                                    
                                                     <td><span class="status-p bg-primary">pending</span></td>
-                                                    <td>
+                                                    
+                                                     <td> {{ m.idGarage.matriculeGarage }}  /  {{ m.idGarage.localisation }} </td>
+                                                     <td> {{ m.idVoiture.matricule }} / {{ m.idVoiture.marque }} </td>
+                                                     <td>
                                                         <ul class="d-flex justify-content-center">
                                                             <li class="mr-3"><a href="#" class="text-secondary"><i class="fa fa-edit"></i></a></li>
                                                             <li><a href="#" class="text-danger"><i class="ti-trash"></i></a></li>
                                                         </ul>
                                                     </td>
                                                 </tr>
-                                                <tr>
-                                                    <th scope="row">2</th>
-                                                    <td>Mark</td>
-                                                    <td>09 / 07 / 2018</td>
-                                                    <td>
-                                                        <div class="progress" style="height: 8px;">
-                                                            <div class="progress-bar bg-warning" role="progressbar" style="width: 80%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-                                                        </div>
-                                                    </td>
-                                                    <td><span class="status-p bg-warning">pending</span></td>
-                                                    <td>
-                                                        <ul class="d-flex justify-content-center">
-                                                            <li class="mr-3"><a href="#" class="text-secondary"><i class="fa fa-edit"></i></a></li>
-                                                            <li><a href="#" class="text-danger"><i class="ti-trash"></i></a></li>
-                                                        </ul>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <th scope="row">3</th>
-                                                    <td>Mark</td>
-                                                    <td>09 / 07 / 2018</td>
-                                                    <td>
-                                                        <div class="progress" style="height: 8px;">
-                                                            <div class="progress-bar bg-success" role="progressbar" style="width: 100%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-                                                        </div>
-                                                    </td>
-                                                    <td><span class="status-p bg-success">complate</span></td>
-                                                    <td>
-                                                        <ul class="d-flex justify-content-center">
-                                                            <li class="mr-3"><a href="#" class="text-secondary"><i class="fa fa-edit"></i></a></li>
-                                                            <li><a href="#" class="text-danger"><i class="ti-trash"></i></a></li>
-                                                        </ul>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <th scope="row">4</th>
-                                                    <td>Mark</td>
-                                                    <td>09 / 07 / 2018</td>
-                                                    <td>
-                                                        <div class="progress" style="height: 8px;">
-                                                            <div class="progress-bar bg-warning" role="progressbar" style="width: 85%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-                                                        </div>
-                                                    </td>
-                                                    <td><span class="status-p bg-warning">panding</span></td>
-                                                    <td>
-                                                        <ul class="d-flex justify-content-center">
-                                                            <li class="mr-3"><a href="#" class="text-secondary"><i class="fa fa-edit"></i></a></li>
-                                                            <li><a href="#" class="text-danger"><i class="ti-trash"></i></a></li>
-                                                        </ul>
-                                                    </td>
-                                                </tr>
+
+                                                {% endfor %}
                                             </tbody>
                                         </table>
                                     </div>

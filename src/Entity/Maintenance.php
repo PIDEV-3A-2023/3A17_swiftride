@@ -2,9 +2,9 @@
 
 namespace App\Entity;
 
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\MaintenanceRepository;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: MaintenanceRepository::class)]
 class Maintenance
@@ -14,19 +14,31 @@ class Maintenance
     #[ORM\Column]
     private $id;
 
+   
     #[ORM\Column]
-    private $dateMaintenance = 'CURRENT_TIMESTAMP';
+    #[Assert\GreaterThan(value:new \DateTime() ,  message:"Doit etre apres la date d'ajourd'hui")]
+    #[Assert\NotNull(message:"Ce champs est vide")]
+    private ?\DateTime $dateMaintenance ;
+
 
     #[ORM\Column(length:25)]
+    #[Assert\NotNull(message:"Ce champs est vide")]
     private $type;
 
+    
     #[ORM\Column]
-    private $finMaintenance = 'CURRENT_TIMESTAMP';
+    #[Assert\GreaterThan(value:new \DateTime() ,  message:"Doit etre apres la date d'ajourd'hui")]
+    #[Assert\NotNull(message:"Ce champs est vide")]
+    private ?\DateTime $finMaintenance;
 
-    #[ORM\ManyToOne(inversedBy:'maintenaces')]
+    
+    #[ORM\ManyToOne(targetEntity: Garage::class)]
+    #[ORM\JoinColumn(name: 'id_garage', referencedColumnName: 'id')]
     private $idGarage;
 
-    #[ORM\ManyToOne(inversedBy:'maintenaces')]
+    
+    #[ORM\ManyToOne(targetEntity: Voiture::class)]
+    #[ORM\JoinColumn(name: 'id_voiture', referencedColumnName: 'id')]
     private $idVoiture;
 
     public function getId(): ?int
@@ -34,12 +46,12 @@ class Maintenance
         return $this->id;
     }
 
-    public function getDateMaintenance(): ?\DateTimeInterface
+    public function getDateMaintenance(): ?\DateTime
     {
         return $this->dateMaintenance;
     }
 
-    public function setDateMaintenance(\DateTimeInterface $dateMaintenance): self
+    public function setDateMaintenance(\DateTime $dateMaintenance): self
     {
         $this->dateMaintenance = $dateMaintenance;
 
@@ -58,12 +70,12 @@ class Maintenance
         return $this;
     }
 
-    public function getFinMaintenance(): ?\DateTimeInterface
+    public function getFinMaintenance(): ?\DateTime
     {
         return $this->finMaintenance;
     }
 
-    public function setFinMaintenance(\DateTimeInterface $finMaintenance): self
+    public function setFinMaintenance(\DateTime $finMaintenance): self
     {
         $this->finMaintenance = $finMaintenance;
 

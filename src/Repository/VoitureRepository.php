@@ -2,30 +2,29 @@
 
 namespace App\Repository;
 
-use App\Entity\Garage;
+use App\Entity\Voiture;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-
 
 /**
  * @extends ServiceEntityRepository<Classroom>
  *
- * @method Garage|null find($id, $lockMode = null, $lockVersion = null)
- * @method Garage|null findOneBy(array $criteria, array $orderBy = null)
- * @method Garage[]    findAll()
- * @method Garage[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Voiture|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Voiture|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Voiture[]    findAll()
+ * @method Voiture[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 
- class GarageRepository extends ServiceEntityRepository 
+ class VoitureRepository extends ServiceEntityRepository 
  {
 
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry ,Garage::class);
+        parent::__construct($registry ,Voiture::class);
     }
 
 
-    public function save(Garage $entity , bool $flush =false):void
+    public function save(Voiture $entity , bool $flush =false):void
     {
         $this->getEntityManager()->persist($entity);
         if($flush){
@@ -33,7 +32,7 @@ use Doctrine\Persistence\ManagerRegistry;
         }
     }
 
-    public function remove(Garage $entity, bool $flush=false):void
+    public function remove(Voiture $entity, bool $flush=false):void
     {
         $this->getEntityManager()->remove($entity);
 
@@ -45,11 +44,10 @@ use Doctrine\Persistence\ManagerRegistry;
     public function getGarageWithMatricule($matricule){
 
         return $this->createQueryBuilder('g')
-        ->where('g.matricule_garage LIKE :mat')
+        ->where('g.id LIKE :mat')
         ->setParameter('mat',$matricule)
         ->getQuery()
         ->getResult();
     }
-
 
  }
