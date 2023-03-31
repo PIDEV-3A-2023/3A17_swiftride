@@ -51,4 +51,53 @@ class MaintenanceController extends AbstractController
         ]);
     }
 
+
+    #[Route('/deleteMaintenence/{id}', name: 'delete_maintenance')]
+    public function deleteMaintenance($id,ManagerRegistry $doctrine)
+    {
+
+        $maintenance=$doctrine->getRepository(Maintenance::class)->find($id);
+        
+
+        $em=$doctrine->getManager();
+
+        $em->remove($maintenance);
+
+        $em->flush();
+
+        return $this->redirectToRoute('app_maintenance');
+    }
+
+    #[Route('/updateMaintenance/{id}', name: 'update_maintenance')]
+    public function updateMaintenance($id , ManagerRegistry $doctrine , Request $req)
+    {
+
+        $maintenance=$doctrine->getRepository(Maintenance::class)->find($id);
+        
+        $garages=$doctrine->getRepository(Garage::class)->findAll();
+        $voiture =$doctrine->getRepository(Voiture::class)->findAll();
+
+        $form=$this->createForm(MaintenanceType::class,$maintenance, [
+            'myEntities' => $garages,
+            'voiture'=>$voiture
+        ]);
+
+        $form->handleRequest($req);
+
+        if($form->isSubmitted() && $form->isValid()){
+
+            $em = $doctrine->getManager();
+            $em->flush();
+
+            return $this->redirectToRoute('app_maintenance');
+
+        }
+
+        return $this->render('maintenance/updateMaintenance.html.twig', [
+            'form'=>$form->createView(),
+            'm'=>$maintenance
+        ]);
+
+    }
+
 }

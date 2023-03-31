@@ -10,7 +10,7 @@
                                 <div id="accordion3" class="according accordion-s3">
                                     <div class="card">
                                         <div class="card-header">
-                                            <a class="card-link" data-toggle="collapse" href="#accordion31">Ajouter un nouveau garage</a>
+                                            <a class="card-link" data-toggle="collapse" href="#accordion31">Ajouter un nouveau Maintenance</a>
                                         </div>
                                         <div id="accordion31" class="collapse show" data-parent="#accordion3">
                                             <div class="card-body">
@@ -18,38 +18,58 @@
                                             {{form_start(form,{'attr': {'novalidate': 'novalidate'}} )}}
 
                                             <div class="form-row align-items-center">
+                                            <div class="col-sm-2">
+                                            </div>
                                                 <div class="col-sm-3 my-1" id="example-datetime-local-input">
+                                                 <label for="exampleInputEmail1">Date Début : </label>
                                                    {{ form_widget(form.dateMaintenance,{'attr':{'class':'form-control'}}) }}
                                                    <div class="form-control-feedback" style="color: red;" >
                                                        {{ form_errors(form.dateMaintenance) }} 
                                                        </div>
                                                 </div>
+                                                <div class="col-sm-2">
+                                                </div>
                                                  <div class="col-sm-3 my-1" >
+                                                 <label for="exampleInputEmail1">Date Fin : </label>
                                                    {{ form_widget(form.finMaintenance,{'attr':{'class':'form-control','placeholder': 'Surface en m²'}}) }}
                                                <div class="form-control-feedback" style="color: red;" >
                                                        {{ form_errors(form.finMaintenance) }} 
                                                        </div>
                                                 </div>
-                                                <div class="col-auto my-1" id="customRadio1">
+                                                </div>
+                                                <div class="form-row align-items-center">
+                                                <div class="col-sm-2">
+                                                </div>
+                                                <div class="col-sm-3 my-1" >
+                                                <label for="exampleInputEmail1">Garage: </label>
+                                                 {{ form_widget(form.idGarage,{'attr':{'class':'form-control'} }) }}
+                                                 </div>
+                                                 <div class="col-sm-2">
+                                                 </div>
+                                                  <div class="col-sm-3 my-1" >
+                                                  <label for="exampleInputEmail1">Voiture: </label>
+                                                 {{ form_widget(form.idVoiture,{'attr':{'class':'form-control'} }) }}
+                                                 </div>
+                                                 </div>
+                                                 <div class="form-row align-items-center">
+                                                 <div class="col-sm-2">
+                                                 </div>
+                                                  <div class="col-sm-3 my-1" id="customRadio1">
+                                                <label for="exampleInputEmail1">Type : </label>
                                                   {{ form_widget(form.type,{'attr':{'class':'custom-radio'}}) }}
                                                 <div class="form-control-feedback" style="color: red;" >
                                                        {{ form_errors(form.type) }} 
                                                        </div> 
                                                  </div>
-                                                <div class="col-sm-3 my-1" >
-                                                 {{ form_widget(form.idGarage,{'attr':{'class':'form-control'} }) }}
+                                                  </div>
+                                                  <div class="form-row align-items-center">
+                                                   <div class="col-sm-2">
                                                  </div>
-                                                  <div class="col-sm-3 my-1" >
-                                                 {{ form_widget(form.idVoiture,{'attr':{'class':'form-control'} }) }}
-                                                 </div>
-                                                 
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-auto my-1">
+                                                <div class="col-sm-3 my-1">
                                                   {{ form_widget(form.ajouter,{'attr':{'class':'btn btn-primary'}}) }}
                                                 </div>
-                                                </div>
-                                            </div>
+                                           </div>
+                                           {{ form_end(form) }}
                                         </div>
                                         </div>
                                            <!-- Progress Table start -->
@@ -78,14 +98,29 @@
                                                     <td> {{ m.dateMaintenance|date('Y-m-d H:i:s') }} </td>
                                                     <td> {{ m.finMaintenance|date('Y-m-d H:i:s')}} </td>
                                                     
-                                                    <td><span class="status-p bg-primary">pending</span></td>
+                                                    <td>
+                                                    
+                                                    {% if date(m.dateMaintenance|date('Y-m-d')) < date("now"|date("Y-m-d"))%}
+                                                   <span class="status-p bg-success"> Terminer</span>
+                                                   
+
+                                                    {% elseif date(m.dateMaintenance|date('Y-m-d')) > date("now"|date("Y-m-d"))%}
+                                                    <span class="status-p bg-warning">
+                                                    A faire
+                                                    </span>
+                                                    {% else %}
+                                                    <span class="status-p bg-primary">
+                                                    en cours
+                                                    </span>
+                                                    {% endif %}
+                                                    </td>
                                                     
                                                      <td> {{ m.idGarage.matriculeGarage }}  /  {{ m.idGarage.localisation }} </td>
                                                      <td> {{ m.idVoiture.matricule }} / {{ m.idVoiture.marque }} </td>
                                                      <td>
                                                         <ul class="d-flex justify-content-center">
-                                                            <li class="mr-3"><a href="#" class="text-secondary"><i class="fa fa-edit"></i></a></li>
-                                                            <li><a href="#" class="text-danger"><i class="ti-trash"></i></a></li>
+                                                            <li class="mr-3"><a href="{{ path('update_maintenance',{'id':m.id}) }}" class="text-primary"><i class="fa fa-edit"></i></a></li>
+                                                            <li><a href="{{ path('delete_maintenance',{'id':m.id}) }}" class="text-danger"><i class="ti-trash"></i></a></li>
                                                         </ul>
                                                     </td>
                                                 </tr>
