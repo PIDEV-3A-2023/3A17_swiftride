@@ -76,7 +76,7 @@ class EntreprisePartenaireController extends AbstractController
              $em = $this->getDoctrine()->getManager();
              $em->flush();
  
-             return $this->redirectToRoute('app_entreprisepartenaire');
+             return $this->redirectToRoute('app_entreprisepartenaire'); 
          }
          return $this->render('entreprise_partenaire/updateEntreprisePartenaire.html.twig',['f'=>$form->createView()]);
  
@@ -84,4 +84,4 @@ class EntreprisePartenaireController extends AbstractController
  
      }
 
-    }
+    } // kmela
