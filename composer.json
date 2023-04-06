@@ -31,7 +31,11 @@
         "symfony/process": "5.4.*",
         "symfony/property-access": "5.4.*",
         "symfony/property-info": "5.4.*",
+<<<<<<< HEAD
         "symfony/runtime": "^6.2",
+=======
+        "symfony/runtime": "5.4.*",
+>>>>>>> ee1953f939a5d23ac852813936bc53cdd3126ca8
         "symfony/security-bundle": "5.4.*",
         "symfony/serializer": "5.4.*",
         "symfony/string": "5.4.*",
