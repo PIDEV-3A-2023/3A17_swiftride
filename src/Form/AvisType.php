@@ -10,6 +10,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Range;
 use Symfony\Component\Validator\Constraints\Regex;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class AvisType extends AbstractType
 {
@@ -33,7 +34,7 @@ class AvisType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('commentaire', null, [
+            ->add('commentaire', TextareaType::class, [
                 'constraints' => [
                     new NotBlank(),
                     new Regex([
@@ -41,6 +42,11 @@ class AvisType extends AbstractType
                         'message' => 'Le commentaire ne doit pas contenir de caractères spéciaux',
                     ]),
                 ],
+                'attr' => [
+                    'rows' => 5, // Set the number of visible rows
+                    'cols' => 40, // Set the number of visible columns
+                    'class' => 'form-control' // Add any other classes you want
+                ]
             ]);
 
     }
