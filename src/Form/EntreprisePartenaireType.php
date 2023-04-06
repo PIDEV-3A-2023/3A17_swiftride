@@ -91,12 +91,6 @@ class EntreprisePartenaireType extends AbstractType
                 'placeholder' => 'Enter your password', // add a placeholder text
                 'data-toggle' => 'password' // add a data-toggle attribute for showing/hiding password
             ]
-        ])
-        
-        ->add('id_admin', null, [
-            'constraints' => [
-                new NotBlank(),
-            ],
         ]);
     }
 

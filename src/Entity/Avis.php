@@ -42,6 +42,12 @@ class Avis
      */
     private $id_client;
 
+    public function __construct()
+    {
+        $this->id_voiture = 11212;
+        $this->id_client = 11212;
+    }
+
     public function getId(): ?int
     {
         return $this->id;

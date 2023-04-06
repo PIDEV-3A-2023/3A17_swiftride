@@ -41,18 +41,7 @@ class AvisType extends AbstractType
                         'message' => 'Le commentaire ne doit pas contenir de caractères spéciaux',
                     ]),
                 ],
-            ])
-            ->add('id_voiture', null, [
-                'constraints' => [
-                    new NotBlank(),
-                ],
-            ])
-            ->add('id_client', null, [
-                'constraints' => [
-                    new NotBlank(),
-                ],
             ]);
-
 
     }
 

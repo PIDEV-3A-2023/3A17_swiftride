@@ -33,22 +33,6 @@
                     {{ form_errors(f.etoile) }} 
                 </div>
 
-                 <div class="form-group">
-                    <label for="exampleInputEmail1">id voiture : </label>
-                    {{ form_widget(f.id_voiture,{'attr':{'class':'form-control'  }}) }}
-                </div>
-                <div class="form-control-feedback" style="color: red;" >
-                            {{ form_errors(f.id_voiture) }} 
-                            </div>  
-
-                                 <div class="form-group">
-                    <label for="exampleInputEmail1">id client : </label>
-                    {{ form_widget(f.id_client,{'attr':{'class':'form-control'  }}) }}
-                </div>
-                <div class="form-control-feedback" style="color: red;" >
-                            {{ form_errors(f.id_client) }} 
-                            </div>             
-
                 <div class="col-auto my-1">
                     <button type="submit" class="btn btn-primary mt-4 pr-4 pl-4">Submit</button>
                 </div>
