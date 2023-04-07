@@ -43,9 +43,29 @@
                                                     <td>
                                                     <ul class="d-flex justify-content-center">
                                                             <li class="mr-3">
-                                                            <a href="#" class="text-primary"><i class="fa fa-edit"  data-toggle="modal" data-target="#exampleLongModalLong2"></i></a>
+                                                            <a href="{{ path('app_updateM',{'id':m.id}) }}" class="text-primary"><i class="fa fa-edit"></i></a>
                                                             </li>
-                                                            <li><a href="{{ path('app_deleteM',{'id':m.id}) }}" class="text-danger"><i class="ti-trash"></i></a></li>
+                                                            <li><a href="#" data-toggle="modal" data-target="#exampleModalLong" class="text-danger"><i class="ti-trash"></i>
+                                                             <!-- Modal -->
+                                <div class="modal fade" id="exampleModalLong">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">Warning-Alert!</h5>
+                                                <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <p> Vous voulez Vraiment supprimer le materiel N° {{ m.id }}</p>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button  type="button" class="btn btn-secondary" data-dismiss="modal">Non</button>
+                                                <a href="{{ path('app_deleteM',{'id':m.id}) }}" type="button" class="btn btn-danger">Oui</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                    <!-- basic modal end -->
+                                                            </a></li>
                                                         </ul>
                                                     </td>
                                                 </tr>

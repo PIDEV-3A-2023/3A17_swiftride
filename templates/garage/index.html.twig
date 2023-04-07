@@ -12,7 +12,7 @@
                                         <div class="card-header">
                                             <a class="card-link" data-toggle="collapse" href="#accordion31">Ajouter un nouveau garage</a>
                                         </div>
-                                        <div id="accordion31" class="collapse show" data-parent="#accordion3">
+                                        <div id="accordion31" class="collapse" data-parent="#accordion3">
                                             <div class="card-body">
 
                                             {{form_start(form,{'attr': {'novalidate': 'novalidate'}} )}}
@@ -73,14 +73,34 @@
                                                     <td>
                                                         <ul class="d-flex justify-content-center">
                                                             <li class="mr-3">
-                                                            <a href="{{ path('app_updateg',{'id':g.id}) }}" class="text-secondary"><i class="fa fa-edit"  data-toggle="modal" data-target="#exampleLongModalLong2"></i></a>
+                                                            <a href="{{ path('app_updateg',{'id':g.id}) }}" class="text-secondary"><i class="fa fa-edit"></i></a>
                                  
                             </div>
                         </div> 
                     </div>
                     <!-- Scrolling Long modal end -->
                                                             </li>
-                                                            <li><a href="{{ path('app_deleteg',{'id':g.id}) }}" class="text-danger"><i class="ti-trash"></i></a></li>
+                                                            <li><a href="#" data-toggle="modal" data-target="#exampleModalLong" class="text-danger"><i class="ti-trash"></i></a>
+                                                                  <!-- Modal -->
+                                <div class="modal fade" id="exampleModalLong">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">Warning-Alert!</h5>
+                                                <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <p> Vous voulez Vraiment supprimer le Garage N° {{ g.id }}</p>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button  type="button" class="btn btn-secondary" data-dismiss="modal">Non</button>
+                                                <a href="{{ path('app_deleteg',{'id':g.id}) }}" type="button" class="btn btn-danger">Oui</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                    <!-- basic modal end -->
+                                                            </li>
                                                         </ul>
                                                     </td>
                                                 </tr>

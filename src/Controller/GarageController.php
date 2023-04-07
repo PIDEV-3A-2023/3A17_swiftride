@@ -82,5 +82,11 @@ class GarageController extends AbstractController
        
     }
 
+    #[Route('/', name:'app_main')]
+    public function indexx(){
+
+        return $this->render('base.html.twig');
+    }
+
 
 }

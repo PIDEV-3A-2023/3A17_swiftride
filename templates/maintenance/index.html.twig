@@ -6,13 +6,13 @@
                     <div class="col-lg-12 mt-5">
                         <div class="card">
                             <div class="card-body">
-                                <h3 class="header-title">Garages</h5>
-                                <div id="accordion3" class="according accordion-s3">
+                                <h3 class="header-title">Les maintenances</h5>
+                                <div id="accordion" class="according accordion-s3">
                                     <div class="card">
                                         <div class="card-header">
                                             <a class="card-link" data-toggle="collapse" href="#accordion31">Ajouter un nouveau Maintenance</a>
                                         </div>
-                                        <div id="accordion31" class="collapse show" data-parent="#accordion3">
+                                        <div id="accordion31" class="collapse" data-parent="#accordion3">
                                             <div class="card-body">
 
                                             {{form_start(form,{'attr': {'novalidate': 'novalidate'}} )}}
@@ -120,7 +120,30 @@
                                                      <td>
                                                         <ul class="d-flex justify-content-center">
                                                             <li class="mr-3"><a href="{{ path('update_maintenance',{'id':m.id}) }}" class="text-primary"><i class="fa fa-edit"></i></a></li>
-                                                            <li><a href="{{ path('delete_maintenance',{'id':m.id}) }}" class="text-danger"><i class="ti-trash"></i></a></li>
+                                                            <li><a href="#" data-toggle="modal" data-target="#exampleModalLong" class="text-danger"> 
+                                                            <i class="ti-trash"></i>
+                                                            
+                                                             <!-- basic modal start -->
+                                <!-- Modal -->
+                                <div class="modal fade" id="exampleModalLong">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">Warning-Alert!</h5>
+                                                <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <p> Vous voulez Vraiment supprimer le maintenance N° {{ m.id }}</p>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button  type="button" class="btn btn-secondary" data-dismiss="modal">Non</button>
+                                                <a href="{{ path('delete_maintenance',{'id':m.id}) }}" type="button" class="btn btn-danger">Oui</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                    <!-- basic modal end -->
+                                        </a></li>
                                                         </ul>
                                                     </td>
                                                 </tr>

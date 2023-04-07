@@ -85,7 +85,7 @@ class MaterielController extends AbstractController
 
     }
 
-    #[Route('/updateMateriel/{id}', name:'app_deleteM')]
+    #[Route('/updateMateriel/{id}', name:'app_updateM')]
     public function updateMateriel($id , ManagerRegistry $doctrine , Request $req)
     {
 
