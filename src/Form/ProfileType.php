@@ -24,7 +24,16 @@ class ProfileType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('nom',TextType::class)
+            ->add('nom',TextType::class,[
+                'constraints'=>[
+                    new NotBlank([
+                        'message' => 'pas de champs vide ',
+                    ]),
+                    new NotNull([
+                        'message' => 'pas de champs vide ',
+                    ])
+                ]
+            ])
             ->add('prenom',TextType::class)
             ->add('ville',ChoiceType::class,[
                 'choices'=>[

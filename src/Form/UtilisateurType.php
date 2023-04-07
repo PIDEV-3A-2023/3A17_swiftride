@@ -82,13 +82,15 @@ class UtilisateurType extends AbstractType
             'required' => false,
             'constraints' => [
                 new File([
-                    'maxSize' => '1024k',
+                    'maxSize' => '2M',
                     'mimeTypes' => [
                         'image/jpeg',
                         'image/jpg',
                         'image/png',
                     ],
-                    'mimeTypesMessage' => 'Please upload a valid image',
+                    'notFoundMessage'=>'selectionne une image',
+                    'disallowEmptyMessage'=>'selectionne une image',
+                    'mimeTypesMessage' => 'type image invalide',
                 ])]])
             ->add('photo_permis',FileType::class,[
                 'label' => 'Choisi une photo de permis',
@@ -96,13 +98,15 @@ class UtilisateurType extends AbstractType
             'required' => false,
             'constraints' => [
                 new File([
-                    'maxSize' => '1024k',
+                    'maxSize' => '2M',
                     'mimeTypes' => [
                         'image/jpeg',
                         'image/jpg',
                         'image/png',
                     ],
-                    'mimeTypesMessage' => 'Please upload a valid image',
+                    'disallowEmptyMessage'=>'selectionne une image',
+                    'notFoundMessage'=>'selectionne une image',
+                    'mimeTypesMessage' => 'type image invalid',
                 ])]])
             
             ->add('submit', SubmitType::class,[

@@ -15,25 +15,36 @@ use App\Repository\UtilisateurRepository;
 use App\Repository\RoleRepository;
 use App\Service\MailerService;
 use App\Service\QrCodeGenerator;
+use InvalidArgumentException;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\String\Slugger\AsciiSlugger;
 
 class UtilisateurController extends AbstractController
 {
+    private $filesystem;
     private $roleRepository;
     private $utilisateurRepository;
     private $mailer;
     private $generetaQr;
-    public function __construct(RoleRepository $roleRepository,UtilisateurRepository $utilisateurRepository,MailerService $mailer,QrCodeGenerator $generetaQr)
-    {   $this->generetaQr=$generetaQr;
+    public function __construct(RoleRepository $roleRepository,UtilisateurRepository $utilisateurRepository,MailerService $mailer,QrCodeGenerator $generetaQr,Filesystem $filesystem )
+    {  $this->filesystem=$filesystem;
+         $this->generetaQr=$generetaQr;
         $this->mailer = $mailer;
         $this->utilisateurRepository = $utilisateurRepository;
         $this->roleRepository = $roleRepository;
     }
 
+    #[Route('/', name: 'firstpage' , methods: ['GET', 'POST'])]
+    public function toLogin(AuthenticationUtils $authenticationUtils,Request $request): Response
+    {
+        return $this->redirect('login');
+         
+    }
     #[Route('/login', name: 'loginspace' , methods: ['GET', 'POST'])]
     public function index(AuthenticationUtils $authenticationUtils,Request $request): Response
     {
@@ -52,17 +63,15 @@ class UtilisateurController extends AbstractController
     }
     #[Route('/profile', name: 'profile_page' ,methods: ['GET', 'POST'])]
     public function profile(Request $request,UtilisateurRepository $utilisateurRepository ,UserPasswordHasherInterface $userPasswordHasher,UserInterface $userInterface): Response
-    {$message='';
-      //  $qrCodes[]= $this->generetaQr->GenerateQrcode();
-        //$mmm='aaaaaa';
-        $user = $this->getUser();        //$user = $doctrine->getRepository(Utilisateur::class)->find($this->session->get('user_id'));
+    {
+        try{
+            $message='';
+        $user = $this->getUser();
         $form = $this->createForm(ProfileType::class, $user);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             if($form->getClickedButton() && 'submit' === $form->getClickedButton()->getName()) {
-          try{
-
-         if(  $form->get('newmdp')->getData()==null){
+         if($form->get('newmdp')->getData()==null){
             $user->setPassword(
                 $userPasswordHasher->hashPassword(
                     $user,
@@ -72,14 +81,13 @@ class UtilisateurController extends AbstractController
             $utilisateurRepository->save($user, true);
             return $this->redirectToRoute('profile_page');
          }
-         else if($userPasswordHasher->isPasswordValid($userInterface, $form->get('mdp')->getData())){
+         else {
             $user->setPassword(
                 $userPasswordHasher->hashPassword(
                     $user,
                     $form->get('newmdp')->getData()
                 )
             );
-$message='mot de passe changé';
             $utilisateurRepository->save($user, true);
             return $this->redirectToRoute('profile_page');
          }
@@ -88,17 +96,26 @@ $message='mot de passe changé';
             } 
         
       //  }
-        catch(AccessDeniedHttpException $ex){
-$message='mot de passe incorrect';
-        }
+      
     }
-    if($form->getClickedButton() && 'delete' === $form->getClickedButton()->getName()) {
-        $utilisateurRepository->remove($utilisateurRepository->findByemail($user->getUserIdentifier()), true);
+    if($form->getClickedButton() && 'delete' === $form->getClickedButton()->getName()) {  
+        $this->deleteFile($user->getPhotoPersonel());
+        $this->deleteFile($user->getPhotoPermis());
+        $utilisateurRepository->remove($this->getUser(), true);
+        $this->container->get('security.token_storage')->setToken(null);  
+        
         return $this->redirectToRoute('loginspace');
     }
         }
+        catch(AccessDeniedHttpException $ex){
+        }
+
+        catch(InvalidArgumentException $ex){
+            $message='il y a des champs vides';
+        }
+      
         return $this->render('utilisateur/profile.html.twig', [
-            'controller_name' => 'UtilisateurController', 'form' => $form->createView(),'user'=>$user,'message'=>$message
+            'controller_name' => 'UtilisateurController', 'form' => $form->createView(),'user'=>$user,'message'=>$message,
         ]);
     }
    
@@ -196,7 +213,9 @@ $message='mot de passe incorrect';
             $utilisateurRepository->remove($utilisateurRepository->find($id), true);
        //}
 
-        return $this->redirectToRoute('liste_admin');
+        return $this->redirectToRoute('liste_admin',[
+            'm'=>$utilisateurRepository->find($id)
+        ]);
     }
     #[Route('/forgetPass', name: 'forgetPass', methods: ['POST'])]
     public function forget(Request $request): Response
@@ -239,5 +258,10 @@ $message='mot de passe incorrect';
         ]);
     }
 */
-    
+public function deleteFile(string $path)
+{
+
+     $this->filesystem->remove($path);
+
+}
 }

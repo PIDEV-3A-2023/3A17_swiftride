@@ -45,7 +45,7 @@
 						 
 					</div><br>
 					
-					{{ form_errors(form.nom,{'attr':{class:'text-danger'}}) }}
+					<div class='text-danger'>{{ form_errors(form.nom,{'attr':{class:'text-danger'}}) }}</div>
 					
 					<br>
                     <div class="wrap-input100 validate-input" >
@@ -56,7 +56,7 @@
 						
 						
 					</div><br>
-					{{ form_errors(form.prenom) }}
+					<div class='text-danger'>{{ form_errors(form.prenom) }}</div>
 					<br>
                     <div class="wrap-input100 validate-input">
 						{{ form_widget(form.login,{'attr':{class:'input100'}}) }}
@@ -64,7 +64,7 @@
 						<span class="label-input100">Email</span>
 						
 					</div><br>
-					{{ form_errors(form.login) }}
+					<div class='text-danger'>{{ form_errors(form.login) }}</div>
 					{{message}}
 
 <br>
@@ -82,20 +82,26 @@
 </div><br>
 
 					
-					{{ form_errors(form.mdp) }}<br>
-					<div class="wrap-input100 validate-input">
-						{{ form_widget(form.generatedPass,{'attr':{class:'input100'}}) }}
-						
-						<span class="focus-input100"></span>
-						<span class="label-input100">généré</span>
-						
-						
-					</div><br>
-					<div class="container-login100-form-btn">
-						
- <button type="button" id="my-button">Submit</button>                           
-						
-					</div><br>
+					<div class='text-danger'>{{ form_errors(form.mdp) }}</div><br>
+
+						<!-- accordion style 3 start -->
+                    
+                                            <a class="card-link" data-toggle="collapse" id="my-button" href="#accordion31">Générer</a>
+                                       
+                                        <div id="accordion31" class="collapse" data-parent="#accordion3">
+                                            <div class="card-body">
+
+
+                                            <div class="form-row align-items-center">
+												  <div class="wrap-input100 validate-input" >
+						{{ form_widget(form.generatedPass,{'attr':{class:'input100'}}) }}    
+						<span class="focus-input100"></span> 
+						<span class="label-input100">Example</span>
+
+						</div>                                        
+                                        
+                                        </div>
+					</div></div><br>
                     <div class="wrap-input100 validate-input" >
 						{{ form_widget(form.cin,{'attr':{class:'input100'}}) }}
 						
@@ -104,7 +110,7 @@
 						<br>
 						
 					</div><br>
-					{{ form_errors(form.cin) }}
+					<div class='text-danger'>{{ form_errors(form.cin) }}</div>
 					{{message1}}<br>
                     <div class="wrap-input100 validate-input" >
 						{{ form_widget(form.num_permis,{'attr':{class:'input100'}}) }}
@@ -114,7 +120,7 @@
 						<br>
 						
 					</div><br>
-					{{ form_errors(form.num_permis) }}
+					<div class='text-danger'>{{ form_errors(form.num_permis) }}</div>
 					{{message2}}<br>
                     <div class="wrap-input100 validate-input" >
 						{{ form_widget(form.num_tel,{'attr':{class:'input100'}}) }}
@@ -124,14 +130,14 @@
 						<br>
 						
 					</div><br>
-					{{ form_errors(form.num_tel) }}<br>
+					<div class='text-danger'>{{ form_errors(form.num_tel) }}</div><br>
                     <div class="wrap-input100 validate-input">
 						{{ form_widget(form.date_naiss,{'attr':{class:'input100'}}) }}
 						<span class="focus-input100"></span>
 						
 					</div>
 					<br>
-					{{ form_errors(form.date_naiss)}}<br>
+					<div class='text-danger'>{{ form_errors(form.date_naiss)}}</div><br>
 					
                      <div class="wrap-input100 validate-input">
 						{{ form_widget(form.ville,{'attr':{class:'input100'}}) }}
@@ -165,7 +171,7 @@
 							
 						</button>
 						<br>
-						{{ form_errors(form.photo_personel) }}
+						<div class='text-danger'>{{ form_errors(form.photo_personel) }}</div>
                         
 					</div><br>
                     <div class="container-login100-form-btn">
@@ -175,7 +181,7 @@
 							                 
 						</button>
 					<br>
-						{{ form_errors(form.photo_personel) }}
+						<div class='text-danger'>{{ form_errors(form.photo_permis) }}</div>
 					</div><br>
 					<div class="container-login100-form-btn">
 						
@@ -253,4 +259,3 @@
     });
 </script>
 	<script src="{{ asset('js/main.js')}}"></script>
-

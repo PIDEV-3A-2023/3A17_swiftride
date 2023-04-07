@@ -6,6 +6,8 @@ use App\Entity\Utilisateur;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;
+use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @extends ServiceEntityRepository<Utilisateur>
@@ -15,7 +17,7 @@ use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;
  * @method Utilisateur[]    findAll()
  * @method Utilisateur[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class UtilisateurRepository extends ServiceEntityRepository  implements UserLoaderInterface
+class UtilisateurRepository extends ServiceEntityRepository  implements UserLoaderInterface,PasswordUpgraderInterface
 {
     public function __construct(ManagerRegistry $registry)
     {
@@ -44,7 +46,7 @@ class UtilisateurRepository extends ServiceEntityRepository  implements UserLoad
             ->andWhere('u.login = :email')
             ->setParameter('email', $email)
             ->getQuery()
-            ->getResult();
+            ->getOneOrNullResult();
     }
     public function findBycin($cin)
     {
@@ -79,7 +81,14 @@ class UtilisateurRepository extends ServiceEntityRepository  implements UserLoad
             ->getQuery()
             ->getOneOrNullResult();
     }
-   
+    public function upgradePassword(UserInterface $user, string $newHashedPassword): void
+    {
+        // set the new hashed password on the User object
+        $user->setPassword($newHashedPassword);
+
+        // execute the queries on the database
+        $this->getEntityManager()->flush();
+    }
 
 //    /**
 //     * @return Utilisateur[] Returns an array of Utilisateur objects

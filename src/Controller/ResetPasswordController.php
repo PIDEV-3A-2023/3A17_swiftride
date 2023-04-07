@@ -37,7 +37,7 @@ class ResetPasswordController extends AbstractController
      */
     #[Route('', name: 'app_forgot_password_request')]
     public function request(Request $request, MailerInterface $mailer, TranslatorInterface $translator,UtilisateurRepository $utilisateurRepository ): Response
-    {$message='email introuvable!';
+    {$message='';
         $form = $this->createForm(ResetPasswordRequestFormType::class);
         $form->handleRequest($request);
 
@@ -49,6 +49,8 @@ class ResetPasswordController extends AbstractController
                     $translator
             );
         }
+        else
+        $message='email introuvable!';
         }
 
         return $this->render('reset_password/request.html.twig', [

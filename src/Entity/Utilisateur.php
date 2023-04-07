@@ -16,7 +16,6 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\GeneratedValue()]
     private ?int $id=null;
 
-
     #[Assert\Length(min:3,minMessage:'contient au minimum 3 caratéres')]
     #[ORM\Column(length:50)]
     #[Assert\NotBlank(message:"Ce champs est vide")]
@@ -67,7 +66,7 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
    #[Assert\Length(min:6,max:20,minMessage:'contient au minimum 6 caratéres',maxMessage:'contient 20 caractéres au maximum')]
    #[ORM\Column(length:50)]
    private ?string $mdp=null;
-   
+
     #[ORM\Column(length:50)]
     private ?string $photo_personel=null;
     #[ORM\Column(length:50)]

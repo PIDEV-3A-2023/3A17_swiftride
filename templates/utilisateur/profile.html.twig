@@ -26,7 +26,6 @@
                      <br>
 					<div class="text-danger">{{ form_errors(form.nom) }}</div>
 					<br></div>
-                   
                     <div class="col-md-6"><label class="labels">Prénom</label>{{ form_widget(form.prenom    ,{'attr':{class:'form-control'}}) }}
                      <br>
 					<div class="text-danger">{{ form_errors(form.prenom) }}</div>
@@ -34,7 +33,7 @@
                    
                 </div>
                 <div class="row mt-3">
-                    <div class="col-md-12"><label class="labels">Numérod de téléphone</label>{{ form_widget(form.num_tel,{'attr':{class:'form-control'}}) }}
+                    <div class="col-md-12"><label class="labels">Numéro de téléphone</label>{{ form_widget(form.num_tel,{'attr':{class:'form-control'}}) }}
                       <br>
 					<div class="text-danger">{{ form_errors(form.num_tel) }}</div>
 					<br></div>
@@ -56,7 +55,7 @@
                     <br>
 					<div class="text-danger">{{ form_errors(form.mdp) }}</div>
 					<br></div>
-                    {{message}}
+                     <div class="mt-5 text-center"><div class="text-danger">{{message}}</div></div>
                 </div>
                 <div class="mt-5 text-center">{{ form_widget(form.submit,{'attr':{class:'btn btn-primary profile-button'}}) }}</div>
                  <div class="mt-5 text-center">{{ form_widget(form.delete,{'attr':{class:'btn btn-primary profile-button'}}) }}</div>
@@ -77,7 +76,7 @@
     </div>
 {{ form_end(form) }}
     </div>
-    
-                            
+            
                                 </body>
 {% endblock %}
+
