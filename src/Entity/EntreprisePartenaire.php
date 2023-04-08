@@ -19,55 +19,46 @@ class EntreprisePartenaire
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank()
      */
     private $nom_entreprise;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank()
      */
     private $nom_admin;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank()
      */
     private $prenom_admin;
 
     /**
      * @ORM\Column(type="integer")
-     * @Assert\NotBlank()
      */
     private $nb_voiture;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank()
      */
     private $tel;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank()
      */
     private $matricule;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank()
      */
     private $login;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank()
      */
     private $mdp;
 
     /**
      * @ORM\Column(type="integer")
-     * @Assert\NotBlank()
      */
     private $id_admin;
 

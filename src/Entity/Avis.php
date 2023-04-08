@@ -19,26 +19,21 @@ class Avis
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank()
      */
     private $commentaire;
 
     /**
      * @ORM\Column(type="integer")
-     * @Assert\NotBlank()
-     * @Assert\Range(min=1, max=5)
      */
     private $etoile;
 
     /**
      * @ORM\Column(type="integer")
-     * @Assert\NotBlank()
      */
     private $id_voiture;
 
     /**
      * @ORM\Column(type="integer")
-     * @Assert\NotBlank()
      */
     private $id_client;
 

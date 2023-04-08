@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class EntreprisePartenaireController extends AbstractController
 {
 
-    #[Route('/entreprise_partenaire', name: 'app_entreprisepartenaire')]
+    #[Route('/entreprisepartenaire', name: 'app_entreprisepartenaire')]
     public function index(): Response
     {
         $EntreprisePartenaire = $this->getDoctrine()->getManager()->getRepository(EntreprisePartenaire::class)->findAll();

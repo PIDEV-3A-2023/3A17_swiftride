@@ -30,7 +30,7 @@
                                                 <ul class="d-flex justify-content-center">
                                                     <li class="mr-3"><a href="{{ path('modifAvis',{'id':avis.id}) }}" class="text-primary"><i class="fa fa-edit"></i></a></li>
                                                     <li>
-                                                        <a href="{{ path('supavis',{'id': avis.id}) }}" class="text-danger">
+                                                    <a href="#" class="text-danger" onclick="confirmDelete('{{ path('supavis',{'id': avis.id}) }}', '{{ avis.getId }}')">
                                                             <i class="ti-trash"></i>
                                                         </a>
                                                     </li>
@@ -38,6 +38,13 @@
                                             </td>
                                         </tr>
                                     {% endfor %}
+                                     <script>
+function confirmDelete(url, id) {
+    if (confirm("Are you sure you want to delete Avis '" + id + "' ?")) {
+        window.location.href = url;
+    }
+}
+</script>
                                 </tbody>
                             </table>
                         </div>

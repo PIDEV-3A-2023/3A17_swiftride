@@ -43,13 +43,11 @@
                                             <td>{{ EntreprisePartenaire.getIdAdmin }}</td>                                        
                                             <td>
                                                 <ul class="d-flex justify-content-center">
-                                                        <li class="mr-3"><a href="{{ path('modifEntreprisePartenaire',{'id':EntreprisePartenaire.id}) }}" class="text-primary"><i class="fa fa-edit"></i></a></li>
-
-                                                       
-                                                    
+                                                        <li class="mr-3"><a href="{{ path('modifEntreprisePartenaire',{'id':EntreprisePartenaire.id}) }}" class="text-primary"><i class="fa fa-edit"></i></a></li>                                                                                                       
                                                     <li>
-                                                        <a href="{{ path('supentreprisepartenaire',{'id': EntreprisePartenaire.id}) }}" class="text-danger">
-                                                            <i class="ti-trash"></i>
+<a href="#" class="text-danger" onclick="confirmDelete('{{ path('supentreprisepartenaire',{'id': EntreprisePartenaire.id}) }}', '{{ EntreprisePartenaire.getNomEntreprise }}')">
+    <i class="ti-trash"></i>
+</a>
                                                         </a>
                                                     </li>
                                                      
@@ -58,6 +56,14 @@
                                             </td>
                                         </tr>
                                     {% endfor %}
+                                    <script>
+function confirmDelete(url, nom_entreprise) {
+    if (confirm('Are you sure you want to delete entreprise ' + nom_entreprise + '?')) {
+        window.location.href = url;
+    }
+}
+</script>
+
                                 </tbody>
                             </table>
                         </div>

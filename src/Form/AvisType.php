@@ -19,6 +19,7 @@ class AvisType extends AbstractType
         $builder
             ->add('etoile', ChoiceType::class, [
                 'choices' => [
+                    'Rate your experience !' => 0,
                     '1' => 1,
                     '2' => 2,
                     '3' => 3,
@@ -36,7 +37,7 @@ class AvisType extends AbstractType
             ])
             ->add('commentaire', TextareaType::class, [
                 'constraints' => [
-                    new NotBlank(),
+                    new NotBlank(['message' => 'Le champ commentaire est obligatoire. Veuillez le remplir']),
                     new Regex([
                         'pattern' => '/^[a-zA-Z0-9\s\'\’\-\_\?\!\.,\;\:\(\)]+$/',
                         'message' => 'Le commentaire ne doit pas contenir de caractères spéciaux',
