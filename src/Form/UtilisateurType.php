@@ -121,7 +121,16 @@ class UtilisateurType extends AbstractType
                     'for' => 'agree_terms', // add a "for" attribute to the label element
                 ],
             ])
-            ->add('generatedPass',TextType::class,[
+            ->add('showGeneratedPassword', CheckboxType::class, [
+                'label' => false,
+                'required' => false,
+                'mapped' => false, // this field doesn't map to an entity property
+                'label_attr' => [
+                    'class' => 'checkbox-inline', // add a class to the label element
+                    'for' => 'agree_terms', // add a "for" attribute to the label element
+                ],
+            ])
+            ->add('generatedPass',PasswordType::class,[
                 'mapped' => false, // this field doesn't map to an entity property
             ])
         ;
