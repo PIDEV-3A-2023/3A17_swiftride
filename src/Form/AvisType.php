@@ -46,7 +46,8 @@ class AvisType extends AbstractType
                 'attr' => [
                     'rows' => 5, // Set the number of visible rows
                     'cols' => 40, // Set the number of visible columns
-                    'class' => 'form-control' // Add any other classes you want
+                    'class' => 'form-control', // Add any other classes you want
+                    'placeholder' => 'Partager votre expérience avec SWIFT RIDE' // Add the placeholder text
                 ]
             ]);
 
