@@ -70,19 +70,18 @@
                                                         </div>
                                                     </td>
                                                     <td><span class="status-p bg-primary">{{g.localisation}}</span></td>
+
+
                                                     <td>
                                                         <ul class="d-flex justify-content-center">
                                                             <li class="mr-3">
                                                             <a href="{{ path('app_updateg',{'id':g.id}) }}" class="text-secondary"><i class="fa fa-edit"></i></a>
-                                 
-                            </div>
-                        </div> 
-                    </div>
-                    <!-- Scrolling Long modal end -->
+                               
                                                             </li>
-                                                            <li><a href="#" data-toggle="modal" data-target="#exampleModalLong" class="text-danger"><i class="ti-trash"></i></a>
-                                                                  <!-- Modal -->
-                                <div class="modal fade" id="exampleModalLong">
+                                                              <li>
+                                                         <a href="{{ path('app_deleteg',{'id':g.id}) }}" onClick=" return confirm('Voulez vous Vraiment supprimer le garage N° {{ g.id }} ?')" class="text-danger"><i class="ti-trash"></i></a>
+                                 <!-- Modal -->
+                          <!--      <div class="modal fade" id="exampleModalLong">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">
@@ -98,8 +97,8 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                    <!-- basic modal end -->
+                                </div>-->
+                                   <!-- basic modal end -->
                                                             </li>
                                                         </ul>
                                                     </td>

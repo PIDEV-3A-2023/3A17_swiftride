@@ -73,5 +73,34 @@ class Voiture
     {
         return $this->marque;
     }
+    public function getModel(): ?string
+    {
+        return $this->model;
+    }
+    
+    public function getDateCirculation(): ?string
+    {
+        return $this->dateCirculation;
+    }
+
+    public function getKilometrage(): ?string
+    {
+        return $this->kilometrage;
+    }
+
+    public function getEtatTechnique(): ?string
+    {
+        return $this->etatTechnique;
+    }
+    public function setIdEntreprisePartenaire(?EntreprisePartenaire $idEntreprisePartenaire) :self
+    {
+        $this->idEntreprisePartenaire = $idEntreprisePartenaire;
+
+        return $this;
+    }
+    public function geIdEntreprisePartenaire (): ?EntreprisePartenaire
+    {
+        return $this->$idEntreprisePartenaire;
+    }
 
 }

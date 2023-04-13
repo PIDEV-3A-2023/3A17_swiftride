@@ -45,9 +45,12 @@
                                                             <li class="mr-3">
                                                             <a href="{{ path('app_updateM',{'id':m.id}) }}" class="text-primary"><i class="fa fa-edit"></i></a>
                                                             </li>
-                                                            <li><a href="#" data-toggle="modal" data-target="#exampleModalLong" class="text-danger"><i class="ti-trash"></i>
+                                                            <li class="mr-3">
+                                                            <a href="{{ path('app_deleteM',{'id':m.id}) }}" onClick=" return confirm('Voulez vous Vraiment supprimer le materiel N° {{ m.id }} ?')"  class="text-danger"><i class="ti-trash"></i></a>
+                                                            </li>
+                                                    </ul>
                                                              <!-- Modal -->
-                                <div class="modal fade" id="exampleModalLong">
+                          <!--      <div class="modal fade" id="exampleModalLong">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">
@@ -63,10 +66,8 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div>-->
                     <!-- basic modal end -->
-                                                            </a></li>
-                                                        </ul>
                                                     </td>
                                                 </tr>
                                                 {% endfor %}
@@ -79,7 +80,6 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
                     <!-- accordion style 3 end -->
 
 {% endblock %}

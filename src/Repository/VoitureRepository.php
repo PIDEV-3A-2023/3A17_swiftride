@@ -50,4 +50,12 @@ use Doctrine\Persistence\ManagerRegistry;
         ->getResult();
     }
 
+    public function getCarsWithPartnerId($id){
+        return $this->createQueryBuilder('c')
+        ->where('c.idEntreprisePartenaire = :id')
+        ->setParameter('id',$id)
+        ->getQuery()
+        ->getResult();
+    }
+
  }

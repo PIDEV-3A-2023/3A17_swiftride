@@ -16,19 +16,14 @@ class Maintenance
 
    
     #[ORM\Column]
-    #[Assert\GreaterThan(value:new \DateTime() ,  message:"Doit etre apres la date d'ajourd'hui")]
-    #[Assert\NotNull(message:"Ce champs est vide")]
     private ?\DateTime $dateMaintenance ;
 
 
     #[ORM\Column(length:25)]
-    #[Assert\NotNull(message:"Ce champs est vide")]
     private $type;
 
     
     #[ORM\Column]
-    #[Assert\GreaterThan(value:new \DateTime() ,  message:"Doit etre apres la date d'ajourd'hui")]
-    #[Assert\NotNull(message:"Ce champs est vide")]
     private ?\DateTime $finMaintenance;
 
     

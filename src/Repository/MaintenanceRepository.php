@@ -43,4 +43,18 @@ use Doctrine\Persistence\ManagerRegistry;
     }
 
 
+    public function getMaitenanceWithGarageAndDate($idg , $date){
+
+        return $this->createQueryBuilder('m')
+        ->join('m.idGarage','g')
+        ->where('g.id LIKE :idg')
+        ->andWhere(' SUBSTRING(m.dateMaintenance,1, 10) LIKE :date')
+        ->setParameter('idg',$idg)
+        ->setParameter('date',$date)
+        ->getQuery()
+        ->getResult();
+
+    }
+
+
  }

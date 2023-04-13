@@ -20,6 +20,13 @@
     <link rel="stylesheet" href="{{asset('assets/css/default-css.css')}}">
     <link rel="stylesheet" href="{{asset('assets/css/styles.css')}}">
     <link rel="stylesheet" href="{{asset('assets/css/responsive.css')}}">
+
+<!---style css datatable-->
+     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.18/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.jqueryui.min.css">
+    <!---end style datatable-->
     <!-- modernizr css -->
     <script src="{{asset('assets/js/vendor/modernizr-2.8.3.min.js')}}"></script>
 </head>
@@ -57,7 +64,7 @@
                                     </span></a>
                                 <ul class="collapse">
                                     <li><a href="index.html">Ajouter voiture</a></li>
-                                    <li><a href="index3-horizontalmenu.html">Consulter les voitures</a></li>
+                                    <li><a href="{{ path('cars_maintenance',{'id':'111'}) }}">Consulter les voitures</a></li>
                                 </ul>
                             </li>
                             <li>
@@ -83,20 +90,16 @@
                             <li><a href="maps.html"><i class="ti-map-alt"></i> <span>Les reservations</span></a></li>
                             <li><a href="invoice.html"><i class="fa fa-ambulance"></i> <span>Les accidents</span></a></li>
                             <li>
-                                <a href="javascript:void(0)" aria-expanded="true"><i class="fa fa-refresh"></i> <span>Les maintenances</span></a>
+                                <a href="{{ path('app_maintenance') }}" aria-expanded="true"><i class="fa fa-refresh"></i> <span>Les maintenances</span></a>
                                 
                             </li>
                             <li>
-                                <a href="javascript:void(0)" aria-expanded="true"><i class="fa fa-map-marker"></i>
+                                <a href="{{ path('app_garage') }}" aria-expanded="true"><i class="fa fa-map-marker"></i>
                                     <span>Les Garages</span></a>
                             </li>
                             <li>
-                                <a href="javascript:void(0)" aria-expanded="true"><i class="fa fa-wrench"></i> <span>Multi
+                                <a href=" {{ path('app_materiel') }} " aria-expanded="true"><i class="fa fa-wrench"></i> <span>
                                         Les materiels</span></a>
-                                <ul class="collapse">
-                                    <li><a href="#">Ajouter materiel</a></li>
-                                    <li><a href="#">Consulter les materiels</a></li>
-                                </ul>
                             </li>
                         </ul>
                     </nav>
@@ -873,6 +876,16 @@
     <script src="{{asset('assets/js/line-chart.js')}}"></script>
     <!-- all pie chart -->
     <script src="{{asset('assets/js/pie-chart.js')}}"></script>
+    <!-- others plugins -->
+    <script src="{{asset('assets/js/plugins.js')}}"></script>
+    <script src="{{asset('assets/js/scripts.js')}}"></script>
+
+     <!-- Start datatable js -->
+    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
+    <script src="https://cdn.datatables.net/1.10.18/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.18/js/dataTables.bootstrap4.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.2.3/js/responsive.bootstrap.min.js"></script>
     <!-- others plugins -->
     <script src="{{asset('assets/js/plugins.js')}}"></script>
     <script src="{{asset('assets/js/scripts.js')}}"></script>

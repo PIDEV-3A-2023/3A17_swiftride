@@ -23,14 +23,7 @@
                                                        {{ form_errors(form.dateMaintenance) }} 
                                                        </div>
                                             <div class="form-group">
-                                                <label for="exampleInputPassword1">Reference : </label>
-                                                {{ form_widget(form.finMaintenance,{'attr':{'class':'form-control','placeholder': 'Surface en m²'}}) }}
-                                            </div>
-                                            <div class="form-control-feedback" style="color: red;" >
-                                                       {{ form_errors(form.finMaintenance) }} 
-                                                       </div>
-                                            <div class="form-group">
-                                                <label for="exampleInputPassword1">Description : </label>
+                                                <label for="exampleInputPassword1">Type : </label>
                                                {{ form_widget(form.type,{'attr':{'class':'custom-radio'}}) }}
                                             </div>
 
@@ -38,12 +31,8 @@
                                                        {{ form_errors(form.type) }} 
                                                        </div>
                                              <div class="form-group">
-                                                <label for="exampleInputPassword1">Description : </label>
+                                                <label for="exampleInputPassword1">Garage : </label>
                                                  {{ form_widget(form.idGarage,{'attr':{'class':'form-control'} }) }}
-                                            </div>
-                                             <div class="form-group">
-                                                <label for="exampleInputPassword1">Description : </label>
-                                                  {{ form_widget(form.idVoiture,{'attr':{'class':'form-control'} }) }}
                                             </div>
                                             <div class="col-auto my-1">
                                                   {{ form_widget(form.ajouter,{'attr':{'class':'btn btn-primary'}}) }}

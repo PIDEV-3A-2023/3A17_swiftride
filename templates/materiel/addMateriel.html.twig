@@ -31,8 +31,15 @@
                                             <div class="form-control-feedback" style="color: red;" >
                                                        {{ form_errors(form.description) }} 
                                                        </div>
+                                                       <div class="row">
                                             <div class="col-auto my-1">
                                                   {{ form_widget(form.ajouter,{'attr':{'class':'btn btn-primary'}}) }}
+                                                </div>
+                                                 <div class="col-6 my-1">
+                                                  <button type="button" class="btn btn-secondary mb-3">
+                                                  <a href=" {{ path('app_materiel') }} " style="color:white;"> Annuler</a>
+                                                  </button>
+                                                </div>
                                                 </div>
                                                    {{form_end(form)}}
                                     </div>
