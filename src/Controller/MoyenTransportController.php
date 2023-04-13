@@ -57,7 +57,7 @@ use App\Repository\MoyenTransportRepository;
 class MoyenTransportController extends AbstractController 
 {
 
-    #[Route('/moyen_transport', name: 'app_moyentransport')]
+    #[Route('/moyentransport', name: 'app_moyentransport')]
     public function index(): Response
     {
         $MoyenTransport = $this->getDoctrine()->getManager()->getRepository(MoyenTransport::class)->findAll();
