@@ -16,24 +16,24 @@
                                     <tr>
                                         <th scope="col">ID</th>
                                         <th scope="col">VILLE</th>
-                                        <th scope="col">NOM DE STATION</th>
+                                        <th scope="col">NOM STATION</th>
                                         <th scope="col">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {% for Station in t %}
+                                    {% for Station in  s %}
                                         <tr>
-                                            <th>{{ Station.ids }}</th>
+                                            <th>{{ Station.getId() }}</th>
                                             <td>{{ Station.getVille }}</td>
                                             <td>{{ Station.getNomStation }}</td>
                                             <td>
                                                 <ul class="d-flex justify-content-center">
-                                                        <li class="mr-3"><a href="{{ path('modifStation',{'ids':Station.ids}) }}" class="text-primary"><i class="fa fa-edit"></i></a></li>
+                                                        <li class="mr-3"><a href="{{ path('modifStation',{'id':Station.getId()}) }}" class="text-primary"><i class="fa fa-edit"></i></a></li>
 
                                                        
                                                     
                                                     <li>
-                                                        <a href="{{ path('supstation',{'ids': Station.ids}) }}" class="text-danger">
+                                                        <a href="{{ path('supstation',{'id': Station.getId()}) }}" class="text-danger">
                                                             <i class="ti-trash"></i>
                                                         </a>
                                                     </li>

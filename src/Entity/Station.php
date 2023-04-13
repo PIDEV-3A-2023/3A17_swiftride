@@ -3,14 +3,15 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 #[ORM\Entity]
 class Station
 {
     #[ORM\Id]
-    #[ORM\Column(name: "ids", type: "integer")]
+    #[ORM\Column(name: "id", type: "integer")]
     #[ORM\GeneratedValue(strategy: "AUTO")]
-    private ?int $ids = null;
+    private ?int $id = null;
     
     #[ORM\Column(name: "ville", type: "string", length: 255)]
     private ?string $ville = null;
@@ -18,10 +19,11 @@ class Station
     #[ORM\Column(name: "nom_station", type: "string", length: 255)]
     private ?string $nomStation = null;
 
-    public function getIds(): ?int
+    public function getId(): ?int
     {
-        return $this->ids;
+        return $this->id;
     }
+
     
     public function getVille(): ?string
     {
@@ -46,4 +48,8 @@ class Station
 
         return $this;
     }
-}
+
+
+
+    }
+    

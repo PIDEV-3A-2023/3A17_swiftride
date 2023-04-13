@@ -8,6 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Repository\StationRepository;
 
 class StationController extends AbstractController
 {
@@ -16,19 +17,21 @@ class StationController extends AbstractController
     public function index(): Response
     {
         $Station = $this->getDoctrine()->getManager()->getRepository(Station::class)->findAll();
-        //$form = $this->createForm(StationType::class);
+        $form = $this->createForm(StationType::class);
         return $this->render('station/index.html.twig', [
-            't'=>$Station
+            's'=>$Station
 
         ]);
+       
     }
    
     /**
      * @Route("/addstation", name="addStation")
      */
-
-    public function addStation(Request $request): Response
-    {
+      
+    public function addStation(Request $request): Response 
+     {
+    
         $Station = new Station();
         $form = $this->createForm(StationType::class, $Station);
 
@@ -47,7 +50,7 @@ class StationController extends AbstractController
 
     }
 
-    #[Route('/removeStation/{ids}', name: 'supstation')]
+    #[Route('/removeStation/{id}', name: 'supstation')]
     public function suppressionStation(Station $Station): Response
     {
         $em = $this->getDoctrine()->getManager();
@@ -56,16 +59,16 @@ class StationController extends AbstractController
         
         
         //return$this->redirectToRoute('supstation');
-        return $this->redirectToRoute('app_station', ['ids' => $Station->getIds()]);
+        return $this->redirectToRoute('app_station', ['id' => $Station->getId()]);
 
 
     }
 
 
-    #[Route('/modifstation/{ids}', name: 'modifStation')]
-     public function modifStation(Request $request,$ids): Response
+    #[Route('/modifstation/{id}', name: 'modifStation')]
+     public function modifStation(Request $request,$id): Response
      {
-         $Station = $this->getDoctrine()->getManager()->getRepository(Station::class)->find($ids);
+         $Station = $this->getDoctrine()->getManager()->getRepository(Station::class)->find($id);
          $form = $this->createForm(StationType::class, $Station);
  
          $form->handleRequest($request);
