@@ -33,22 +33,20 @@
                                                        
                                                     
                                                     <li>
-                                                        <a href="#" class="text-danger" onclick="confirmDelete('{{ path('supmoyentransport',{'id': MoyenTransport.id}) }}')">
+           <a href="#" class="text-danger" onclick="confirmDelete('{{ path('supmoyentransport',{'id': MoyenTransport.id}) }}', '{{ MoyenTransport.getId }}')">
                                                             <i class="ti-trash"></i>
                                                         </a>
-                                                    </li>
-                                                     
                                                     </li>
                                                 </ul>
                                             </td>
                                         </tr>
                                     {% endfor %}
-                                    <script>
-          function confirmDelete(url) {
-          if (confirm('voulez vous supprimer ce moyen de transport numero $t.getId?')) {
-            window.location.href = url;
-          }
+                                     <script>
+function confirmDelete(url, id) {
+    if (confirm("Are you sure you want to delete Moyen Transport '" + id + "' ?")) {
+        window.location.href = url;
     }
+}
 </script>
                                 </tbody>
                             </table>

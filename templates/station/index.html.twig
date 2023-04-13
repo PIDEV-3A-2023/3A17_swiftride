@@ -29,20 +29,23 @@
                                             <td>
                                                 <ul class="d-flex justify-content-center">
                                                         <li class="mr-3"><a href="{{ path('modifStation',{'id':Station.getId()}) }}" class="text-primary"><i class="fa fa-edit"></i></a></li>
-
-                                                       
-                                                    
+      
                                                     <li>
-                                                        <a href="{{ path('supstation',{'id': Station.getId()}) }}" class="text-danger">
+           <a href="#" class="text-danger" onclick="confirmDelete('{{ path('supstation',{'id': Station.id}) }}', '{{ Station.getId }}')">
                                                             <i class="ti-trash"></i>
                                                         </a>
-                                                    </li>
-                                                     
                                                     </li>
                                                 </ul>
                                             </td>
                                         </tr>
                                     {% endfor %}
+                                     <script>
+function confirmDelete(url, id) {
+    if (confirm("Are you sure you want to delete Station '" + id + "' ?")) {
+        window.location.href = url;
+    }
+}
+</script>
                                 </tbody>
                             </table>
                         </div>

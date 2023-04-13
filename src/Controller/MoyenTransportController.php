@@ -9,50 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\MoyenTransportRepository;
-//use Doctrine\Persistence\ObjectManager;
-//use Doctrine\Bundle\FixturesBundle\Fixture;
-//use Faker\Factory;
 
-/*class MoyenTransportController extends AbstractController 
-{
-    public function __construct(
-        private MoyenTransportRepository $moyentransportRepository
-    ) { 
-    }
-    
-    public function load(ObjectManager $manager): void
-    {
-        $faker = Factory::create('fr_FR');
-
-        $moyentransports= [];
-        for($i = 0; $i < 10; $i++){
-            $moyentransport = new MoyenTransport();
-            $moyentransport->setName($faker->words(1,true) . ' ' . $i)
-                           ->setDescription(
-                            mt_rand(0, 1) === 1 ? $faker->realText(254) : null
-                           );
-
-            $manager->persist($moyentransport);
-            $moyentransports[] = $moyentransport;
-        }
-
-        $stations = $this->StationRepository->findAll();
-
-        foreach ($stations as $station) {
-            $station->addMoyenTransport(
-                $moyentransports[mt_rand(0, count($moyentransports) - 1)]
-            );
-            
-        }
-
-        $manager->flush();
-    }
-
-    public function getDependencies(): array
-    {
-        return [StationController::class];
-    }
-}*/
 
 class MoyenTransportController extends AbstractController 
 {
