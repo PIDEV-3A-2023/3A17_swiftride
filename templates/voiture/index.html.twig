@@ -39,7 +39,7 @@
                 <td>{{ voiture.image }}</td>
                 <td>{{ voiture.position }}</td>
                 <td>{{ voiture.entrepriseId }}</td>
-                <td>{{ voiture.dateAjout }}</td>
+                <td>{{ voiture.dateAjout|date('d/m/Y H:i:s') }}</td>
                 <td>
                     <a class="btn btn-primary py-3 px-5" href="{{ path('app_voiture_show', {'id': voiture.id}) }}">show</a>
                     <br>

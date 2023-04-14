@@ -195,18 +195,24 @@ class VoitureType extends AbstractType
                     'style' => 'padding: 15px; margin: 0 50px;',
                 ]])
 
-            ->add('entrepriseId', TextType::class , [
-                'label_attr' => [
-                    'style' => 'padding: 15px; margin: 0 50px;',
-                ],
-                'row_attr' => [
-                    'class' => 'form-group row'
-                ],
-                'attr' => [
-                   
-                    'class' => 'contact-form bg-light mb-4',
-                    'style' => 'padding: 15px; margin: 0 50px;',
-                ]])
+                ->add('entrepriseId', ChoiceType::class, [
+                    'choices' => [
+                        'skander_entreprise' => 1,
+                        'Sami_entreprise' => 2,
+                        'ines_entreprise' => 3,
+                    ],
+                    'expanded' => true,
+                    'label_attr' => [
+                        'style' => 'padding: 15px; margin: 0 50px;',
+                    ],
+                    'row_attr' => [
+                        'class' => 'form-group row'
+                    ],
+                    'attr' => [
+                        'class' => 'contact-form bg-light mb-4',
+                        'style' => 'padding: 15px; margin: 0 50px;',
+                    ]
+                ])
 
                 ->add('dateAjout', DateType::class, [
                     'label_attr' => [
@@ -216,9 +222,10 @@ class VoitureType extends AbstractType
                         'class' => 'form-group row'
                     ],
                     
+                    
                 'attr' => [
                     
-                    
+                    'class' => 'contact-form bg-light mb-4',
                     'style' => 'padding: 15px; margin: 0 50px;',
                 ]
                 

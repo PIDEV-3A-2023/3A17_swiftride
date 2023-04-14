@@ -57,7 +57,7 @@
             </tr>
             <tr>
                 <th>DateAjout</th>
-                <td>{{ voiture.dateAjout }}</td>
+                <td>{{ voiture.dateAjout|date('d/m/Y H:i:s') }}</td>
             </tr>
         </tbody>
     </table>

@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
+use DateTime ;
+
 /**
  * Voiture
  *
@@ -99,9 +101,9 @@ class Voiture
     private $entrepriseId;
 
     /**
-     * @var string
+     * @var DateTime
      *
-     * @ORM\Column(name="Date_ajout", type="string", length=150, nullable=false)
+     * @ORM\Column(name="Date_ajout", type="datetime", length=150, nullable=false)
      */
     private $dateAjout;
 
@@ -242,12 +244,12 @@ class Voiture
         return $this;
     }
 
-    public function getDateAjout(): ?string
+    public function getDateAjout(): ?DateTime
     {
         return $this->dateAjout;
     }
 
-    public function setDateAjout(string $dateAjout): self
+    public function setDateAjout(DateTime $dateAjout): self
     {
         $this->dateAjout = $dateAjout;
 

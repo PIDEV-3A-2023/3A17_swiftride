@@ -32,9 +32,13 @@ class VoitureController extends AbstractController
         $form = $this->createForm(VoitureType::class, $voiture);
         $form->handleRequest($request);
 
+
+        
         if ($form->isSubmitted() && $form->isValid()) {
+            
             $entityManager->persist($voiture);
             $entityManager->flush();
+  
 
             return $this->redirectToRoute('app_voiture_index', [], Response::HTTP_SEE_OTHER);
         }
