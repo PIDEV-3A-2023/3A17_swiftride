@@ -78,9 +78,9 @@ class Voiture
     private $kilometrage;
 
     /**
-     * @var string
+     * @var string|null
      *
-     * @ORM\Column(name="image", type="string", length=150, nullable=false)
+     * @ORM\Column(name="image", type="string", length=150, nullable=true)
      */
     private $image;
 
@@ -97,6 +97,13 @@ class Voiture
      * @ORM\Column(name="entreprise_id", type="integer", nullable=false)
      */
     private $entrepriseId;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="Date_ajout", type="string", length=150, nullable=false)
+     */
+    private $dateAjout;
 
     public function getId(): ?int
     {
@@ -204,7 +211,7 @@ class Voiture
         return $this->image;
     }
 
-    public function setImage(string $image): self
+    public function setImage(?string $image): self
     {
         $this->image = $image;
 
@@ -231,6 +238,18 @@ class Voiture
     public function setEntrepriseId(int $entrepriseId): self
     {
         $this->entrepriseId = $entrepriseId;
+
+        return $this;
+    }
+
+    public function getDateAjout(): ?string
+    {
+        return $this->dateAjout;
+    }
+
+    public function setDateAjout(string $dateAjout): self
+    {
+        $this->dateAjout = $dateAjout;
 
         return $this;
     }

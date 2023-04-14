@@ -3,7 +3,7 @@
 {% block title %}Voiture index{% endblock %}
 
 {% block content %}
-    <h1>Voiture index</h1>
+    <h1>Liste de vos voitures</h1>
 
     <table class="table">
         <thead>
@@ -20,6 +20,7 @@
                 <th>Image</th>
                 <th>Position</th>
                 <th>EntrepriseId</th>
+                <th>DateAjout</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -38,18 +39,21 @@
                 <td>{{ voiture.image }}</td>
                 <td>{{ voiture.position }}</td>
                 <td>{{ voiture.entrepriseId }}</td>
+                <td>{{ voiture.dateAjout }}</td>
                 <td>
-                    <a href="{{ path('app_voiture_show', {'id': voiture.id}) }}">show</a>
-                    <a href="{{ path('app_voiture_edit', {'id': voiture.id}) }}">edit</a>
+                    <a class="btn btn-primary py-3 px-5" href="{{ path('app_voiture_show', {'id': voiture.id}) }}">show</a>
+                    <br>
+                    <br>
+                    <a class="btn btn-primary py-3 px-5" href="{{ path('app_voiture_edit', {'id': voiture.id}) }}">edit</a>
                 </td>
             </tr>
         {% else %}
             <tr>
-                <td colspan="13">no records found</td>
+                <td colspan="14">no records found</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
 
-    <a href="{{ path('app_voiture_new') }}">Create new</a>
+    <a class="btn btn-primary py-3 px-5" href="{{ path('app_voiture_new') }}">Create new</a>
 {% endblock %}

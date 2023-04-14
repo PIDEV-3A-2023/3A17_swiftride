@@ -131,6 +131,13 @@ textarea:-moz-placeholder { color: #999999;}
 textarea::-moz-placeholder { color: #999999;}
 textarea:-ms-input-placeholder { color: #999999;}
 
+label {
+  display: block;
+  font-size: 16px;
+  color: #555;
+  margin-bottom: 8px;
+}
+
 
 label {
   display: block;
@@ -171,6 +178,9 @@ iframe {
   color: #999999;
 }
 
+.my-2 {
+  margin-top: 10px;
+}
 
 /*==================================================================
 [ Size ]*/

@@ -58,6 +58,7 @@ class VoitureControllerTest extends WebTestCase
             'voiture[image]' => 'Testing',
             'voiture[position]' => 'Testing',
             'voiture[entrepriseId]' => 'Testing',
+            'voiture[dateAjout]' => 'Testing',
         ]);
 
         self::assertResponseRedirects('/sweet/food/');
@@ -80,6 +81,7 @@ class VoitureControllerTest extends WebTestCase
         $fixture->setImage('My Title');
         $fixture->setPosition('My Title');
         $fixture->setEntrepriseId('My Title');
+        $fixture->setDateAjout('My Title');
 
         $this->repository->save($fixture, true);
 
@@ -106,6 +108,7 @@ class VoitureControllerTest extends WebTestCase
         $fixture->setImage('Value');
         $fixture->setPosition('Value');
         $fixture->setEntrepriseId('Value');
+        $fixture->setDateAjout('Value');
 
         $this->manager->persist($fixture);
         $this->manager->flush();
@@ -124,6 +127,7 @@ class VoitureControllerTest extends WebTestCase
             'voiture[image]' => 'Something New',
             'voiture[position]' => 'Something New',
             'voiture[entrepriseId]' => 'Something New',
+            'voiture[dateAjout]' => 'Something New',
         ]);
 
         self::assertResponseRedirects('/voiture/');
@@ -141,6 +145,7 @@ class VoitureControllerTest extends WebTestCase
         self::assertSame('Something New', $fixture[0]->getImage());
         self::assertSame('Something New', $fixture[0]->getPosition());
         self::assertSame('Something New', $fixture[0]->getEntrepriseId());
+        self::assertSame('Something New', $fixture[0]->getDateAjout());
     }
 
     public function testRemove(): void
@@ -158,6 +163,7 @@ class VoitureControllerTest extends WebTestCase
         $fixture->setImage('Value');
         $fixture->setPosition('Value');
         $fixture->setEntrepriseId('Value');
+        $fixture->setDateAjout('Value');
 
         $$this->manager->remove($fixture);
         $this->manager->flush();

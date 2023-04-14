@@ -12,13 +12,27 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Regex;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Validator\Constraints\RegexValidator;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Validator\Constraints\File;
 
 class VoitureType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
+        
         ->add('marque', ChoiceType::class, [
+            'attr' => [
+               
+                'class' => 'contact-form bg-light mb-4 ',
+                'style' => 'padding: 15px; margin: 0 50px;',
+            ],
+            'label_attr' => [
+                'style' => 'padding: 15px; margin: 0 50px;',
+            ],
+            'row_attr' => [
+                'class' => 'form-group row'
+            ],
             'choices' => [
                 'Audi' => 'Audi',
                 'BMW' => 'BMW',
@@ -28,12 +42,32 @@ class VoitureType extends AbstractType
             ],
             'placeholder' => 'Donner la marque',
         ])
-            ->add('model')
+            ->add('model' , TextType::class , [
+                'label_attr' => [
+                    'style' => 'padding: 15px; margin: 0 50px;',
+                ],
+                'row_attr' => [
+                    'class' => 'form-group row'
+                ],
+                'attr' => [
+             
+                    'class' => 'contact-form bg-light mb-4',
+                    'style' => 'padding: 15px; margin: 0 50px;',
+                ]])
             ->add('matricule', TextType::class, [
+                'label_attr' => [
+                    'style' => 'padding: 15px; margin: 0 50px;',
+                ],
+                'row_attr' => [
+                    'class' => 'form-group row'
+                ],
                 'attr' => [
                     'placeholder' => 'XXX TU XXXX',
+                    'class' => 'contact-form bg-light mb-4',
+                    'style' => 'padding: 15px; margin: 0 50px;',
                 ],
                 'label' => 'Matricule',
+                
         'required' => true,
                 'constraints' => [
                     new Regex([
@@ -43,9 +77,47 @@ class VoitureType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('cartegrise')
-            ->add('couleur')
+            ->add('cartegrise', TextType::class , [
+                'label_attr' => [
+                    'style' => 'padding: 15px; margin: 0 50px;',
+                ],
+                'row_attr' => [
+                    'class' => 'form-group row'
+                ],
+               
+                'attr' => [
+                    
+                    'class' => 'form-group',
+                    
+                    'class' => 'contact-form bg-light mb-4',
+                    'style' => 'padding: 15px; margin: 0 50px;',
+                ]]
+                )
+            ->add('couleur', TextType::class , [
+                'label_attr' => [
+                    'style' => 'padding: 15px; margin: 0 50px;',
+                ],
+                'row_attr' => [
+                    'class' => 'form-group row'
+                ],
+                'attr' => [
+                   
+                    'class' => 'contact-form bg-light mb-4',
+                    'style' => 'padding: 15px; margin: 0 50px;',
+                ]])
+
             ->add('etat', ChoiceType::class, [
+                'label_attr' => [
+                    'style' => 'padding: 15px; margin: 0 50px;',
+                ],
+                'row_attr' => [
+                    'class' => 'form-group row'
+                ],
+                'attr' => [
+               
+                    'class' => 'contact-form bg-light mb-4',
+                    'style' => 'padding: 15px; margin: 0 50px;',
+                ],
                 'choices' => [
                     'Bonne etat' => 'Bonne etat',
                     'En panne' => 'En panne',
@@ -53,18 +125,105 @@ class VoitureType extends AbstractType
                 ],
                 'placeholder' => 'Donner l"etat',
             ])
-            ->add('prix')
-            ->add('kilometrage')
+
+            ->add('prix', TextType::class , [
+                'label_attr' => [
+                    'style' => 'padding: 15px; margin: 0 50px;',
+                ],
+                'row_attr' => [
+                    'class' => 'form-group row'
+                ],
+                'attr' => [
+                   
+                    'class' => 'contact-form bg-light mb-4',
+                    'style' => 'padding: 15px; margin: 0 50px;',
+                ]])
+
+            ->add('kilometrage', TextType::class , [
+                'label_attr' => [
+                    'style' => 'padding: 15px; margin: 0 50px;',
+                ],
+                'row_attr' => [
+                    'class' => 'form-group row'
+                ],
+                'attr' => [
+                   
+                    'class' => 'contact-form bg-light mb-4',
+                    'style' => 'padding: 15px; margin: 0 50px;',
+                ]])
+
             ->add('image', FileType::class, [
+                'label_attr' => [
+                    'style' => 'padding: 15px; margin: 0 50px;',
+                ],
+                'row_attr' => [
+                    'class' => 'form-group row'
+                ],
                 'label' => 'Image (JPG, JPEG, PNG file)',
-                'mapped' => false,
+                'mapped' => true, // map the uploaded file to the 'image' property in the entity
                 'required' => false,
                 'attr' => [
+                  
+                        'class' => 'contact-form bg-light mb-4',
+                        'style' => 'padding: 15px; margin: 0 50px;',
+                    
                     'accept' => 'image/jpeg, image/png',
                 ],
+
+                'constraints' => [
+                    new File([
+                        'mimeTypes' => [
+                            'image/jpeg',
+                            'image/png',
+                        ],
+                        'mimeTypesMessage' => 'Please upload a valid JPG, JPEG, or PNG image',
+                    ])
+                ]
             ])
-            ->add('position')
-            ->add('entrepriseId')
+
+            ->add('position', TextType::class , [
+                'label_attr' => [
+                    'style' => 'padding: 15px; margin: 0 50px;',
+                ],
+                'row_attr' => [
+                    'class' => 'form-group row'
+                ],
+                'attr' => [
+                    
+                    'class' => 'contact-form bg-light mb-4',
+                    'style' => 'padding: 15px; margin: 0 50px;',
+                ]])
+
+            ->add('entrepriseId', TextType::class , [
+                'label_attr' => [
+                    'style' => 'padding: 15px; margin: 0 50px;',
+                ],
+                'row_attr' => [
+                    'class' => 'form-group row'
+                ],
+                'attr' => [
+                   
+                    'class' => 'contact-form bg-light mb-4',
+                    'style' => 'padding: 15px; margin: 0 50px;',
+                ]])
+
+                ->add('dateAjout', TextType::class, [
+                    'label_attr' => [
+                        'style' => 'padding: 15px; margin: 0 50px;',
+                    ],
+                    'row_attr' => [
+                        'class' => 'form-group row'
+                    ],
+                    
+                'attr' => [
+                 
+                    'class' => 'contact-form bg-light mb-4',
+                    'style' => 'padding: 15px; margin: 0 50px;',
+                ]
+                
+                
+                ])
+
             ;
 
        
