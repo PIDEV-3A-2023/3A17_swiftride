@@ -162,6 +162,7 @@ class VoitureType extends AbstractType
                 'label' => 'Image (JPG, JPEG, PNG file)',
                 'mapped' => true, // map the uploaded file to the 'image' property in the entity
                 'required' => false,
+                'data_class' => null, // Set data_class to null for this field
                 'attr' => [
                   
                         'class' => 'contact-form bg-light mb-4',
@@ -207,7 +208,7 @@ class VoitureType extends AbstractType
                     'style' => 'padding: 15px; margin: 0 50px;',
                 ]])
 
-                ->add('dateAjout', TextType::class, [
+                ->add('dateAjout', DateType::class, [
                     'label_attr' => [
                         'style' => 'padding: 15px; margin: 0 50px;',
                     ],
@@ -216,13 +217,14 @@ class VoitureType extends AbstractType
                     ],
                     
                 'attr' => [
-                 
-                    'class' => 'contact-form bg-light mb-4',
+                    
+                    
                     'style' => 'padding: 15px; margin: 0 50px;',
                 ]
                 
                 
                 ])
+                
 
             ;
 
