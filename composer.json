@@ -5,7 +5,7 @@
     "prefer-stable": true,
     "require": {
         "php": ">=7.2.5",
-        "ext-ctype": "*",
+       "ext-ctype": "*",
         "ext-iconv": "*",
         "doctrine/annotations": "^2.0",
         "doctrine/doctrine-bundle": "^2.8",

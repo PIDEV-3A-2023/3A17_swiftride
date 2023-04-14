@@ -10,6 +10,7 @@ use App\Entity\Accident;
 
 use App\Entity\Voiture;
 use App\Form\AccidentType;
+use App\Form\UpdateaccidentType;
 use DateTime;
 use Doctrine\Persistence\ManagerRegistry;
 class GestionAccidentController extends AbstractController
@@ -24,13 +25,14 @@ $accidents =$doctrine->getRepository(Accident::class)->findBy([], ['date' => 'DE
 
 
         $accident=new Accident();
-
-        $form = $this->createForm(AccidentType::class, $accident);
+$idvoiture =$doctrine->getRepository(Voiture::class)->findAvailableVoituresQueryBuilder();
+        $form = $this->createForm(AccidentType::class, $accident, ['myEntities' => $idvoiture]);
 
         
         $form->handleRequest($req);
 
         $em=$doctrine->getManager();
+       
 
         if($form->isSubmitted() && $form->isValid()){
 
@@ -49,11 +51,13 @@ $accidents =$doctrine->getRepository(Accident::class)->findBy([], ['date' => 'DE
             
         ]);
     }
+
+    
     #[Route('/update/{id}', name: 'update')]
     public function update(Request $request, ManagerRegistry $doctrine, $id)
     {
         $accident = $doctrine->getRepository(Accident::class)->find($id);
-        $form = $this->createForm(AccidentType::class, $accident);
+        $form = $this->createForm(UpdateaccidentType::class, $accident);
     
         $form->handleRequest($request);
     

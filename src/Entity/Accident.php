@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\AccidentRepository;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 #[ORM\Entity(repositoryClass: AccidentRepository::class)]
 class Accident
@@ -14,6 +16,8 @@ class Accident
     private $id;
 
     #[ORM\Column]
+    #[Assert\NotBlank(message:"le type est requis")]
+    
     private $type;
 
     #[ORM\Column]
@@ -21,9 +25,19 @@ class Accident
 
     
     #[ORM\Column(length:65535)]
+    #[Assert\NotBlank(message:"description est requis")]
+    #[Assert\Length( 
+        min: 10,
+        max: 2555,
+    minMessage: 'il faut etre superieure au :  {{ limit }} caractéres',
+    maxMessage: 'il faut etre inferieur au :  {{ limit }} caractéres')]
     private $description;
 
     #[ORM\Column(length:40)]
+    #[Assert\NotBlank(message:"lieu est requis")]
+    #[Assert\Length( 
+        min: 10,
+    minMessage: 'le lieu doit etre superieure au :  {{ limit }} caractéres')]
     private $lieu;
 
    

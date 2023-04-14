@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\AnnonceRepository;
+use Symfony\Component\Validator\Constraints as Assert;
 
 
 #[ORM\Entity(repositoryClass: AnnonceRepository::class)]
@@ -15,12 +16,23 @@ class Annonces
     private $id;
 
     #[ORM\Column(length:255)]
+   #[Assert\NotBlank(message:" title est requis")]
+   #[Assert\Length( 
+    min: 3,
+    minMessage: 'le title doit etre superieure au :  {{ limit }} caractéres')]
     private $title;
 
     #[ORM\Column(length:255)]
+    #[Assert\NotBlank(message:" image est requis")]
     private $image;
     
     #[ORM\Column(length:65535)]
+    #[Assert\NotBlank(message:"content est requis")]
+    #[Assert\Length( 
+        min: 5,
+        max: 2555,
+    minMessage: 'il faut etre superieure au :  {{ limit }} caractéres',
+    maxMessage: 'il faut etre inferieur au :  {{ limit }} caractéres')]
 
     private $content;
 

@@ -38,7 +38,16 @@ class VoitureRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+    public function findAvailableVoituresQueryBuilder()
+    {
+        return $this->createQueryBuilder('v')
+            ->andWhere('v.etat = :etat')
+            ->setParameter('etat', 'available')
+            ->orderBy('v.marque', 'ASC')
+            ->getQuery()
+            ->getResult();
 
+    }
 //    /**
 //     * @return Voiture[] Returns an array of Voiture objects
 //     */

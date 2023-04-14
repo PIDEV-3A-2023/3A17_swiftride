@@ -16,6 +16,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class AccidentType extends AbstractType
 {
@@ -28,8 +29,10 @@ class AccidentType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $myEntities = $options['myEntities'];
         $builder
             ->add('type', TextType::class, ['required' => true])
+            
             ->add('date',DateTimeType::class, [
                 'widget' => 'single_text',
                 'attr' => [
@@ -38,27 +41,35 @@ class AccidentType extends AbstractType
             ])
             ->add('description', TextType::class, ['required' => true])
             ->add('lieu', TextType::class, ['required' => true])
-            ->add('id_voiture', EntityType::class, [
-                'class' => Voiture::class,
-                'query_builder' => function (VoitureRepository $er) {
-                    return $er->createQueryBuilder('v')
-                        ->andWhere('v.etat = :etat')
-                        ->setParameter('etat', 'available')
-                        ->orderBy('v.marque', 'ASC');
-                },
-                'choice_label' => function (Voiture $voiture) {
-                    return sprintf('%s ', $voiture->getId());
-                },
+            
+            ->add('id_voiture', ChoiceType::class, [
+                'choices' => $this->getAvailableVoitures($myEntities), // This should return an array of available voitures
+                'expanded' => true, // This makes the field a radio button instead of a dropdown list
+                'multiple' => false, // This allows only one voiture to be selected at a time
+                
             ])
+            
         ;
     }
+    private function getAvailableVoitures($myEntities)
+    {
+        $choices = [];
 
+        foreach ($myEntities as $entity) {
+            $choices[$entity->getId()] = $entity;
+        }
+
+        return $choices;
+    }
     
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => Accident::class,
+            
         ]);
+        $resolver->setRequired('myEntities');
+        $resolver->setAllowedTypes('myEntities', 'array');
     }
 }

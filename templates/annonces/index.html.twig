@@ -7,21 +7,25 @@
         <h1 class="text-center mb-5">Ajouter un annonce</h1>
 
        {{ form_start(form) }}
+        {{ form_errors(form) }}
 
         <div class="form-group">
             {{ form_label(form.title, 'title') }}
             {{ form_widget(form.title, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.title) }}
         </div>
 
        
         <div class="form-group">
             {{ form_label(form.image, 'image') }}
             {{ form_widget(form.image, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.image) }}
         </div>
 
         <div class="form-group">
             {{ form_label(form.content, 'content') }}
             {{ form_widget(form.content, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.content) }}
         </div>
 
         <div class="form-group">
