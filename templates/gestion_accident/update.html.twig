@@ -1,0 +1,38 @@
+{% extends 'templateUpdate.html.twig' %}
+
+{% block title %}Update Accident{% endblock %}
+
+{% block body %}
+
+  <section class="get-in-touch">
+   <h1 class="title">Update accident</h1>
+    {{ form_start(form) }}
+   <form class="contact-form row">
+     <div class="form-field col-lg-6">
+     {{ form_label(form.type, 'Type') }}
+        {{ form_widget(form.type, {'attr': {'class': 'form-control'}}) }}
+      </div>
+      <div class="form-field col-lg-6 ">
+         {{ form_label(form.date, 'Date') }}
+            {{ form_widget(form.date, {'attr': {'class': 'form-control'}}) }}
+      </div>
+      <div class="form-field col-lg-6 ">
+          {{ form_label(form.description, 'Description') }}
+            {{ form_widget(form.description, {'attr': {'class': 'form-control'}}) }}
+      </div>
+       <div class="form-field col-lg-6 ">
+           {{ form_label(form.lieu, 'Lieu') }}
+            {{ form_widget(form.lieu, {'attr': {'class': 'form-control'}}) }}
+      </div>
+      <div class="form-field col-lg-12">
+           {{ form_label(form.id_voiture, 'Voiture') }}
+            {{ form_widget(form.id_voiture, {'attr': {'class': 'form-control'}}) }}
+      </div>
+      <div class="form-field col-lg-12">
+          <button type="submit" class="btn btn-primary">update</button>
+      </div>
+       {{ form_end(form) }}
+   </form>
+    
+</section>
+{% endblock %}
