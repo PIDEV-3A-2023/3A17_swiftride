@@ -89,7 +89,6 @@
                             <table class="table table-striped text-center">
                                 <thead class="text-uppercase">
                                     <tr>
-                                        <th scope="col">ID</th>
                                         <th scope="col">Etoile</th>
                                         <th scope="col">Commentaire</th>
                                         <th scope="col">Action</th>
@@ -98,7 +97,6 @@
                                 <tbody>
                                     {% for avis in a %}
                                         <tr>
-                                            <th>{{ avis.getId }}</th>
                                             <td>{{ avis.getEtoile }}</td>
                                             <td>{{ avis.getCommentaire }}</td>
                                             <td>
@@ -120,22 +118,6 @@ function confirmDelete(url, id) {
     }
 }
 </script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/jquery.raty/latest/jquery.raty.min.js"></script>
-
-<script>
-  $(function() {
-    $('.rating').raty({
-      score: function() {
-        return $(this).val();
-      },
-      click: function(score, evt) {
-        $(this).val(score);
-      }
-    });
-  });
-</script>
-
                                 </tbody>
                             </table>
                         </div>
@@ -244,5 +226,7 @@ function confirmDelete(url, id) {
 
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
+      <link rel="stylesheet" href="{{ asset('assets/rating/style.css') }}">
+
 {% endblock %}
 

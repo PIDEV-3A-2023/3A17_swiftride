@@ -12,29 +12,34 @@ use Symfony\Component\Validator\Constraints\Range;
 use Symfony\Component\Validator\Constraints\Regex;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
+
 class AvisType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('etoile', ChoiceType::class, [
-                'choices' => [
-                    'Rate your experience !' => 0,
-                    '1' => 1,
-                    '2' => 2,
-                    '3' => 3,
-                    '4' => 4,
-                    '5' => 5,
-                ],
-                'constraints' => [
-                    new NotBlank(),
-                    new Range([
-                        'min' => 1,
-                        'max' => 5,
-                        'notInRangeMessage' => 'La note doit être entre 1 et 5',
-                    ]),
-                ],
-            ])
+        ->add('etoile', ChoiceType::class, [
+          'choices' => [
+              '1' => 1,
+              '2' => 2,
+              '3' => 3,
+              '4' => 4,
+              '5' => 5,
+          ],
+          'expanded' => true, // Render as radio buttons
+          'multiple' => false, // Only allow one option to be selected
+          'attr' => [
+              'class' => 'raty',
+          ],
+          'constraints' => [
+              new NotBlank(),
+              new Range([
+                  'min' => 1,
+                  'max' => 5,
+                  'notInRangeMessage' => 'La note doit être entre 1 et 5',
+              ]),
+          ],
+      ])
             ->add('commentaire', TextareaType::class, [
                 'constraints' => [
                     new NotBlank(['message' => 'Le champ commentaire est obligatoire. Veuillez le remplir']),

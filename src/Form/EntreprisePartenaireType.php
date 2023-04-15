@@ -2,10 +2,13 @@
 
 namespace App\Form;
 
+use App\Entity\EntreprisePartenaire;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Regex;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -14,6 +17,12 @@ use Symfony\Component\Validator\Constraints\Email;
 
 class EntreprisePartenaireType extends AbstractType
 {
+    private $entityManager;
+
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -24,6 +33,14 @@ class EntreprisePartenaireType extends AbstractType
                     'pattern' => '/^[a-zA-Z]+$/',
                     'message' => 'Le nom d\'entreprise doit être alphabétique'
                 ]),
+                new Callback(function ($value, $context) {
+                    $existingEntreprise = $this->entityManager->getRepository(EntreprisePartenaire::class)->findOneBy([
+                        'nom_entreprise' => $value,
+                    ]);
+                    if ($existingEntreprise !== null) {
+                        $context->buildViolation('Une entreprise avec ce nom existe déjà')->addViolation();
+                    }
+                }),
             ],
         ])
         ->add('nom_admin', null, [

@@ -14,7 +14,6 @@
                             <table class="table table-striped text-center">
                                 <thead class="text-uppercase">
                                     <tr>
-                                        <th scope="col">ID</th>
                                         <th scope="col">Nom Entreprise</th>
                                         <th scope="col">Nom Admin</th>
                                         <th scope="col">Prenom Admin</th>
@@ -23,7 +22,6 @@
                                         <th scope="col">Matricule</th>
                                         <th scope="col">Login</th>
                                         <th scope="col">Mot De Passe</th>
-                                        <th scope="col">id admin</th>
                                         
                                         <th scope="col">Action</th>
                                     </tr>
@@ -31,7 +29,6 @@
                                 <tbody>
                                     {% for EntreprisePartenaire in e %}
                                         <tr>
-                                            <th>{{ EntreprisePartenaire.id }}</th>
                                             <td>{{ EntreprisePartenaire.getNomEntreprise }}</td>
                                             <td>{{ EntreprisePartenaire.getNomAdmin }}</td>
                                             <td>{{ EntreprisePartenaire.getPrenomAdmin }}</td>
@@ -40,7 +37,6 @@
                                             <td>{{ EntreprisePartenaire.matricule }}</td>
                                             <td>{{ EntreprisePartenaire.login }}</td>
                                             <td>{{ EntreprisePartenaire.mdp }}</td>
-                                            <td>{{ EntreprisePartenaire.getIdAdmin }}</td>                                        
                                             <td>
                                                 <ul class="d-flex justify-content-center">
                                                         <li class="mr-3"><a href="{{ path('modifEntreprisePartenaire',{'id':EntreprisePartenaire.id}) }}" class="text-primary"><i class="fa fa-edit"></i></a></li>                                                                                                       
