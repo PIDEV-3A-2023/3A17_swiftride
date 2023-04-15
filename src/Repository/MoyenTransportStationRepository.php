@@ -2,26 +2,26 @@
 
 namespace App\Repository;
 
-use App\Entity\MoyenStation;
+use App\Entity\MoyenTransportStation;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @extends ServiceEntityRepository<MoyenStation>
  *
- * @method MoyenStation|null find($id, $lockMode = null, $lockVersion = null)
- * @method MoyenStation|null findOneBy(array $criteria, array $orderBy = null)
- * @method MoyenStation[]    findAll()
- * @method MoyenStation[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method MoyenTransportStation|null find($id, $lockMode = null, $lockVersion = null)
+ * @method MoyenTransportStation|null findOneBy(array $criteria, array $orderBy = null)
+ * @method MoyenTransportStation[]    findAll()
+ * @method MoyenTransportStation[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class MoyenStationRepository extends ServiceEntityRepository
+class MoyenTransportStationRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, MoyenStation::class);
+        parent::__construct($registry, MoyenTransportStation::class);
     }
 
-    public function save(MoyenStation $entity, bool $flush = false): void
+    public function save(MoyenTransportStation $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
 
@@ -30,7 +30,7 @@ class MoyenStationRepository extends ServiceEntityRepository
         }
     }
 
-    public function remove(MoyenStation $entity, bool $flush = false): void
+    public function remove(MoyenTransportStation $entity, bool $flush = false): void
     {
         $this->getEntityManager()->remove($entity);
 
@@ -40,7 +40,7 @@ class MoyenStationRepository extends ServiceEntityRepository
     }
 
 //    /**
-//     * @return MoyenStation[] Returns an array of MoyenStation objects
+//     * @return MoyenTransportStation[] Returns an array of MoyenStation objects
 //     */
 //    public function findByExampleField($value): array
 //    {
@@ -54,7 +54,7 @@ class MoyenStationRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?MoyenStation
+//    public function findOneBySomeField($value): ?MoyenTransportStation
 //    {
 //        return $this->createQueryBuilder('m')
 //            ->andWhere('m.exampleField = :val')
