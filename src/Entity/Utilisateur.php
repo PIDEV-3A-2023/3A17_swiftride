@@ -74,7 +74,9 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\JoinColumn(name: 'idrole', referencedColumnName: 'id')]
     #[ORM\OneToOne(targetEntity: Role::class )]
     private ?Role $role = null;
-    
+    #[ORM\Column(length:50)]
+    private ?string $etat=null;
+
 public function setId(int $id){
     $this->id = $id;
     return $this;
@@ -105,6 +107,17 @@ public function getPrenom(): ?string
 public function setPrenom(string $prenom): self
 {
     $this->prenom = $prenom;
+
+    return $this;
+}
+public function getEtat(): ?string
+{
+    return $this->etat;
+}
+
+public function setEtat(string $etat): self
+{
+    $this->etat = $etat;
 
     return $this;
 }

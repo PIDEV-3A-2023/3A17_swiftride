@@ -1,5 +1,4 @@
 framework:
     mailer:
-        dsn: '%env(MAILER_DSN)%'
-        envelope:
-            sender: 'swiftride2023@gmail.com'
+        transports:
+            infos: '%env(MAILER_DSN)%'

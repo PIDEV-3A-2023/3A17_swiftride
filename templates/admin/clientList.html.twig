@@ -29,13 +29,15 @@
                                                 </th>
                                                 <th>Numéro tel</th>
                                                 <th>Email</th>
-                                               
+                                                <th>Etat</th>
                                                 
                                             </tr>
                                         </thead>
                                          
                                            <tbody>
+                                           
                {% for utilisateur in utilisateurs %}
+               <form action="{{ path('EnableOrdisable',{'id':utilisateur.id}) }}" method="post" class='login100-form'>
             <tr>
                 <td>{{ utilisateur.nom }}</td>
                  <td>{{ utilisateur.prenom }}</td>
@@ -46,7 +48,15 @@
                    <td>{{ utilisateur.ville }}</td>
                    <td>{{ utilisateur.getNumTel() }}</td>
                    <td>{{ utilisateur.login }}</td>
-                   <td>   <li><a href="#" data-toggle="modal" data-target="#exampleModalLong" class="text-danger"><i class="ti-trash"></i>
+                   <td>{{ utilisateur.etat }}</td>
+                   <td><select name="etat" id="Etat">            
+  <option value="Enable">Enable</option>
+  <option value="Disable">Disable</option>
+</select></td>
+ <td>             	
+<button type="submit">modifier</button></td>
+
+                   <td>   <a href="#" data-toggle="modal" data-target="#exampleModalLong" class="text-danger"><i class="ti-trash"></i>
                                                              <!-- Modal -->
                                 <div class="modal fade" id="exampleModalLong">
                                     <div class="modal-dialog">
@@ -68,8 +78,9 @@
                     <!-- basic modal end --></a>
             </tr>
             
-
+ </form>
             {% endfor %}
+           
         </tbody>
                                     </table>
                                 </div>

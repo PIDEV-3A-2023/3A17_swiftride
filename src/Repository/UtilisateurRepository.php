@@ -77,7 +77,9 @@ class UtilisateurRepository extends ServiceEntityRepository  implements UserLoad
         return $this->createQueryBuilder('u')
             ->where('u.login = :query')
             ->andWhere('u.role = 2')
+            ->andWhere('u.etat = :etat')
             ->setParameter('query', $usernameOrEmail)
+            ->setParameter('etat', 'Enable')
             ->getQuery()
             ->getOneOrNullResult();
     }

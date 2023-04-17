@@ -18,7 +18,10 @@ use App\Service\QrCodeGenerator;
 use InvalidArgumentException;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\Security\Core\Exception\DisabledException;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
@@ -31,12 +34,14 @@ class UtilisateurController extends AbstractController
     private $utilisateurRepository;
     private $mailer;
     private $generetaQr;
-    public function __construct(RoleRepository $roleRepository,UtilisateurRepository $utilisateurRepository,MailerService $mailer,QrCodeGenerator $generetaQr,Filesystem $filesystem )
+    private $mailerInterface;
+    public function __construct(RoleRepository $roleRepository,UtilisateurRepository $utilisateurRepository,MailerService $mailer,QrCodeGenerator $generetaQr,Filesystem $filesystem,MailerInterface $mailerInterface )
     {  $this->filesystem=$filesystem;
          $this->generetaQr=$generetaQr;
         $this->mailer = $mailer;
         $this->utilisateurRepository = $utilisateurRepository;
         $this->roleRepository = $roleRepository;
+        $this->mailerInterface = $mailerInterface;
     }
 
     #[Route('/', name: 'firstpage' , methods: ['GET', 'POST'])]
@@ -46,21 +51,25 @@ class UtilisateurController extends AbstractController
          
     }
     #[Route('/login', name: 'loginspace' , methods: ['GET', 'POST'])]
-    public function index(AuthenticationUtils $authenticationUtils,Request $request): Response
+    public function index(AuthenticationUtils $authenticationUtils,Request $request,Security $security ): Response
     {
-        // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
-    
-        // last username entered by the user
-        $lastUsername = $authenticationUtils->getLastUsername();
-        $form = $this->createForm(ProfileType::class);
-        $form->handleRequest($request);
+
+        $lastUsername = $authenticationUtils->getLastUsername();        
+        /*$user=$this->utilisateurRepository->findByemail($lastUsername);
+        if($user && $user->getEtat()=='Disable'){
+            $this->addFlash('error', 'Votre compte est bloqué');
+            return $this->redirectToRoute('loginspace');
+        }*/
+     
+           
+        
         return $this->render('utilisateur/login.html.twig', [
             'last_username' => $lastUsername,
             'error' => $error,
-            'form' =>$form->createView()
         ]);
     }
+    
     #[Route('/profile', name: 'profile_page' ,methods: ['GET', 'POST'])]
     public function profile(Request $request,UtilisateurRepository $utilisateurRepository ,UserPasswordHasherInterface $userPasswordHasher,UserInterface $userInterface): Response
     {
@@ -183,6 +192,7 @@ class UtilisateurController extends AbstractController
             $user->setPhotoPersonel($newpersonnelname ?? "");
             $user->setPhotoPermis($newpermisname ?? "");
             $user->setRole($this->roleRepository->find(2));
+            $user->setEtat('Disable');
             if($utilisateurRepository->findByemail($user->getLogin())){
                 $message='email déja utilisé';
             }
@@ -194,6 +204,7 @@ class UtilisateurController extends AbstractController
             }
             else {
             $utilisateurRepository->save($user, true);
+            $this->mailer->sendRegistrationEmail($this->mailerInterface,$user->getLogin(),$user->getPrenom());
             return $this->redirectToRoute('loginspace');
             }
         }
@@ -208,26 +219,16 @@ class UtilisateurController extends AbstractController
 
     #[Route('/delete/{id}', name: 'user_delete', methods: ['GET','POST'])]
     public function delete(UtilisateurRepository $utilisateurRepository,$id,Request $request): Response
-    {
+    { $user=$utilisateurRepository->find($id);
        // if ($this->isCsrfTokenValid('delete'.$utilisateurRepository->find($id)->getId(), $request->request->get('_token'))) {
-            $utilisateurRepository->remove($utilisateurRepository->find($id), true);
+        $this->deleteFile($user->getPhotoPersonel());
+        $this->deleteFile($user->getPhotoPermis());
+            $utilisateurRepository->remove($user, true);
        //}
 
         return $this->redirectToRoute('liste_admin',[
             'm'=>$utilisateurRepository->find($id)
         ]);
-    }
-    #[Route('/forgetPass', name: 'forgetPass', methods: ['POST'])]
-    public function forget(Request $request): Response
-{
-    $email1='skan.nasri@gmail.com';
-    $email = $request->request->get('email');
-    //if($this->utilisateurRepository->findByemail($email1))
-          $this->mailer->sendEmail($email1);
-          return $this->render('utilisateur/forgetPassword.html.twig', [
-            'controller_name' => 'UtilisateurController'
-        ]);
-            
     }
 
     #[Route('/changePass', name: 'changePass', methods: ['GET','POST'])]
