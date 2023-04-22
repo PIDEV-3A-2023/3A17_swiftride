@@ -139,8 +139,6 @@ class MaintenanceController extends AbstractController
     #[Route('/rendez-vous1/{id}/{d}/{idg}', name: 'finale_etape')]
     public function rendezVous(ManagerRegistry $doctrine , Request $req  , $id , $idg , $d){
 
-        var_dump($idg);
-        var_dump($d);
         $voiture=$doctrine->getRepository(Voiture::class)->find($id);
 
         $garage=$doctrine->getRepository(Garage::class)->find($idg);
@@ -154,7 +152,6 @@ class MaintenanceController extends AbstractController
             array_push($time,"08:00:00","10:30:00","13:00:00","15:30:00");
         }
         else{
-            var_dump($time);
 
             $tabTimes=["08:00:00","10:30:00","13:00:00","15:30:00"];
             
@@ -172,7 +169,6 @@ class MaintenanceController extends AbstractController
                     $found=true;
                     break;
 
-                    var_dump($found);
                 }
             }
 
@@ -218,7 +214,6 @@ class MaintenanceController extends AbstractController
 
             //concatiner date + heur 
             $t=$form->get('temps')->getData();
-            var_dump($t);
 
             $dateHeure = \DateTime::createFromFormat('Y-m-d H:i:s', $d . ' ' . $t);
 
@@ -259,7 +254,6 @@ class MaintenanceController extends AbstractController
         if($form->isSubmitted() && $form->isValid() )
         {
 
-            var_dump($form->isValid());
 
             $datesrc= $form->get('dateMaintenance')->getData();
             $date = new \DateTime($datesrc->format('Y/m/d'));
@@ -287,8 +281,6 @@ class MaintenanceController extends AbstractController
     #[Route('/rendez-vous-client/{idv}/{da}/{idgr}', name: 'final_client')]
     public function rendezVousClient(ManagerRegistry $doctrine , Request $req  , $idv , $idgr , $da){
 
-        var_dump($idgr);
-        var_dump($da);
         $voiture=$doctrine->getRepository(Voiture::class)->find($idv);
 
         $garage=$doctrine->getRepository(Garage::class)->find($idgr);
@@ -302,7 +294,6 @@ class MaintenanceController extends AbstractController
             array_push($time,"8:00:00","10:30","13:00","15:30");
         }
         else{
-            var_dump($time);
             $tabTimes=["08:00:00","10:30:00","13:00:00","15:30:00"];
            
         foreach ( $maintenances as $m){
@@ -318,7 +309,6 @@ class MaintenanceController extends AbstractController
                     $found=true;
                     break;
 
-                    var_dump($found);
                 }
             }
 
@@ -365,7 +355,6 @@ class MaintenanceController extends AbstractController
 
             //concatiner date + heur 
             $t=$form->get('temps')->getData();
-            var_dump($t);
 
             $dateHeure = \DateTime::createFromFormat('Y-m-d H:i:s', $da . ' ' . $t);
 
@@ -394,6 +383,14 @@ class MaintenanceController extends AbstractController
     }
 
 
+    #[Route('/calendrier', name: 'app_calender')]
+    public function calendrierDesMaintenance(ManagerRegistry $doctrine){
+
+        $maitenances= $doctrine->getRepository(Maintenance::class)->findAll();
+
+        return $this->render('maintenance/calendrierDesMaintenances.html.twig');
+
+    }
     
 
 }

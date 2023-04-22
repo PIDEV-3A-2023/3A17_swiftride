@@ -30,9 +30,7 @@ class GarageController extends AbstractController
 
         if($form->isSubmitted() && $form->isValid()){
 
-            $em->persist($garage);
-
-            $em->flush();
+            $doctrine->getRepository(Garage::class)->save($garage,true);
 
             return  $this->redirectToRoute('materiel_g',['id'=>$garage->getId()]);
         }
