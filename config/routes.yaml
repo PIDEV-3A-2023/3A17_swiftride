@@ -7,6 +7,3 @@ logout:
 logout_admin:
     path: /admin/logout
     methods: GET
-forgetPass:
-    path: /forgetPass
-    controller: App\Controller\UtilisateurController::forget

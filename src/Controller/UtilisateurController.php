@@ -35,13 +35,18 @@ class UtilisateurController extends AbstractController
     private $mailer;
     private $generetaQr;
     private $mailerInterface;
-    public function __construct(RoleRepository $roleRepository,UtilisateurRepository $utilisateurRepository,MailerService $mailer,QrCodeGenerator $generetaQr,Filesystem $filesystem,MailerInterface $mailerInterface )
+    private $qrCodeGenerator;
+    public function __construct(RoleRepository $roleRepository,
+    UtilisateurRepository $utilisateurRepository,MailerService $mailer,
+    QrCodeGenerator $generetaQr,Filesystem $filesystem,MailerInterface $mailerInterface,
+    QrCodeGenerator $qrCodeGenerator )
     {  $this->filesystem=$filesystem;
          $this->generetaQr=$generetaQr;
         $this->mailer = $mailer;
         $this->utilisateurRepository = $utilisateurRepository;
         $this->roleRepository = $roleRepository;
         $this->mailerInterface = $mailerInterface;
+        $this->qrCodeGenerator=$qrCodeGenerator;
     }
 
     #[Route('/', name: 'firstpage' , methods: ['GET', 'POST'])]
@@ -76,6 +81,8 @@ class UtilisateurController extends AbstractController
         try{
             $message='';
         $user = $this->getUser();
+        $qrCode=$this->qrCodeGenerator->createQrCode($user);
+        //$qrCode->setSize(300);
         $form = $this->createForm(ProfileType::class, $user);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -124,7 +131,11 @@ class UtilisateurController extends AbstractController
         }
       
         return $this->render('utilisateur/profile.html.twig', [
-            'controller_name' => 'UtilisateurController', 'form' => $form->createView(),'user'=>$user,'message'=>$message,
+            'controller_name' => 'UtilisateurController',
+             'form' => $form->createView(),
+             'user'=>$user,
+             'message'=>$message,
+             'qrCode' => $qrCode->getDataUri()
         ]);
     }
    
@@ -192,7 +203,7 @@ class UtilisateurController extends AbstractController
             $user->setPhotoPersonel($newpersonnelname ?? "");
             $user->setPhotoPermis($newpermisname ?? "");
             $user->setRole($this->roleRepository->find(2));
-            $user->setEtat('Disable');
+            $user->setEtat('Bloqué');
             if($utilisateurRepository->findByemail($user->getLogin())){
                 $message='email déja utilisé';
             }
@@ -231,34 +242,6 @@ class UtilisateurController extends AbstractController
         ]);
     }
 
-    #[Route('/changePass', name: 'changePass', methods: ['GET','POST'])]
-    public function change(Request $request,UserPasswordHasherInterface $userPasswordHasher,UtilisateurRepository $utilisateurRepository): Response
-    {       //$user = $doctrine->getRepository(Utilisateur::class)->find($this->session->get('user_id'));
-        $user = new Utilisateur();
-            /*  $user->setPassword(
-                $userPasswordHasher->hashPassword(
-                    $user,
-                )
-            );
-                $utilisateurRepository->save($user, true);
-                return $this->redirectToRoute('loginspace');
-    */
-            
-        
-        return $this->render('utilisateur/forgetPassword.html.twig', [
-            'controller_name' => 'UtilisateurController'
-        ]);
-    }
-
-  /*  #[Route('/listeUser', name: 'user_liste', methods: ['GET'])]
-    public function liste(UtilisateurRepository $utilisateurRepository,RoleRepository $roleRepository): Response
-    {
-
-        return $this->render('admin/datatable.html.twig', [
-            'utilisateurs' => $utilisateurRepository->findByRoleId($roleRepository->find(2))
-        ]);
-    }
-*/
 public function deleteFile(string $path)
 {
 

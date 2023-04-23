@@ -7,4 +7,3 @@ endroid_qr_code:
         errorCorrectionLevel: 'low'
         roundBlockSizeMode: 'margin'
         validateResult: false
-  

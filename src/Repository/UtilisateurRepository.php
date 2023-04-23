@@ -79,7 +79,7 @@ class UtilisateurRepository extends ServiceEntityRepository  implements UserLoad
             ->andWhere('u.role = 2')
             ->andWhere('u.etat = :etat')
             ->setParameter('query', $usernameOrEmail)
-            ->setParameter('etat', 'Enable')
+            ->setParameter('etat', 'Activé')
             ->getQuery()
             ->getOneOrNullResult();
     }

@@ -13,7 +13,9 @@
             <div class="d-flex flex-column align-items-center text-center p-3 py-5">
               {% if form.photo_personel.vars.value %}
                
-            <img class="rounded-circle mt-5" width="150px" src="{{ form.photo_personel.vars.value | replace({'\\': '/'}) | raw }}" alt="Photo personel"></div>
+            <img class="rounded-circle mt-5" width="150px" src="{{ form.photo_personel.vars.value | replace({'\\': '/'}) | raw }}" alt="Photo personel"></div><br>
+            <label for='qrcode'>Pour plus d'informations sur votre compte scanner ce qrcode</label>
+            <img src={{qrCode}} alt='qrCode ici ' name='qrcode'>
       {% endif %}  
         </div>
         <div class="col-md-5 border-right">
