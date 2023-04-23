@@ -99,23 +99,7 @@
 </div>
 
 {{ form_end(form) }}
-    <script>
-        const submitButton = document.querySelector('#submit-button');
-
-        submitButton.addEventListener('click', (event) => {
-            event.preventDefault();
-
-            const confirmed = confirm('Do you want to add another comment?');
-
-            if (confirmed) {
-                event.target.form.submit();
-            } else {
-                event.target.form.submit();
-                window.location.href = '{{ path('list') }}';
-            }
-        });
-    </script>
-
+   
         </div>
       </div>
     </div>

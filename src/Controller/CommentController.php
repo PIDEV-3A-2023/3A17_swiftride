@@ -11,32 +11,35 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+
 class CommentController extends AbstractController
 {
-    /**
-     * @Route("/entreprise-partenaire/{id}/add-commentaire", name="addcommentaire")
-     */
-    public function addCommentaire(Request $request, $id, EntityManagerInterface $entityManager): Response
-    {
-        $entreprisePartenaire = $entityManager->getRepository(EntreprisePartenaire::class)->find($id);
+/**
+ * @Route("/addcommentaire/{id}", name="addcommentaire")
+ */
+public function addCommentaire(Request $request, EntreprisePartenaire $entreprisePartenaire)
+{
+    $comment = new Comment();
+    $comment->setEntreprisePartenaire($entreprisePartenaire);
 
-        $commentaire = new Comment();
-        $commentaire->setEntreprisePartenaire($entreprisePartenaire);
+    $form = $this->createForm(CommentType::class, $comment);
 
-        $form = $this->createForm(CommentType::class, $commentaire);
+    $form->handleRequest($request);
 
-        $form->handleRequest($request);
+    if ($form->isSubmitted() && $form->isValid()) {
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->persist($comment);
+        $entityManager->flush();
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($commentaire);
-            $entityManager->flush();
+        $this->addFlash('success', 'Comment added successfully.');
 
-            return $this->redirectToRoute('app_entreprisepartenaire', ['id' => $entreprisePartenaire->getId()]);
-        }
-
-        return $this->render('comment/CreateComment.html.twig', [
-            'form' => $form->createView(),
-            'entreprisePartenaire' => $entreprisePartenaire
-        ]);
+        return $this->redirectToRoute('list');
     }
+
+    return $this->render('comment/CreateComment.html.twig', [
+        'form' => $form->createView(),
+        'entreprisePartenaire' => $entreprisePartenaire,
+    ]);
+}
+
 }
