@@ -3,3 +3,11 @@ index:
     controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController::templateAction
     defaults:
         template: 'base.html.twig'
+
+app_entreprisepartenaire:
+   path: '/entreprisepartenaire/{id}/add-commentaire'
+   controller: 'App\Controller\CommentController::addCommentaire'
+
+list:
+   path: '/entreprisepartenaire'
+   controller: 'App\Controller\EntreprisePartenaireController::index'

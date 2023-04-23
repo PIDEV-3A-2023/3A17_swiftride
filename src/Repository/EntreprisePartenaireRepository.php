@@ -39,6 +39,16 @@ class EntreprisePartenaireRepository extends ServiceEntityRepository
         }
     }
 
+    public function findAllWithCommentaires(): array
+{
+    return $this->createQueryBuilder('e')
+        ->leftJoin('e.commentaires', 'c')
+        ->addSelect('c')
+        ->getQuery()
+        ->getResult()
+    ;
+}
+
 //    /**
 //     * @return EntreprisePartenaire[] Returns an array of EntreprisePartenaire objects
 //     */

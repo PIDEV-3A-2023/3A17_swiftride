@@ -8,27 +8,24 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-
-
+use App\Repository\EntreprisePartenaireRepository;
 
 class EntreprisePartenaireController extends AbstractController
 {
 
-    #[Route('/entreprisepartenaire', name: 'app_entreprisepartenaire')]
-    public function index(): Response
+    #[Route('/entreprisepartenaire', name: 'list')]
+    public function index(EntreprisePartenaireRepository $repository): Response
     {
-        $EntreprisePartenaire = $this->getDoctrine()->getManager()->getRepository(EntreprisePartenaire::class)->findAll();
-        //$form = $this->createForm(EntreprisePartenaireType::class);
-        return $this->render('entreprise_partenaire/index.html.twig', [
-            'e'=>$EntreprisePartenaire
+        $e = $repository->findAllWithCommentaires();
 
+        return $this->render('entreprise_partenaire/index.html.twig', [
+            'e' => $e,
         ]);
     }
-   
+
     /**
      * @Route("/addentreprisepartenaire", name="addEntreprisePartenaire")
      */
-
     public function addEntreprisePartenaire(Request $request): Response
     {
         $EntreprisePartenaire = new EntreprisePartenaire();
@@ -36,17 +33,14 @@ class EntreprisePartenaireController extends AbstractController
 
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $em->persist($EntreprisePartenaire);//Add
+            $em->persist($EntreprisePartenaire); //Add
             $em->flush();
 
-            return $this->redirectToRoute('app_entreprisepartenaire');
+            return $this->redirectToRoute('list');
         }
-        return $this->render('entreprise_partenaire/createEntreprisePartenaire.html.twig',['f'=>$form->createView()]);
-
-
-
+        return $this->render('entreprise_partenaire/createEntreprisePartenaire.html.twig', ['f' => $form->createView()]);
     }
 
     #[Route('/removeEntreprisePartenaire/{id}', name: 'supentreprisepartenaire')]
@@ -55,33 +49,27 @@ class EntreprisePartenaireController extends AbstractController
         $em = $this->getDoctrine()->getManager();
         $em->remove($EntreprisePartenaire);
         $em->flush();
-        
-        
+
+
         //return$this->redirectToRoute('supentreprisepartenaire');
-        return $this->redirectToRoute('app_entreprisepartenaire', ['id' => $EntreprisePartenaire->getId()]);
-
-
+        return $this->redirectToRoute('list', ['id' => $EntreprisePartenaire->getId()]);
     }
 
-
     #[Route('/modifentreprisepartenaire/{id}', name: 'modifEntreprisePartenaire')]
-     public function modifEntreprisePartenaire(Request $request,$id): Response
-     {
-         $EntreprisePartenaire = $this->getDoctrine()->getManager()->getRepository(EntreprisePartenaire::class)->find($id);
-         $form = $this->createForm(EntreprisePartenaireType::class, $EntreprisePartenaire);
- 
-         $form->handleRequest($request);
- 
-         if($form->isSubmitted() && $form->isValid()) {
-             $em = $this->getDoctrine()->getManager();
-             $em->flush();
- 
-             return $this->redirectToRoute('app_entreprisepartenaire'); 
-         }
-         return $this->render('entreprise_partenaire/updateEntreprisePartenaire.html.twig',['f'=>$form->createView()]);
- 
- 
- 
-     }
+    public function modifEntreprisePartenaire(Request $request, $id): Response
+    {
+        $EntreprisePartenaire = $this->getDoctrine()->getManager()->getRepository(EntreprisePartenaire::class)->find($id);
+        $form = $this->createForm(EntreprisePartenaireType::class, $EntreprisePartenaire);
 
-    } 
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->flush();
+
+            return $this->redirectToRoute('list');
+        }
+        return $this->render('entreprise_partenaire/updateEntreprisePartenaire.html.twig', ['f' => $form->createView()]);
+    }
+
+}

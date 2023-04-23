@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -62,9 +64,16 @@ class EntreprisePartenaire
      */
     private $id_admin;
 
+/**
+ * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="entreprisePartenaire")
+ */
+private $commentaires;
+
     public function __construct()
     {
         $this->id_admin = 11212;
+        $this->commentaires = new ArrayCollection();
+
     }
 
     public function getId(): ?int
@@ -176,4 +185,21 @@ class EntreprisePartenaire
         $this->id_admin = $id_admin;
         return $this;
     }
+
+    public function getCommentaires()
+    {
+        return $this->commentaires;
+    }
+ 
+    public function addComment(Comment $comment): self
+    {
+        if (!$this->commentaires->contains($comment)) {
+            $this->commentaires[] = $comment;
+            $comment->setEntreprisePartenaire($this);
+        }
+    
+        return $this;
+    }
+    
+
 }

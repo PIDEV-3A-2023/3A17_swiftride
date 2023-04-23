@@ -77,37 +77,45 @@
 <div class="col-12">
   <div class="row">
 <div class="col-3 mt-5 mr-5 pl-5">
-  <img src="{{ asset('assets/images/Comment-256.png') }}" alt="Side Image" class="img-fluid">
+  <img src="assets/images/Comment-256.png" alt="Side Image" class="img-fluid">
+</div>
+    <div class="col-6 mt-5">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="header-title">Ajouter Commentaire</h4>
+{{ form_start(form, {'attr': {'novalidate': 'novalidate', 'action': path('addcommentaire', {'id': entreprisePartenaire.id})}}) }}
+
+<div class="form-group">
+    <label for="exampleInputEmail1">Commentaire</label>
+    {{ form_widget(form.commentaire,{'attr':{'class':'form-control'  }}) }}
 </div>
 
-    <div class="col-6 mt-5">
-        <div class="card">
-            <div class="card-body">
-                <h4 class="header-title">Modifier Avis</h4>
-                {{form_start(f,{'attr': {'novalidate': 'novalidate'}} )}}
-                                        
-                <div class="form-group">
-                    <label for="exampleInputEmail1">Commentaire</label>
-                    {{ form_widget(f.commentaire,{'attr':{'class':'form-control'  }}) }}
-                </div>
+<div class="form-control-feedback" style="color: red;" >
+    {{ form_errors(form.commentaire) }} 
+</div>
 
-                <div class="form-control-feedback" style="color: red;" >
-                    {{ form_errors(f.commentaire) }} 
-                </div>
+<div class="col-auto my-1">
+    <button type="submit" id="submit-button" class="btn btn-primary mt-4 pr-4 pl-4">Submit</button>
+</div>
 
-                <div class="form-group">
-                    <label for="exampleInputEmail1">Note</label>
-                    {{ form_widget(f.etoile,{'attr':{'class':'form-control'  }}) }}
-                </div>
+{{ form_end(form) }}
+    <script>
+        const submitButton = document.querySelector('#submit-button');
 
-                <div class="form-control-feedback" style="color: red;" >
-                    {{ form_errors(f.etoile) }} 
-                </div>
+        submitButton.addEventListener('click', (event) => {
+            event.preventDefault();
 
-                    <div class="col-auto my-1">
-                        <button type="submit" class="btn btn-primary mt-4 pr-4 pl-4">Submit</button>
-                    </div>
-          {{ form_end(f) }}
+            const confirmed = confirm('Do you want to add another comment?');
+
+            if (confirmed) {
+                event.target.form.submit();
+            } else {
+                event.target.form.submit();
+                window.location.href = '{{ path('list') }}';
+            }
+        });
+    </script>
+
         </div>
       </div>
     </div>
@@ -127,7 +135,8 @@ line-height: 20px;
 
 </style>
 
- <!-- Footer Start -->
+
+    <!-- Footer Start -->
     <div class="container-fluid bg-secondary py-5 px-sm-3 px-md-5" style="margin-top: 90px;">
         <div class="row pt-5">
             <div class="col-lg-3 col-md-6 mb-5">
@@ -215,5 +224,17 @@ line-height: 20px;
 
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
+
+    <script>
+        // Get the comment from the URL parameter
+        const urlParams = new URLSearchParams(window.location.search);
+        const comment = urlParams.get('comment');
+
+        // If a comment was added, update the corresponding entreprise's comment section
+        if (comment) {
+            const commentDiv = document.getElementById(`comment-${comment.entrepriseId}`);
+            commentDiv.innerHTML = comment.text;
+        }
+    </script>
 {% endblock %}
 
