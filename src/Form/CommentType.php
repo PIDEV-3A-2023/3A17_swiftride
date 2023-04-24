@@ -9,6 +9,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Constraints\Length;
 
 
 class CommentType extends AbstractType
@@ -26,6 +27,10 @@ class CommentType extends AbstractType
                     new NotBlank([
                         'message' => 'Le commentaire ne doit pas être vide',
                     ]),
+                    new Length([
+                        'max' => 255,
+                        'maxMessage' => 'Le commentaire ne peut pas dépasser {{ limit }} caractères',
+                    ]),        
                     new Assert\Callback([$this, 'validateComment']),
                 ],
             ])

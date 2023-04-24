@@ -42,4 +42,17 @@ public function addCommentaire(Request $request, EntreprisePartenaire $entrepris
     ]);
 }
 
+/**
+ * @Route("/commentaire/supprimer/{id}", name="supprimer_commentaire")
+ */
+public function supprimerCommentaire(Request $request, Comment $commentaire): Response
+{
+    $entityManager = $this->getDoctrine()->getManager();
+    $entityManager->remove($commentaire);
+    $entityManager->flush();
+    $this->addFlash('success', 'Commentaire supprimé avec succès.');
+
+    return $this->redirectToRoute('list');
+}
+
 }

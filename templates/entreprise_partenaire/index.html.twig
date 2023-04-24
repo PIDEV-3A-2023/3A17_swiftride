@@ -41,9 +41,15 @@
                                             <td>{{ EntreprisePartenaire.mdp }}</td>
                                            <td>
   <div id="comment-{{ EntreprisePartenaire.id }}">
-    {% for comment in EntreprisePartenaire.commentaires %}
-      {{ comment.commentaire }}<br>
-    {% endfor %}
+{% for comment in EntreprisePartenaire.commentaires %}
+    <div id="comment-{{ comment.id }}">
+        {{ comment.commentaire }}<br>
+        <a href="{{ path('supprimer_commentaire', {'id': comment.id}) }}" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce commentaire ?')">
+            <i class="fa fa-scissors" style="color: orange;"></i>
+        </a>
+    </div>
+{% endfor %}
+
   </div>
 </td>
 
