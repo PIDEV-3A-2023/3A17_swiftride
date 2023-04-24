@@ -6,9 +6,12 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+
 
 /**
- * @ORM\Entity()
+ * @ORM\Entity
+ * @UniqueEntity(fields={"nom_entreprise"}, message="nom d'entreprise existe déja")
  */
 class EntreprisePartenaire
 {

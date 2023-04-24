@@ -33,14 +33,7 @@ class EntreprisePartenaireType extends AbstractType
                     'pattern' => '/^[a-zA-Z]+$/',
                     'message' => 'Le nom d\'entreprise doit être alphabétique'
                 ]),
-                new Callback(function ($value, $context) {
-                    $existingEntreprise = $this->entityManager->getRepository(EntreprisePartenaire::class)->findOneBy([
-                        'nom_entreprise' => $value,
-                    ]);
-                    if ($existingEntreprise !== null) {
-                        $context->buildViolation('Une entreprise avec ce nom existe déjà')->addViolation();
-                    }
-                }),
+              
             ],
         ])
         ->add('nom_admin', null, [
