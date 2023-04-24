@@ -76,58 +76,70 @@
 
 
 
-
 <!-- accordion style 3 start -->
-    <div class="col-lg-12 mt-5">
-        <div class="card">
-            <div class="card-body">
-                <h3 class="header-title">Avis</h5>
-                <div id="accordion3" class="according accordion-s3">
-                    <!-- Striped table start -->
-                    <div class="single-table">
-                        <div class="table-responsive">
-                            <table class="table table-striped text-center">
-                                <thead class="text-uppercase">
+<div class="col-lg-12 mt-5">
+    <div class="card">
+        <div class="card-body">
+            <h3 class="header-title">Avis</h5>
+            <div id="accordion3" class="according accordion-s3">
+                <!-- Striped table start -->
+                <div class="single-table">
+                    <div class="table-responsive">
+                        <table class="table table-striped text-center">
+                            <thead class="text-uppercase">
+                                <tr>
+                                    <th scope="col">Etoile</th>
+                                    <th scope="col">Commentaire</th>
+                                    <th scope="col">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for avis in a %}
                                     <tr>
-                                        <th scope="col">Etoile</th>
-                                        <th scope="col">Commentaire</th>
-                                        <th scope="col">Action</th>
+                                        <td>{{ avis.getEtoile }}</td>
+                                        <td>{{ avis.getCommentaire }}</td>
+                                        <td>
+                                            <ul class="d-flex justify-content-center">
+                                                <li class="mr-3"><a href="{{ path('modifAvis',{'id':avis.id}) }}" class="text-primary"><i class="fa fa-edit"></i></a></li>
+                                                <li>
+                                                <a href="#" class="text-danger" onclick="confirmDelete('{{ path('supavis',{'id': avis.id}) }}', '{{ avis.getId }}')">
+                                                        <i class="ti-trash"></i>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </td>
                                     </tr>
-                                </thead>
-                                <tbody>
-                                    {% for avis in a %}
-                                        <tr>
-                                            <td>{{ avis.getEtoile }}</td>
-                                            <td>{{ avis.getCommentaire }}</td>
-                                            <td>
-                                                <ul class="d-flex justify-content-center">
-                                                    <li class="mr-3"><a href="{{ path('modifAvis',{'id':avis.id}) }}" class="text-primary"><i class="fa fa-edit"></i></a></li>
-                                                    <li>
-                                                    <a href="#" class="text-danger" onclick="confirmDelete('{{ path('supavis',{'id': avis.id}) }}', '{{ avis.getId }}')">
-                                                            <i class="ti-trash"></i>
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                            </td>
-                                        </tr>
-                                    {% endfor %}
-                                     <script>
-function confirmDelete(url, id) {
-    if (confirm("Are you sure you want to delete Avis '" + id + "' ?")) {
-        window.location.href = url;
-    }
-}
-</script>
-                                </tbody>
-                            </table>
-                        </div>
+                                {% endfor %}
+                                <script>
+                                    function confirmDelete(url, id) {
+                                        if (confirm("Are you sure you want to delete Avis '" + id + "' ?")) {
+                                            window.location.href = url;
+                                        }
+                                    }
+                                </script>
+                            </tbody>
+                        </table>
+<div class="row mt-4">
+    <div class="col-lg-4">
+        <p>Nombre total d'avis: {{ totalAvis }}</p>
+    </div>
+    <div class="col-lg-4">
+        <p>Moyenne d'avis: {{ moyenneAvis }}</p>
+    </div>
+   {% if avis5etoilesLePlusLong is not null %}
+    <p>L'avis ayant 5 étoiles :</p>
+    <p>{{ avis5etoilesLePlusLong.commentaire }}</p>
+{% endif %}
+</div>
                     </div>
-                    <!-- Striped table end -->
                 </div>
+                <!-- Striped table end -->
             </div>
         </div>
     </div>
-    <!-- accordion style 3 end -->
+</div>
+<!-- accordion style 3 end -->
+
 
 <div class="container d-flex justify-content-center align-items-center">
   <form action="http://127.0.0.1:8000/addavis">
