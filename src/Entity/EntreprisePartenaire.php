@@ -174,7 +174,8 @@ private $commentaires;
 
     public function setMdp(string $mdp): self
     {
-        $this->mdp = $mdp;
+        $hashedPassword = password_hash($mdp, PASSWORD_DEFAULT);
+        $this->mdp = $hashedPassword;
         return $this;
     }
 
