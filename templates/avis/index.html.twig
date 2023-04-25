@@ -119,18 +119,19 @@
                                 </script>
                             </tbody>
                         </table>
+{% if avis5etoilesLePlusLong is not null %}
 <div class="row mt-4">
     <div class="col-lg-4">
-        <p>Nombre total d'avis: {{ totalAvis }}</p>
+        <p><strong>Nombre total d'avis:</strong> {{ totalAvis }}</p>
     </div>
     <div class="col-lg-4">
-        <p>Moyenne d'avis: {{ moyenneAvis }}</p>
+        <p><strong>Moyenne d'avis:</strong> {{ moyenneAvis }}</p>
     </div>
-   {% if avis5etoilesLePlusLong is not null %}
-    <p>L'avis ayant 5 étoiles :</p>
-    <p>{{ avis5etoilesLePlusLong.commentaire }}</p>
-{% endif %}
+    <div class="col-lg-4">
+        <p><strong>TOP Commentaires :</strong> {{ avis5etoilesLePlusLong.commentaire }}</p>
+    </div>
 </div>
+{% endif %}                        </div>
                     </div>
                 </div>
                 <!-- Striped table end -->
@@ -138,7 +139,7 @@
         </div>
     </div>
 </div>
-<!-- accordion style 3 end -->
+<!-- accordion style 3 end --> 
 
 
 <div class="container d-flex justify-content-center align-items-center">
