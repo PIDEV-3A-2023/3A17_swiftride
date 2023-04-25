@@ -17,7 +17,7 @@ class AdminController extends AbstractController
     public function index(UtilisateurRepository $utilisateurRepository, RoleRepository $roleRepository): Response
     {
     return $this->render('admin/clientList.html.twig', [
-        'utilisateurs' => $utilisateurRepository->findByRoleId($roleRepository->find(2)),
+        'users' => $utilisateurRepository->findByRoleId($roleRepository->find(2)),
     ]);
 }
     #[Route('/login', name: 'login_admin')]
@@ -35,10 +35,9 @@ class AdminController extends AbstractController
     }
     #[Route('/listeUser', name: 'liste_admin')]
     public function liste(UtilisateurRepository $utilisateurRepository, RoleRepository $roleRepository,Request $request): Response
-    {
-
+    {       
     return $this->render('admin/clientList.html.twig', [
-        'utilisateurs' => $utilisateurRepository->findByRoleId($roleRepository->find(2))
+        'users' => $utilisateurRepository->findByRoleId($roleRepository->find(2))
     ]);
 }
 #[Route('/EnableOrdisable/{id}', name: 'EnableOrdisable')]

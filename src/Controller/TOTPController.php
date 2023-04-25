@@ -11,15 +11,15 @@ use Scheb\TwoFactorBundle\Security\Authentication\Exception\InvalidTwoFactorCode
 
 class TOTPController extends AbstractController
 {
-    #[Route("/totp-login", name:"totp_login")]
-    public function totpLogin(Request $request)
+    #[Route("/2fa-login", name:"2fa_login")]
+    public function totp_Login(Request $request)
     {
         $error = $request->getSession()->get('totp_login_error');
         return $this->render('totp/login.html.twig', [
             'error' => $error,
         ]);
     }
-    #[Route("/totp_check", name:"totp_check")]
+    #[Route("/2fa_check", name:"2fa_check")]
     public function totp_check(Request $request, TotpAuthenticatorInterface $authenticator)
     {
         $context = $this->get('security.token_storage')->getToken()->getTwoFactorAuthenticationContext();
@@ -36,7 +36,7 @@ class TOTPController extends AbstractController
             if ($targetUrl = $context->getTargetUrl()) {
                 return $this->redirect($targetUrl);
             } else {
-                return $this->redirectToRoute('homepage');
+                return $this->redirectToRoute('profile_page');
             }
         } catch (ExceptionInvalidTwoFactorCodeException $e) {
             // If the code is invalid, display an error message and the TOTP form again

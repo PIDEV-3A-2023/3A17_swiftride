@@ -17,6 +17,7 @@ use App\Service\MailerService;
 use App\Service\QrCodeGenerator;
 use InvalidArgumentException;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -25,6 +26,7 @@ use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\String\Slugger\AsciiSlugger;
 
 class UtilisateurController extends AbstractController
@@ -247,5 +249,25 @@ public function deleteFile(string $path)
 
      $this->filesystem->remove($path);
 
+}
+
+ #[Route("/search-users", name:"search_users",methods: ['GET'])]
+ 
+public function searchUsers(Request $request, UtilisateurRepository $userRepository,NormalizerInterface $normalizer)
+{
+    $searchTerm = $request->query->get('term');
+
+    $users = $userRepository->findBySearchTerm($searchTerm);
+    $jsonContent = $normalizer->normalize($users,'json');
+    $retour = json_encode($jsonContent);
+
+    return new Response($retour);
+}
+#[Route('/liste', name: 'liste')]
+public function liste(UtilisateurRepository $utilisateurRepository, RoleRepository $roleRepository)
+{       
+    $users = $utilisateurRepository->findByRoleId($roleRepository->find(2));
+
+    return new JsonResponse($users);
 }
 }

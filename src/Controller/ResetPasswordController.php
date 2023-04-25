@@ -189,13 +189,12 @@ class ResetPasswordController extends AbstractController
 
        // $email->getHeaders()->addTextHeader('X-Transport', 'infos');
 
-       $tranport = Transport::fromDsn('smtp://swiftride2023@gmail.com:mtawexjymmjcuceg@smtp.gmail.com:587?verify_peer=0');
-       $mailer2 = new Mailer($tranport);
-
+       #$tranport = Transport::fromDsn('smtp://swiftride2023@gmail.com:mtawexjymmjcuceg@smtp.gmail.com:587?verify_peer=0');
+      # $mailer2 = new Mailer($tranport);
    // dd($mailer, $mailer2);
-
+   $mailer->send($email);
     
-        $mailer2->send($email);
+        #$mailer2->send($email);
 
         // Store the token object in session for retrieval in check-email route.
         $this->setTokenObjectInSession($resetToken);

@@ -5,14 +5,14 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use App\Entity\Role;
 use App\Repository\UtilisateurRepository;
+use Scheb\TwoFactorBundle\Model\Email\TwoFactorInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints As Assert;
 use Scheb\TwoFactorBundle\Model\Totp\TotpConfiguration;
 use Scheb\TwoFactorBundle\Model\Totp\TotpConfigurationInterface;
-use Scheb\TwoFactorBundle\Model\Totp\TwoFactorInterface;
 #[ORM\Entity(repositoryClass: UtilisateurRepository::class)]
-class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface,TwoFactorInterface
+class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\Column]
@@ -79,27 +79,7 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface,T
     private ?Role $role = null;
     #[ORM\Column(length:50)]
     private ?string $etat=null;
-     #[ORM\Column(name:"totpSecret", type:"string", nullable:true)]
 
-    private $totpSecret;
-
-
-
-    public function isTotpAuthenticationEnabled(): bool
-    {
-        return $this->totpSecret ? true : false;
-    }
-
-    public function getTotpAuthenticationUsername(): string
-    {
-        return $this->getUserIdentifier();
-    }
-
-    public function getTotpAuthenticationConfiguration(): ?TotpConfigurationInterface
-    {
-        // You could persist the other configuration options in the user entity to make it individual per user.
-        return new TotpConfiguration($this->totpSecret, TotpConfiguration::ALGORITHM_SHA1, 20, 8);
-    }
 public function setId(int $id){
     $this->id = $id;
     return $this;
@@ -341,4 +321,5 @@ public function setRole(?Role $role): self
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
     }
+
 }

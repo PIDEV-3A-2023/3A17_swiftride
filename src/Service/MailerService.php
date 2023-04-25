@@ -27,8 +27,8 @@ class MailerService extends AbstractController
                 ->subject('Création du comtpe')
                 ->html($html)
             ;
-            $tranport = Transport::fromDsn('smtp://swiftride2023@gmail.com:mtawexjymmjcuceg@smtp.gmail.com:587?verify_peer=0');
-$mailer=new Mailer($tranport);
+            //$tranport = Transport::fromDsn('smtp://swiftride2023@gmail.com:mtawexjymmjcuceg@smtp.gmail.com:587?verify_peer=0');
+//$mailer=new Mailer($tranport);
             $mailer->send($email);
         }
 }

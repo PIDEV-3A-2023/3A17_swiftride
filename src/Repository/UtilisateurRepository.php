@@ -91,6 +91,20 @@ class UtilisateurRepository extends ServiceEntityRepository  implements UserLoad
         // execute the queries on the database
         $this->getEntityManager()->flush();
     }
+    public function findBySearchTerm($searchTerm)
+{
+    $qb = $this->createQueryBuilder('u');
+
+    if ($searchTerm) {
+        $qb->andWhere('u.nom LIKE :searchTerm OR u.prenom LIKE :searchTerm OR u.cin LIKE :searchTerm OR u.num_permis LIKE :searchTerm OR u.ville LIKE :searchTerm OR u.num_tel LIKE :searchTerm OR u.login LIKE :searchTerm OR u.age LIKE :searchTerm ')
+            ->andWhere('u.role = 2')
+        ->setParameter('searchTerm', '%'.$searchTerm.'%');
+    }
+
+    return $qb->getQuery()->getResult();
+}
+
+    
 
 //    /**
 //     * @return Utilisateur[] Returns an array of Utilisateur objects
