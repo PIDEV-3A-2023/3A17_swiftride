@@ -6,33 +6,51 @@ use App\Repository\ReservationMRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: ReservationMRepository::class)]
+/**
+ * @ORM\Entity(repositoryClass=ReservationMRepository::class)
+ */
 class ReservationM
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
+    /**
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="integer")
+     */
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    /**
+     * @ORM\Column(length=255)
+     */
     private ?string $nom = null;
 
-    #[ORM\Column(length: 255)]
+    /**
+     * @ORM\Column(length=255)
+     */
     private ?string $email = null;
 
-    #[ORM\Column(length: 255)]
+    /**
+     * @ORM\Column(length=255)
+     */
     private ?string $depart = null;
 
-    #[ORM\Column(length: 255)]
+    /**
+     * @ORM\Column(length=255)
+     */
     private ?string $arrive = null;
 
-    #[ORM\Column(length: 255)]
+    /**
+     * @ORM\Column(length=255)
+     */
     private ?string $typeM = null;
     
-    #[ORM\Column(type: Types::DATETIMETZ_MUTABLE)]
+    /**
+     * @ORM\Column(type=Types::DATETIMETZ_MUTABLE)
+     */
     private ?\DateTimeInterface $temps = null;
 
-    #[ORM\Column]
+    /**
+     * @ORM\Column(type="integer")
+     */
     private ?int $nb_ticket = null;
 
     public function getId(): ?int

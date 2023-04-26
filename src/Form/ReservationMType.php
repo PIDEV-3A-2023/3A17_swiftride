@@ -6,6 +6,8 @@ use App\Entity\ReservationM;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+
 
 class ReservationMType extends AbstractType
 {
@@ -17,8 +19,13 @@ class ReservationMType extends AbstractType
             ->add('depart')
             ->add('arrive')
             ->add('typeM')
-            ->add('temps')
-            ->add('nb_ticket')
+            ->add('temps', DateTimeType::class, [
+                'widget' => 'single_text',
+                'attr' => [
+                    'class' => 'form-control',
+                    'placeholder' => 'Temps de voyage'
+                ]
+            ])            ->add('nb_ticket')
         ;
     }
 

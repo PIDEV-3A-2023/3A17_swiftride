@@ -111,11 +111,39 @@
 <td><!-- Code pour afficher le prix --></td>
 
             </tr>
+
+
         {% endfor %}
     </tbody>
 </table>
 </div>
-</div>
+{% set max_nb_tickets = 0 %}
+{% for reservation in reservations %}
+    {% if reservation.nbTicket > max_nb_tickets %}
+        {% set max_nb_tickets = reservation.nbTicket %}
+    {% endif %}
+{% endfor %}
+
+{% set fidele_clients = [] %}
+{% for reservation in reservations %}
+    {% if reservation.nbTicket == max_nb_tickets %}
+        {% if reservation.email not in fidele_clients %}
+            {% set fidele_clients = fidele_clients|merge([reservation.nom]) %}
+        {% endif %}
+    {% endif %}
+{% endfor %}
+
+{% if fidele_clients|length > 0 %}
+    <h6>Clients fidèles ayant le maximum de billets {{ max_nb_tickets }} :</h6>
+    <ul>
+        {% for client in fidele_clients %}
+            <li>{{ client }}</li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>Aucun client fidèle avec un maximum de billets trouvé.</p>
+{% endif %}
+
 
 
 
