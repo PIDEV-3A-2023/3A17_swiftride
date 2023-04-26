@@ -82,6 +82,8 @@
 .card-body {
     padding: 25.6px;
     padding: 1.6rem;
+    background-image: url('images/car-rent-2.png');
+    background-size: cover;
 }
 
 .h-full {
