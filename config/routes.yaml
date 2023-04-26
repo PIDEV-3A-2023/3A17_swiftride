@@ -12,6 +12,3 @@ list:
    path: '/entreprisepartenaire'
    controller: 'App\Controller\EntreprisePartenaireController::index'
 
-addavis:
-    path: '/addavis'
-    controller: 'App\Controller\AvisController::addavis' 

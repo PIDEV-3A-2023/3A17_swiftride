@@ -135,5 +135,4 @@ class User implements UserInterface
         $this->name = $name;
     }
 
-
 }
