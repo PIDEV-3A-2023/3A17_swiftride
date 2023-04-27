@@ -43,5 +43,20 @@ class EntreprisePartenaire
     #[ORM\JoinColumn(name: 'id_admin', referencedColumnName: 'id')]
     private $idAdmin;
 
+    public function getNomAdmin(): ?string
+    {
+        return $this->nomAdmin;
+    }
+
+    public function getNomEntreprise(): ?string
+    {
+        return $this->nomEntreprise;
+    }
+
+    public function getTel(): ?string
+    {
+        return $this->tel;
+    }
+
 
 }

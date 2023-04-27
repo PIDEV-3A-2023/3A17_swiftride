@@ -36,6 +36,14 @@ class Maintenance
     #[ORM\JoinColumn(name: 'id_voiture', referencedColumnName: 'id')]
     private $idVoiture;
 
+    #[ORM\ManyToOne(targetEntity: Utilisateur::class)]
+    #[ORM\JoinColumn(name: 'idutilisateur', referencedColumnName: 'id')]
+    private $idutilisateur;
+
+     #[ORM\ManyToOne(targetEntity: EntreprisePartenaire::class)]
+     #[ORM\JoinColumn(name: 'identreprise', referencedColumnName: 'id')]
+    private $identreprise;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -97,6 +105,31 @@ class Maintenance
     public function setIdVoiture(?Voiture $idVoiture): self
     {
         $this->idVoiture = $idVoiture;
+
+        return $this;
+    }
+
+
+    public function getIdutilisateur() : ?Utilisateur
+    {
+        return $this->idutilisateur;
+    }
+
+    public function setIdutilisateur(?Utilisateur $idutilisateur): self
+    {
+        $this->idutilisateur = $idutilisateur;
+
+        return $this;
+    }
+
+    public function getIdentreprise() : ?EntreprisePartenaire
+    {
+        return $this->identreprise;
+    }
+
+    public function setIdentreprise(?EntreprisePartenaire $identreprise): self
+    {
+        $this->identreprise = $identreprise;
 
         return $this;
     }

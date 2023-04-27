@@ -98,9 +98,9 @@ class Voiture
 
         return $this;
     }
-    public function geIdEntreprisePartenaire (): ?EntreprisePartenaire
+    public function getIdEntreprisePartenaire (): ?EntreprisePartenaire
     {
-        return $this->$idEntreprisePartenaire;
+        return $this->idEntreprisePartenaire;
     }
 
 }

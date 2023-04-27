@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Garage;
 use App\Entity\Maintenance;
 use App\Entity\Voiture;
+use App\EventSubscriber\PdfService;
 use App\Form\MaintenanceType;
 use App\Form\RendezVousType;
 use App\Form\SuiteRendezVousType;
@@ -42,6 +43,22 @@ class MaintenanceController extends AbstractController
         $em->flush();
 
         return $this->redirectToRoute('app_maintenance');
+    }
+
+    #[Route('/SupprimerMaintenace/{id}', name: 'supp_maint')]
+    public function deleteMaintenanceClient($id,ManagerRegistry $doctrine)
+    {
+
+        $maintenance=$doctrine->getRepository(Maintenance::class)->find($id);
+        
+
+        $em=$doctrine->getManager();
+
+        $em->remove($maintenance);
+
+        $em->flush();
+
+        return $this->redirectToRoute('histo_client');
     }
 
     #[Route('/updateMaintenance/{id}', name: 'update_maintenance')]
@@ -371,7 +388,7 @@ class MaintenanceController extends AbstractController
 
             $em->flush(); 
 
-            return $this->redirectToRoute('app_maintenance');
+            return $this->redirectToRoute('histo_client');
 
         }
 
@@ -384,13 +401,76 @@ class MaintenanceController extends AbstractController
 
 
     #[Route('/calendrier', name: 'app_calender')]
-    public function calendrierDesMaintenance(ManagerRegistry $doctrine){
-
-        $maitenances= $doctrine->getRepository(Maintenance::class)->findAll();
-
+    public function calendrierDesMaintenance(){
         return $this->render('maintenance/calendrierDesMaintenances.html.twig');
 
     }
+
+    #[Route('/detailMaintenance/{id}', name: 'app_detail_maint')]
+    public function detailMaintenance(ManagerRegistry $doctrine , $id){
+
+        $maintenance=$doctrine->getRepository(Maintenance::class)->find($id);
+
+
+
+        return $this->render('maintenance/detailMaintenance.html.twig',[
+            "maintenance"=>$maintenance,
+        ]);
+    }
+
+    #[Route('/detailMaintenanceClient/{id}', name: 'app_detail_maint_client')]
+    public function detailMaintenanceClient(ManagerRegistry $doctrine , $id){
+
+        $maintenance=$doctrine->getRepository(Maintenance::class)->find($id);
+
+
+
+        return $this->render('maintenance/detailMaintenanceClient.html.twig',[
+            "maintenance"=>$maintenance,
+        ]);
+    }
+
+    #[Route('/pdf/{id}', name: 'app_pdf')]
+    public function pdfFile( $id , ManagerRegistry $doctrine , PdfService $pdf){
+
+        $maintenance=$doctrine->getRepository(Maintenance::class)->find($id);
+
+        $html= $this->renderView('maintenance/pdfDetail.html.twig',[
+            "maintenance"=>$maintenance,
+        ]);
+
+        $pdf->showPdfFile($html);
+        
+        return new Response('',200);
+    }
+
+    #[Route('/clientMaintHisto', name: 'histo_client')]
+    public function historiqueMaintenanceClient(ManagerRegistry $doctrine){
+
+        $id = 4;
+
+        //if($this->getUser()->getRole()->getId()==2 );
+        $maint=$doctrine->getRepository(Maintenance::class)->getHistoMaintForClient($id);
+
+        return $this->render('maintenance/histroqueMaintenanceClinet.html.twig',[
+            "maintenances"=>$maint
+        ]);
+
+    }
     
+
+    #[Route('/historiqueMaintenance', name: 'histo_Entre')]
+    public function historiqueMaintenance(ManagerRegistry $doctrine){
+
+        $id = 4; //$this->getUser()->getId();
+
+        //if($this->getUser()->getRole()->getId()!=1 && $this->getUser()->getRole()->getId()!=2 );
+        $maint=$doctrine->getRepository(Maintenance::class)->getHistoMaintForClient($id);
+
+        return $this->render('maintenance/histoMaintenance.html.twig',[
+            "maintenances"=>$maint
+        ]);
+
+    }
 
 }

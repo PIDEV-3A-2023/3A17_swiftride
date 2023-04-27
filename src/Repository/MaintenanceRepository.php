@@ -56,5 +56,15 @@ use Doctrine\Persistence\ManagerRegistry;
 
     }
 
+    public function getHistoMaintForClient($id){
+
+        return $this->createQueryBuilder('m')
+        ->join('m.idutilisateur','u')
+        ->where('u.id= :id')
+        ->setParameter('id',$id)
+        ->getQuery()
+        ->getResult();
+    }
+
 
  }
