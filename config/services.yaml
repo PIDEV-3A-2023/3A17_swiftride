@@ -9,6 +9,8 @@ parameters:
         personnel_directory1: 'C:/wamp6/www/img/PhotoPersonnel'
         permis_directory1: 'C:/wamp6/www/img/PhotoPermis'
 services:
+    App\Controller\adminController:
+        tags: ['controller.service_arguments']
     # default configuration for services in *this* file
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.

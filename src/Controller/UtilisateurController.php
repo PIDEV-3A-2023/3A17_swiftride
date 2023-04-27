@@ -35,15 +35,13 @@ class UtilisateurController extends AbstractController
     private $roleRepository;
     private $utilisateurRepository;
     private $mailer;
-    private $generetaQr;
     private $mailerInterface;
     private $qrCodeGenerator;
     public function __construct(RoleRepository $roleRepository,
     UtilisateurRepository $utilisateurRepository,MailerService $mailer,
-    QrCodeGenerator $generetaQr,Filesystem $filesystem,MailerInterface $mailerInterface,
+Filesystem $filesystem,MailerInterface $mailerInterface,
     QrCodeGenerator $qrCodeGenerator )
     {  $this->filesystem=$filesystem;
-         $this->generetaQr=$generetaQr;
         $this->mailer = $mailer;
         $this->utilisateurRepository = $utilisateurRepository;
         $this->roleRepository = $roleRepository;
@@ -262,12 +260,5 @@ public function searchUsers(Request $request, UtilisateurRepository $userReposit
     $retour = json_encode($jsonContent);
 
     return new Response($retour);
-}
-#[Route('/liste', name: 'liste')]
-public function liste(UtilisateurRepository $utilisateurRepository, RoleRepository $roleRepository)
-{       
-    $users = $utilisateurRepository->findByRoleId($roleRepository->find(2));
-
-    return new JsonResponse($users);
 }
 }

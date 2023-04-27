@@ -54,9 +54,9 @@
                    <td>{{ user.cin }}</td>
                   <!--   <td>{{ user.getDateNaiss()|date('Y-m-d')  }}</td>-->
                 <td>{{ user.age }}</td>
-                   <td>{{ user.getNumPermis() }}</td>
+                   <td>{{ user.getNumpermis() }}</td>
                    <td>{{ user.ville }}</td>
-                   <td>{{ user.getNumTel() }}</td>
+                   <td>{{ user.getNumtel()}}</td>
                    <td>{{ user.login }}</td>
                    <td>{{ user.etat }}</td>
                    <td><select name="etat" id="Etat">            
@@ -81,7 +81,7 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <p> Vous voulez Vraiment supprimer l'utilisateur  {{ user.login }}</p>
+                            <p> Vous voulez vraiment supprimer l'utilisateur  {{ user.login }}</p>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Non</button>
@@ -98,7 +98,8 @@
             {% endfor %}
            
         </tbody>
-        <tbody id ='new_tab'></tbody>
+        <tbody id ='new_tab'>
+        </tbody>
         
                                     </table>
                                     <h4 style="text-align:center"></h4>
@@ -148,20 +149,37 @@ $(document).ready(function() {
                         
                         // Loop through the search results and create new rows in the table body
                         $.each(data, function(index, user) {
-                     
+console.log(user)
                             var row = $('<tr>');
                             row.append($('<td>').text(user.nom));
                             row.append($('<td>').text(user.prenom));
                             row.append($('<td>').text(user.cin));
                             row.append($('<td>').text(user.age));
-                            row.append($('<td>').text(user.num_permis));
+                            row.append($('<td>').text(user.numPermis));
                             row.append($('<td>').text(user.ville));
-                            row.append($('<td>').text(user.num_tel));
+                            row.append($('<td>').text(user.numTel));
                             row.append($('<td>').text(user.login));
                             row.append($('<td>').text(user.etat));
                             row.append($('<td>').html('<select name="etat" id="Etat"><option value="Activé">Activé</option><option value="Bloqué">Bloqué</option></select>'));
-                            row.append($('<td>').html('<button type="submit">modifier</button>'));
+                            row.append($('<td>').html('<button type="submit">modifier</button>').on('click', function() {
+        // Get the user ID
+        var userId = user.id;
+        var selectedOptionValue = row.find('select#Etat').val();
+        // Construct the form action URL with the user ID
+var formAction = '/EnableOrdisableInJs/' + userId + '/' + selectedOptionValue;        
+        // Create a form element dynamically
+        var form = $('<form>', {
+            'action': formAction,
+            'method': 'POST',
+            'class': 'login100-form'
+        })
+        form.appendTo('body').submit();
+                        })
+                        );                
                             row.append($('<td>').html('<a href="#" class="text-danger" data-toggle="modal" data-target="#deleteModal-' + user.id + '"><i class="ti-trash"></i></a>'));
+                                       // Delete Modal
+  
+    // End Delete Modal
                             $('#new_tab').append(row);
                         })
                 }

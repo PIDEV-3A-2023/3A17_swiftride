@@ -13,7 +13,7 @@ class ChangePasswordFormType extends AbstractType
     {
         $builder
             ->add('plainPassword', PasswordType::class, [
-                'label' => 'New Password',
+                'label' => 'Nouveau mot de passe',
                 'attr' => [
                     'autocomplete' => 'new-password',
                 ],

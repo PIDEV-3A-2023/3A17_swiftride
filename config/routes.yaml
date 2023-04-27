@@ -7,3 +7,8 @@ logout:
 logout_admin:
     path: /admin/logout
     methods: GET
+enable_or_disable_user:
+    path: /EnableOrdisableInJs/{id}/{etat}
+    methods: [POST]
+    controller: App\Controller\adminController::enableOrdisableInJs
+    
