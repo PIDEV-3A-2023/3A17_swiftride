@@ -14,15 +14,15 @@ class EntreprisePartenaireController extends AbstractController
 {
 
     #[Route('/entreprisepartenaire', name: 'list')]
-    public function index(EntreprisePartenaireRepository $repository): Response
+    public function index(): Response
     {
-        $e = $repository->findAllWithCommentaires();
-
+        $EntreprisePartenaire = $this->getDoctrine()->getManager()->getRepository(EntreprisePartenaire::class)->findAll();
+        //$form = $this->createForm(EntreprisePartenaireType::class);
         return $this->render('entreprise_partenaire/index.html.twig', [
-            'e' => $e,
+            'e'=>$EntreprisePartenaire
+
         ]);
     }
-
     /**
      * @Route("/addentreprisepartenaire", name="addEntreprisePartenaire")
      */
