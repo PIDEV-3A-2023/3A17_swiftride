@@ -5,7 +5,7 @@ index:
         template: 'base.html.twig'
 
 app_entreprisepartenaire:
-   path: '/entreprisepartenaire/{id}/add-commentaire'
+   path: '/avis/{id}/add-commentaire'
    controller: 'App\Controller\CommentController::addCommentaire'
 
 list:

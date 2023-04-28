@@ -77,13 +77,13 @@
 <div class="col-12">
   <div class="row">
 <div class="col-3 mt-5 mr-5 pl-5">
-  <img src="assets/images/Comment-256.png" alt="Side Image" class="img-fluid">
+  <img src="{{ asset('assets/images/Comment-256.png') }}" alt="Side Image" class="img-fluid">
 </div>
     <div class="col-6 mt-5">
       <div class="card">
         <div class="card-body">
           <h4 class="header-title">Ajouter Commentaire</h4>
-{{ form_start(form, {'attr': {'novalidate': 'novalidate', 'action': path('addcommentaire', {'id': entreprisePartenaire.id})}}) }}
+{{ form_start(form, {'attr': {'novalidate': 'novalidate', 'action': path('addcommentaire', {'id': avis.id})}}) }}
 
 <div class="form-group">
     <label for="exampleInputEmail1">Commentaire</label>
@@ -216,7 +216,7 @@ line-height: 20px;
 
         // If a comment was added, update the corresponding entreprise's comment section
         if (comment) {
-            const commentDiv = document.getElementById(`comment-${comment.entrepriseId}`);
+            const commentDiv = document.getElementById(`comment-${comment.avisId}`);
             commentDiv.innerHTML = comment.text;
         }
     </script>

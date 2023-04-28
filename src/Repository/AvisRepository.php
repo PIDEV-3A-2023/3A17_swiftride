@@ -39,6 +39,16 @@ class AvisRepository extends ServiceEntityRepository
         }
     }
 
+    public function findAllWithCommentaires(): array
+{
+    return $this->createQueryBuilder('a')
+        ->leftJoin('a.commentaires', 'c')
+        ->addSelect('c')
+        ->getQuery()
+        ->getResult()
+    ;
+}
+
 //    /**
 //     * @return Avis[] Returns an array of Avis objects
 //     */
