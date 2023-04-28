@@ -9,6 +9,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\ReservationM;
 use App\Form\ReservationMType;
+use App\Service\PdfService;
 
 class ReservationMController extends AbstractController
 {
@@ -21,6 +22,27 @@ class ReservationMController extends AbstractController
             'reservations' => $reservations,
         ]);
     }
+
+    #[Route('/pdf', name: 'pdf_reservation')]
+    public function generatePdfReservationList(ReservationMRepository $reservationMRepository, PdfService $pdf): Response
+    {
+        // Récupérer toutes les réservations
+        $reservations = $reservationMRepository->findAll();
+        // Passer les réservations au template pour les afficher
+        $html = $this->render('reservation_m/index2.html.twig', ['reservations' => $reservations]);
+        // Générer le PDF à partir de la table HTML
+        $pdfContent = $pdf->generatePdfFile($html);
+        // Retourner une réponse avec le contenu du PDF pour le téléchargement
+        return new Response($pdfContent, 200, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'attachment; filename="reservation_list.pdf"'
+        ]);
+    }
+    
+
+
+    
+
 
      /**
      * @Route("/addreservation", name="addReservation")

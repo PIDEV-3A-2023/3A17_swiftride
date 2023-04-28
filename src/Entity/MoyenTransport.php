@@ -9,60 +9,65 @@ use App\Repository\MoyenTransportRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 
-#[ORM\Entity(repositoryClass: MoyenTransportRepository::class)]
+/**
+ * @ORM\Entity(repositoryClass=MoyenTransportRepository::class)
+ */
 class MoyenTransport
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
+    /**
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="integer")
+     */
     private ?int $id = null;
-    
 
-    #[ORM\Column]
-    
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
     private ?string $type = null;
 
-
-   #[ORM\Column]
-
+    /**
+     * @ORM\Column(type="integer")
+     */
     private ?int $numero_trans = null;
 
-   #[ORM\ManyToMany(targetEntity: Station::class)]
-   private Collection $MoyenStation;
+    /**
+     * @ORM\ManyToMany(targetEntity=Station::class)
+     */
+    private Collection $MoyenStation;
 
-   public function __construct()
-   {
-       $this->MoyenStation = new ArrayCollection();
-   }
+    public function __construct()
+    {
+        $this->MoyenStation = new ArrayCollection();
+    }
 
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
 
-   public function getId(): ?int
-   {
-       return $this->id;
-   }
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
 
-   public function getType(): ?string
-   {
-   return $this->type;
-   }
+    public function setType(string $type): self
+    {
+        $this->type = $type;
 
-   public function setType(string $type): self
-   {
-   $this->type = $type;
-
-   return $this;
-   }
-
+        return $this;
+    }
 
     public function getNumeroTrans(): ?int
     {
-    return $this->numero_trans;
+        return $this->numero_trans;
     }
 
     public function setNumeroTrans(int $numero_trans): self
     {
-    $this->numero_trans = $numero_trans;
-    return $this;
+        $this->numero_trans = $numero_trans;
+
+        return $this;
     }
 
     /**
@@ -88,7 +93,4 @@ class MoyenTransport
 
         return $this;
     }
-    }
-   
-
-   
+}

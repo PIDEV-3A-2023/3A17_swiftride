@@ -5,18 +5,26 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
-#[ORM\Entity]
+/**
+ * @ORM\Entity
+ */
 class Station
 {
-    #[ORM\Id]
-    #[ORM\Column(name: "id", type: "integer")]
-    #[ORM\GeneratedValue(strategy: "AUTO")]
+    /**
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="integer")
+     */
     private ?int $id = null;
     
-    #[ORM\Column(name: "ville", type: "string", length: 255)]
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
     private ?string $ville = null;
     
-    #[ORM\Column(name: "nom_station", type: "string", length: 255)]
+    /**
+     * @ORM\Column(name="nom_station", type="string", length=255)
+     */
     private ?string $nomStation = null;
 
     public function getId(): ?int
@@ -48,8 +56,4 @@ class Station
 
         return $this;
     }
-
-
-
-    }
-    
+}
