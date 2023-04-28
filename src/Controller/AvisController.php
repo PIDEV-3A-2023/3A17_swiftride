@@ -8,6 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Exception;
 
 
 
@@ -63,26 +64,36 @@ return $this->render('avis/index.html.twig', [
      * @Route("/addavis", name="addAvis")
      */
 
-    public function addAvis(Request $request): Response
-    {
-        $Avis = new Avis();
-        $form = $this->createForm(AvisType::class, $Avis);
+     public function addAvis(Request $request): Response
+     {
+         $Avis = new Avis();
+         $form = $this->createForm(AvisType::class, $Avis);
+         $form->handleRequest($request);
+         
+         if($form->isSubmitted() && $form->isValid()) {
+            $etoile = $request->request->get('etoile');
 
-        $form->handleRequest($request);
-
-        if($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($Avis);//Add
-            $em->flush();
-
-            return $this->redirectToRoute('app_avis');
-        }
-        return $this->render('avis/createAvis.html.twig',['f'=>$form->createView()]);
-
-
-
-    }
-
+            
+            if ($etoile === null) {
+                // set a default value
+                $etoile = 0;
+                // or throw an exception
+                throw new Exception('Etoile field cannot be null.');
+            }
+             
+             $Avis->setEtoile($etoile);
+                   
+             $em = $this->getDoctrine()->getManager();
+             $em->persist($Avis);//Add
+             $em->flush();
+             
+             return $this->redirectToRoute('app_avis');
+         }
+         
+         return $this->render('avis/createAvis.html.twig',['f'=>$form->createView()]);
+     }
+     
+     
     #[Route('/removeAvis/{id}', name: 'supavis')]
     public function suppressionAvis(Avis $Avis): Response
     {

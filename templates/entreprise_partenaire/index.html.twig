@@ -22,8 +22,6 @@
                                         <th scope="col">Matricule</th>
                                         <th scope="col">Email</th>
                                         <th scope="col">Mot De Passe</th>
-                                        <th scope="col">Commentaire</th>
-
                                         
                                         <th scope="col">Action</th>
                                     </tr>
@@ -39,27 +37,13 @@
                                             <td>{{ EntreprisePartenaire.matricule }}</td>
                                             <td>{{ EntreprisePartenaire.login }}</td>
                                             <td>{{ EntreprisePartenaire.mdp }}</td>
-                                           <td>
-  <div id="comment-{{ EntreprisePartenaire.id }}">
-{% for comment in EntreprisePartenaire.commentaires %}
-    <div id="comment-{{ comment.id }}">
-        {{ comment.commentaire }}<br>
-        <a href="{{ path('supprimer_commentaire', {'id': comment.id}) }}" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce commentaire ?')">
-            <i class="fa fa-scissors" style="color: orange;"></i>
-        </a>
-    </div>
-{% endfor %}
-
-  </div>
-</td>
+                                           
 
                                             <td>
                                             
                                                 <ul class="d-flex justify-content-center">
                                                         <li class="mr-3"><a href="{{ path('modifEntreprisePartenaire',{'id':EntreprisePartenaire.id}) }}" class="text-primary"><i class="fa fa-edit"></i></a></li>                                                                                                       
-                                                        <li><a href="#" class="text-danger" onclick="confirmDelete('{{ path('supentreprisepartenaire',{'id': EntreprisePartenaire.id}) }}', '{{ EntreprisePartenaire.getNomEntreprise }}')"><i class="ti-trash"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;</li>
-                                                <li><a href="{{ path('addcommentaire',{'id':EntreprisePartenaire.id}) }}" class="text-secondary"><i class="fa fa-comments-o" style="color: orange;"></i></a></li>
-                                                </ul>
+                                                        <li><a href="#" class="text-danger" onclick="confirmDelete('{{ path('supentreprisepartenaire',{'id': EntreprisePartenaire.id}) }}', '{{ EntreprisePartenaire.getNomEntreprise }}')"><i class="ti-trash"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;</li>                                                </ul>
                                             </td>
                                         </tr>
                                     {% endfor %}
@@ -81,5 +65,21 @@ function confirmDelete(url, nom_entreprise) {
         </div>
     </div>
     <!-- accordion style 3 end -->
+
+
+    <div class="container d-flex justify-content-center align-items-center">
+  <form action="http://127.0.0.1:8000/addentreprisepartenaire">
+    <div class="col-auto my-1">
+      <button type="submit" class="btn btn-primary mt-4 pr-4 pl-4">ajouter une entreprise</button>
+    </div>
+  </form>
+</div>
+
+
+        <!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Bootstrap JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.1/js/bootstrap.bundle.min.js"></script>
 
 {% endblock %}

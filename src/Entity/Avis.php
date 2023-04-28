@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity()
@@ -37,10 +38,17 @@ class Avis
      */
     private $id_client;
 
+    /**
+ * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="avis")
+ */
+private $commentaires;
+
     public function __construct()
     {
         $this->id_voiture = 11212;
         $this->id_client = 11212;
+        $this->commentaires = new ArrayCollection();
+
     }
 
     public function getId(): ?int
@@ -65,12 +73,12 @@ class Avis
         return $this->etoile;
     }
 
-    public function setEtoile(int $etoile): self
+    public function setEtoile($etoile): self
     {
-        $this->etoile = $etoile;
-
+            $this->etoile = (int) $etoile;
         return $this;
     }
+    
 
     public function getIdVoiture(): ?int
     {
@@ -93,6 +101,21 @@ class Avis
     {
         $this->id_client = $id_client;
 
+        return $this;
+    }
+
+    public function getCommentaires()
+    {
+        return $this->commentaires;
+    }
+ 
+    public function addComment(Comment $comment): self
+    {
+        if (!$this->commentaires->contains($comment)) {
+            $this->commentaires[] = $comment;
+            $comment->setAvis($this);
+        }
+    
         return $this;
     }
 }

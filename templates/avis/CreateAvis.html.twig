@@ -1,5 +1,8 @@
 {% extends 'front.html.twig' %}
 
+
+
+
 {% block body %}
 
     <!-- Topbar Start -->
@@ -126,32 +129,35 @@
 
          <div class="form-group">
     <label for="etoile">Note </label>
-    {{ form_widget(f.etoile) }}
-    {{ form_errors(f.etoile) }}
+    <input type="hidden" name="etoile" id="etoile" value="">
+    <div id="etoile_value"></div>
+    <div class="rating" id="rating_input">
 
-          <div class="col-auto my-1">
+                                            <h4 class="text-center mt-2 mb-4">
+                                                <i class="fas fa-star star-light submit_star mr-1" id="submit_star_1" data-rating="1"></i>
+                                                <i class="fas fa-star star-light submit_star mr-1" id="submit_star_2" data-rating="2"></i>
+                                                <i class="fas fa-star star-light submit_star mr-1" id="submit_star_3" data-rating="3"></i>
+                                                <i class="fas fa-star star-light submit_star mr-1" id="submit_star_4" data-rating="4"></i>
+                                                <i class="fas fa-star star-light submit_star mr-1" id="submit_star_5" data-rating="5"></i>
+                                            </h4>
+                                        </div>
+                                        
+{{ form_widget(f.etoile, {'attr': {'required': 'required'}}) }}
+
+    <div class="form-control-feedback" style="color: red;">
+        {{ form_errors(f.etoile) }}
+    </div>
+</div>          <div class="col-auto my-1">
             <button type="submit" class="btn btn-primary mt-4 pr-4 pl-4">Submit</button>
           </div>
-
-          {{ form_end(f) }}
         </div>
       </div>
     </div>
   </div>
 </div>
+{{ form_end(f) }}
 <!-- basic form end -->
-<style>
-.classe-radio {
-display: inline-block;
-position: relative;
-padding-left: 25px;
-margin-right: 10px;
-cursor: pointer;
-font-size: 16px;
-line-height: 20px;
-}
 
-</style>
 
 
    <!-- Footer Start -->
@@ -165,21 +171,60 @@ line-height: 20px;
     <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="fa fa-angle-double-up"></i></a>
 
 
-    <!-- JavaScript Libraries -->
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
-    <script src="lib/easing/easing.min.js"></script>
-    <script src="lib/waypoints/waypoints.min.js"></script>
-    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
-    <script src="lib/tempusdominus/js/moment.min.js"></script>
-    <script src="lib/tempusdominus/js/moment-timezone.min.js"></script>
-    <script src="lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
-        <!-- jQuery -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
+{% endblock %}
+    {% block stylesheets %}
+    {{ parent() }}
+    <style>
+.classe-radio {
+display: inline-block;
+position: relative;
+padding-left: 25px;
+margin-right: 10px;
+cursor: pointer;
+font-size: 16px;
+line-height: 20px;
+}
 
-<!-- Bootstrap JavaScript -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.1/js/bootstrap.bundle.min.js"></script>
+</style>
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+   <style>
+       .star-light
+       {
+           color:#e9ecef;
+       }
+       .submit_star {
+           cursor: pointer;
+       }
+   </style>
+{% endblock %}
 
-    <!-- Template Javascript -->
-    <script src="js/main.js"></script>
+{% block javascripts %}
+    {{ parent() }}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script defer>
+  $(document).ready(function(){
+    let rating_data = 0;
+
+    function reset_background() {
+        for(let count = 1; count <= 5; count++) {
+            $('#submit_star_'+count).addClass('star-light');
+            $('#submit_star_'+count).removeClass('text-yellow-400');
+        }
+    }
+
+$(document).on('mouseenter mouseleave', '.submit_star', function(){
+    rating_data = $(this).data('rating');
+    reset_background();
+    for(let count = 1; count <= rating_data; count++) {
+        $('#submit_star_'+count).removeClass('star-light');
+        $('#submit_star_'+count).addClass('text-yellow-400');
+    }
+    $('input[name="etoile"]').val(rating_data); // update the hidden input field
+});
+});
+
+</script>
+    
+
 {% endblock %}

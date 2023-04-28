@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Comment;
-use App\Entity\EntreprisePartenaire;
+use App\Entity\Avis;
 use App\Form\CommentType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -17,10 +17,10 @@ class CommentController extends AbstractController
 /**
  * @Route("/addcommentaire/{id}", name="addcommentaire")
  */
-public function addCommentaire(Request $request, EntreprisePartenaire $entreprisePartenaire)
+public function addCommentaire(Request $request, Avis $avis)
 {
     $comment = new Comment();
-    $comment->setEntreprisePartenaire($entreprisePartenaire);
+    $comment->setAvis($avis);
 
     $form = $this->createForm(CommentType::class, $comment);
 
@@ -33,12 +33,12 @@ public function addCommentaire(Request $request, EntreprisePartenaire $entrepris
 
         $this->addFlash('success', 'Comment added successfully.');
 
-        return $this->redirectToRoute('list');
+        return $this->redirectToRoute('app_avis');
     }
 
     return $this->render('comment/CreateComment.html.twig', [
         'form' => $form->createView(),
-        'entreprisePartenaire' => $entreprisePartenaire,
+        'avis' => $avis,
     ]);
 }
 
@@ -52,7 +52,7 @@ public function supprimerCommentaire(Request $request, Comment $commentaire): Re
     $entityManager->flush();
     $this->addFlash('success', 'Commentaire supprimé avec succès.');
 
-    return $this->redirectToRoute('list');
+    return $this->redirectToRoute('app_avis');
 }
 
 }

@@ -18,10 +18,10 @@ class Comment
     private $id;
 
 /**
- * @ORM\ManyToOne(targetEntity="App\Entity\EntreprisePartenaire", inversedBy="commentaires")
+ * @ORM\ManyToOne(targetEntity="App\Entity\avis", inversedBy="commentaires")
  * @ORM\JoinColumn(nullable=false)
  */
-private $entreprisePartenaire;
+private $avis;
 
     /**
      * @ORM\Column(type="string")
@@ -33,14 +33,14 @@ private $entreprisePartenaire;
         return $this->id;
     }
 
-    public function getEntreprisePartenaire(): ?EntreprisePartenaire
+    public function getAvis(): ?Avis
     {
-        return $this->entreprisePartenaire;
+        return $this->avis;
     }
     
-    public function setEntreprisePartenaire(?EntreprisePartenaire $entreprisePartenaire): self
+    public function setAvis(?Avis $avis): self
     {
-        $this->entreprisePartenaire = $entreprisePartenaire;
+        $this->avis = $avis;
         return $this;
     }
     
