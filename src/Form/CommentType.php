@@ -10,6 +10,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\Callback;
 
 
 class CommentType extends AbstractType
@@ -22,6 +23,8 @@ class CommentType extends AbstractType
                 'required' => true,
                 'attr' => [
                     'rows' => 5,
+                    'placeholder' => 'Partager votre expérience avec SWIFT RIDE' // Add the placeholder text
+
                 ],
                 'constraints' => [
                     new NotBlank([

@@ -13,6 +13,10 @@ use Symfony\Component\Validator\Constraints\Regex;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints as Assert;
+
+
 
 class AvisType extends AbstractType
 {
@@ -41,9 +45,19 @@ class AvisType extends AbstractType
                     'cols' => 40, // Set the number of visible columns
                     'class' => 'form-control', // Add any other classes you want
                     'placeholder' => 'Partager votre expérience avec SWIFT RIDE' // Add the placeholder text
-                ]
-            ]);
-
+                ],
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Le commentaire ne doit pas être vide',
+                    ]),
+                    new Length([
+                        'max' => 255,
+                        'maxMessage' => 'Le commentaire ne peut pas dépasser {{ limit }} caractères',
+                    ]),        
+                    new Assert\Callback([$this, 'validateComment']),
+                ],
+            ])
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
@@ -52,4 +66,18 @@ class AvisType extends AbstractType
             // Configure your form options here
         ]);
     }
-}
+    public function validateComment($value, $context)
+    {
+        $forbiddenWords = ['stupid', 'dumb', 'fat', 'ugly'];
+    
+        foreach ($forbiddenWords as $word) {
+            if (stripos($value, $word) !== false) {
+                $context->buildViolation('Le commentaire contient des mots interdits')
+                    ->addViolation();
+                return;
+            }
+        }
+    }
+}    
+
+    
