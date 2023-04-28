@@ -4,62 +4,353 @@
 {% block title %}Hello AdminController!{% endblock %}
 
 {% block body %}
-  {% for accident in accidents %}
-<div class="alert alert-danger" role="alert">
-  A new accident occurred: {{ accident.description }} <a href="/listeaccident" class="alert-link">view</a>. Give it a click if you like.
-</div>
-{% endfor %}
-<div aria-live="polite" aria-atomic="true" style="position: relative; min-height: 200px;">
-  <div class="toast" style="position: absolute; top: 0; right: 0;">
-    <div class="toast-header">
-   
-      <strong class="mr-auto">You have {{ accidents|length }} new accidents</strong>
-       {% for accident in accidents %}
-      <small>{{ accident.date|date('F j, Y') }}</small>
-      <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
-       <span aria-hidden="true">&times;</span>
-      </button>
-    
-    </div>
-    <div class="toast-body">
-      A new accident occurred: {{ accident.description }}
-    </div>
-      {% endfor %}
-  </div>
-</div>
-<div class="col-md-6 col-sm-4 clearfix">
-                        <ul class="notification-area pull-right">
-                            <li id="full-view"><i class="ti-fullscreen"></i></li>
-                            <li id="full-view-exit"><i class="ti-zoom-out"></i></li>
-                            <li class="dropdown">
-                                <i class="ti-bell dropdown-toggle" data-toggle="dropdown">
-                                    <span>  {{ accidents|length }} </span>
-                                </i>
-                                <div class="dropdown-menu bell-notify-box notify-box">
-                                    <span class="notify-title">You have {{ accidents|length }} new accidents <a href="/listeaccident">view all</a></span>
-                                    <div class="nofity-list">
-                                    {% for accident in accidents %}
-                                        <a href="#" class="notify-item">
-                                            <div class="notify-thumb"><i class="ti-key btn-danger"></i></div>
-                                            <div class="notify-text">
-                                                <p>A new accident occurred: {{ accident.description }}</p>
-                                                <span>{{ accident.date|date('F j, Y') }}</span>
-                                            </div>
-                                        </a>
-                       
-                                    {% endfor %}
-                                   </div>
-                               </div>
-                            </li>
+
  
-                                        
-                           
-                            <li class="settings-btn">
-                                <i class="ti-settings"></i>
-                            </li>
-                        </ul>
+ 
+ <div class="main-content-inner">
+            <div class="row">
+               <div class="col-lg-8">
+                        <div class="row">
+                            <div class="col-md-6 mt-5 mb-3">
+                                <div class="card">
+                                    <div class="seo-fact sbg1">
+                                        <div class="p-4 d-flex justify-content-between align-items-center">
+                                            <div class="seofct-icon"><i class="ti-help"></i> Accidents</div>
+                                            <h2>{{ totalAccident|json_encode }}</h2>
+                                        </div>
+                                        <canvas id="acident_chart5" height="50"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mt-md-5 mb-3">
+                                <div class="card">
+                                    <div class="seo-fact sbg2">
+                                        <div class="p-4 d-flex justify-content-between align-items-center">
+                                            <div class="seofct-icon"><i class="ti-announcement"></i> Annonces</div>
+                                            <h2>{{ totalAnnoncement|json_encode }}</h2>
+                                            
+                                        </div>
+                                        <canvas id="accident-chart6" height="50"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3 mb-lg-0">
+                                <div class="card">
+                                    <div class="seo-fact sbg3">
+                                        <div class="p-4 d-flex justify-content-between align-items-center">
+                                            <div class="seofct-icon"><i class="ti-user"></i>Users</div>
+                                            <h2>{{ totalutilisateur|json_encode }}</h2>
+                                            
+                                        </div>
+                                       
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3 mb-lg-0">
+                                <div class="card">
+                                    <div class="seo-fact sbg4">
+                                        <div class="p-4 d-flex justify-content-between align-items-center">
+                                            <div class="seofct-icon">New Users</div>
+                                            <canvas id="seolinechart4" height="60"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                      </div>
+                </div>          
+        <div class="col-lg-6 mt-5">
+            <div class="card">
+                <div class="card-body">
+                <h4 class="header-title">User Statistics</h4>
+                    <canvas id="accident-chart"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6 mt-5">
+                        <div class="card">
+                            <div class="card-body">
+                            <h4 class="header-title">User Statistics</h4>
+                                <canvas id="accident-chart1"></div>
+                            </div>
+                        </div>
                     </div>
-             
-            
+   <div class="col-lg-6 mt-5">
+                        <div class="card">
+                            <div class="card-body">
+                            <h4 class="header-title">User Statistics</h4>
+                                <canvas id="accident-chart2"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+      <div class="col-lg-8 mt-5">
+                        <div class="card">
+                            <div class="card-body">
+                            <h4 class="header-title">User Statistics</h4>
+                                <canvas id="accident-chart3"></div>
+                            </div>
+                        </div>
+                    </div>
+ 
+    
+                    <!-- seo fact area end -->
+<div class="col-lg-8 mt-5">
+                        <div class="card ">
+                            <div class="card-body">
+                                <h4 class="header-title ">Coin Distribution</h4>
+                                <canva id="annonce_chart"></div>
+                            </div>
+                        </div>
+                    </div>
+                
+</div>
+</div>  
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js" integrity="sha512-s+xg36jbIujB2S2VKfpGmlC3T5V2TF3lY48DX7u2r9XzGzgPsa6wTpOQA7J9iffvdeBN0q9tKzRxVxw1JviZPg==" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+       <script src="https://code.highcharts.com/highcharts.js"></script>
+
+    <script>
+    var ctx = document.getElementById("accident-chart").getContext('2d');
+    var chart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: {{ years|json_encode }},
+            datasets: [{
+                label: 'Number of Accidents',
+                data: {{ countsperyer|json_encode }},
+                backgroundColor: [
+                    '#8416fe',
+                    '#3a3afb',
+                    "#8919FE",
+                    "#12C498",
+                    "#F8CB3F",
+                    "#E36D68",
+                   
+                ]
+            }]
+        },
+        
+    });
+    var ctx = document.getElementById("accident-chart1").getContext('2d');
+    var chart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+     
+
+        labels: {{ years|json_encode }},
+        datasets: [{
+            label: 'Number of Accidents',
+            data: {{ countsperyer|json_encode }},
+            backgroundColor: '#8416fe',
+            borderColor: '#8416fe',
+            fill: false
+        }]
+    },
+    options: {
+        // add any chart options here
+    }
+});
+
+
+    var ctx = document.getElementById("accident-chart3").getContext('2d');
+    var chart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: {{ marques|json_encode|raw }},
+            datasets: [{
+                label: 'Number of Accidents by models',
+                data: {{ countsbymodel|json_encode|raw }},
+                backgroundColor: [
+                    '#8416fe',
+                    '#3a3afb',
+                    '#bfbffd',
+                    '#7474F0',
+                ]
+            }]
+        },
+        options: {
+            legend: {
+                display: false
+            },
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true,
+                        precision: 0
+                    }
+                }]
+            }
+        }
+    });
+ 
+    var ctx = document.getElementById("acident_chart5").getContext('2d');
+    var chart = new Chart(ctx, {
+        // The type of chart we want to create
+        type: 'line',
+        // The data for our dataset
+        data: {
+            labels: {{ months|json_encode }},
+            datasets: [{
+                label: "number of accident",
+                backgroundColor: "rgba(104, 124, 247, 0.6)",
+                borderColor: '#8596fe',
+                data: {{ countsbymonth|json_encode }} ,
+            }]
+        },
+        // Configuration options go here
+        options: {
+            legend: {
+                display: false
+            },
+            animation: {
+                easing: "easeInOutBack"
+            },
+            scales: {
+                yAxes: [{
+                    display: !1,
+                    ticks: {
+                        fontColor: "rgba(0,0,0,0.5)",
+                        fontStyle: "bold",
+                        beginAtZero: !0,
+                        maxTicksLimit: 5,
+                        padding: 0
+                    },
+                    gridLines: {
+                        drawTicks: !1,
+                        display: !1
+                    }
+                }],
+                xAxes: [{
+                    display: !1,
+                    gridLines: {
+                        zeroLineColor: "transparent"
+                    },
+                    ticks: {
+                        padding: 0,
+                        fontColor: "rgba(0,0,0,0.5)",
+                        fontStyle: "bold"
+                    }
+                }]
+            },
+            elements: {
+                line: {
+                    tension: 0, // disables bezier curves
+                }
+            }
+        }
+    });
+    var ctx = document.getElementById("seolinechart4").getContext('2d');
+    var chart = new Chart(ctx, {
+        // The type of chart we want to create
+        type: 'line',
+        // The data for our dataset
+        data: {
+            labels: {{ yearannoncement|json_encode }},
+            datasets: [{
+                label: "number of accident",
+                backgroundColor: "rgba(104, 124, 247, 0.6)",
+                borderColor: '#8596fe',
+                data: {{ countsA|json_encode }} ,
+            }]
+        },
+        // Configuration options go here
+        options: {
+            legend: {
+                display: false
+            },
+            animation: {
+                easing: "easeInOutBack"
+            },
+            scales: {
+                yAxes: [{
+                    display: !1,
+                    ticks: {
+                        fontColor: "rgba(0,0,0,0.5)",
+                        fontStyle: "bold",
+                        beginAtZero: !0,
+                        maxTicksLimit: 5,
+                        padding: 0
+                    },
+                    gridLines: {
+                        drawTicks: !1,
+                        display: !1
+                    }
+                }],
+                xAxes: [{
+                    display: !1,
+                    gridLines: {
+                        zeroLineColor: "transparent"
+                    },
+                    ticks: {
+                        padding: 0,
+                        fontColor: "rgba(0,0,0,0.5)",
+                        fontStyle: "bold"
+                    }
+                }]
+            },
+            elements: {
+                line: {
+                    tension: 0, // disables bezier curves
+                }
+            }
+        }
+    });
+var ctx = document.getElementById("accident-chart2").getContext('2d');
+    var chart = new Chart(ctx, {
+     type: 'line',
+        data: {
+            labels: {{ labels|json_encode|raw }},
+            datasets: [{
+                label: 'Number of Accidents by month and year',
+                data: {{ countsbymonthandyear|json_encode|raw }},
+                backgroundColor: [
+                    '#8416fe',
+                    '#3a3afb',
+                    '#bfbffd',
+                    '#7474F0',
+                ]
+            }]
+        },
+        options: {
+            legend: {
+                display: false
+            },
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true,
+                        precision: 0
+                    }
+                }]
+            }
+        }
+    });
+var ctx = document.getElementById("annonce_chart").getContext('2d');
+    var chart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: {{ yeara|json_encode }},
+            datasets: [{
+                label: 'Number of Accidents',
+                data: {{ countsa|json_encode }},
+                backgroundColor: [
+                    '#8416fe',
+                    '#3a3afb',
+                    "#8919FE",
+                    "#12C498",
+                    "#F8CB3F",
+                    "#E36D68",
+                   
+                ]
+            }]
+        },
+        
+    });
+
+</script>
+
+
 
 {% endblock %}

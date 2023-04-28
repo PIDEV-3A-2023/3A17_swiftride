@@ -48,6 +48,45 @@ class VoitureRepository extends ServiceEntityRepository
             ->getResult();
 
     }
+    public function getCountByYear()
+    {
+        $qb = $this->createQueryBuilder('v');
+
+        $qb->select('YEAR(v.dateCirculation) AS year, COUNT(a.id) AS count')
+           ->groupBy('year')
+           ->orderBy('year');
+
+        return $qb->getQuery()->getArrayResult();
+    }
+    public function getCountByvoiture()
+    {
+        $qb = $this->createQueryBuilder('a');
+
+        $qb->select('(a.idVoiture) AS voiture, COUNT(a.id) AS count')
+           ->groupBy('voiture')
+           ->orderBy('count', 'ASC');
+
+        return $qb->getQuery()->getArrayResult();
+    }
+    public function getmodelByvoiture()
+    {
+        $qb = $this->createQueryBuilder('a')
+           ->select('v.marque AS marque, COUNT(a.id) AS count')
+           ->leftJoin('App\Entity\Voiture', 'v', 'WITH', 'a.idVoiture = v.id')
+           ->groupBy('marque')
+           ->orderBy('count', 'DESC');
+
+        return $qb->getQuery()->getArrayResult();
+    }
+    public function countTotalVoiture(): int
+    {
+        $qb = $this->createQueryBuilder('v');
+        
+        $qb->select($qb->expr()->count('v.id'));
+        
+        return (int) $qb->getQuery()->getSingleScalarResult();
+    }
+    
 //    /**
 //     * @return Voiture[] Returns an array of Voiture objects
 //     */

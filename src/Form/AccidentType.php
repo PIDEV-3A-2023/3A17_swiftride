@@ -3,6 +3,8 @@
 namespace App\Form;
 
 use App\Entity\Accident;
+
+use Captcha\Bundle\CaptchaBundle\Form\Type\CaptchaType;
 use App\Entity\Voiture;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -17,7 +19,8 @@ use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
-
+use Karser\Recaptcha3Bundle\Form\Recaptcha3Type;
+use Karser\Recaptcha3Bundle\Validator\Constraints\Recaptcha3;
 class AccidentType extends AbstractType
 {
     private EntityManagerInterface $entityManager;
@@ -49,6 +52,11 @@ class AccidentType extends AbstractType
                 
             ])
             
+            ->add('captcha', Recaptcha3Type::class, [
+                'constraints' => new Recaptcha3(),
+                'action_name' => 'gestionaccident',
+               
+            ])
         ;
     }
     private function getAvailableVoitures($myEntities)

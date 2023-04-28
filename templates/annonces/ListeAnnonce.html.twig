@@ -27,7 +27,7 @@
                                                 <tr>
                                                     <th scope="row">{{ annonce.id }}</th>
                                                     <td>{{ annonce.title }}</td>
-                                                    <td>{{ annonce.image }}</td>
+                                                    <td> <img  src="{{ asset('images/' ~ annonce.getImage()) }}" alt="Image"></td>
                                                     <td>{{ annonce.Content }}</td>
                                                 <td>
                                                 <a  href="{{ path('update', {'id': annonce.id}) }}" class="btn btn-danger">Update</a>
@@ -40,10 +40,8 @@
                                         </table>
                                     </div>
                                 </div>
-                                <div class="col-xs-6">
-							<a href="{{ path('app_annonces') }}" class="btn btn-primary" >Add Accident</a>
-                                            						
-				                     </div>
+                                
+                                
                             </div>
                         
                         <!-- Delete Confirmation Modal -->
@@ -95,7 +93,7 @@
         });
     </script>
 {% endblock %}
-                    </div>
-
-
+    <div class="navigation">
+       {{ knp_pagination_render(pager) }}
+         </div>
 {% endblock %}

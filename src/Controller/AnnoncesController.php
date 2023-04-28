@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use App\Entity\Annonces;
-
+use App\Entity\Utilisateur;
 use App\Form\AnnonceType;
 use DateTime;
 use Doctrine\Persistence\ManagerRegistry;
@@ -20,7 +20,7 @@ class AnnoncesController extends AbstractController
     public function createannonce(ManagerRegistry $doctrine , Request $req): Response
     {
         $annonce =$doctrine->getRepository(Annonces::class)->findAll();
-        
+       
 
         $annonce=new Annonces();
 

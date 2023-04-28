@@ -38,6 +38,34 @@ class AnnonceRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+    public function countTotalAnnoncement(): int
+    {
+        $qb = $this->createQueryBuilder('a');
+        
+        $qb->select($qb->expr()->count('a.id'));
+        
+        return (int) $qb->getQuery()->getSingleScalarResult();
+    }
+    public function getCountannoncementByMonth()
+    {
+        $qb = $this->createQueryBuilder('a');
+        $qb->select('MONTHNAME(a.dateannonce) AS monthname')
+           ->addSelect('COUNT(a.id) AS counta')
+           ->groupBy('monthname')
+           ->orderBy('monthname');
+        
+        return $qb->getQuery()->getArrayResult();
+    }
+    public function getCountannoncementByYEAR()
+    {
+        $qb = $this->createQueryBuilder('a');
+        $qb->select('YEAR(a.dateannonce) AS years')
+           ->addSelect('COUNT(a.id) AS count')
+           ->groupBy('years')
+           ->orderBy('years');
+        
+        return $qb->getQuery()->getArrayResult();
+    }
 
 //    /**
 //     * @return Accident[] Returns an array of Accident objects

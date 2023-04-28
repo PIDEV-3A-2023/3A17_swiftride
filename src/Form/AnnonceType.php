@@ -3,10 +3,16 @@
 namespace App\Form;
 
 use App\Entity\Annonces;
+use App\Entity\Utilisateur;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use VictorPrdh\RecaptchaBundle\Form\ReCaptchaType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use App\Repository\UtilisateurRepository;
 
 class AnnonceType extends AbstractType
 {
@@ -18,15 +24,26 @@ class AnnonceType extends AbstractType
                 'label' => 'Image (JPG or PNG file)',
                 'required' => false,
             ])
-        
+            ->add('date',DateTimeType::class, [
+                'widget' => 'single_text',
+                'attr' => [
+                    'min' => (new \DateTime())->format('Y-m-d')
+                ]
+            ])
+           
             ->add('content')
+            ->add("recaptcha", ReCaptchaType::class)
+           
         ;
     }
+    
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => Annonces::class,
+            
         ]);
+       
     }
 }

@@ -3,64 +3,104 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\MaintenanceRepository;
+use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * Maintenance
- *
- * @ORM\Table(name="maintenance", indexes={@ORM\Index(name="id_voiture", columns={"id_voiture"}), @ORM\Index(name="id_garage", columns={"id_garage"})})
- * @ORM\Entity
- */
+#[ORM\Entity(repositoryClass: MaintenanceRepository::class)]
 class Maintenance
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
     private $id;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="date_maintenance", type="datetime", nullable=false, options={"default"="CURRENT_TIMESTAMP"})
-     */
-    private $dateMaintenance = 'CURRENT_TIMESTAMP';
+   
+    #[ORM\Column]
+    private ?\DateTime $dateMaintenance ;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="type", type="string", length=25, nullable=false)
-     */
+
+    #[ORM\Column(length:25)]
     private $type;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="fin_maintenance", type="datetime", nullable=false, options={"default"="CURRENT_TIMESTAMP"})
-     */
-    private $finMaintenance = 'CURRENT_TIMESTAMP';
+    
+    #[ORM\Column]
+    private ?\DateTime $finMaintenance;
 
-    /**
-     * @var \Garage
-     *
-     * @ORM\ManyToOne(targetEntity="Garage")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id_garage", referencedColumnName="id")
-     * })
-     */
+    
+    #[ORM\ManyToOne(targetEntity: Garage::class)]
+    #[ORM\JoinColumn(name: 'id_garage', referencedColumnName: 'id')]
     private $idGarage;
 
-    /**
-     * @var \Voiture
-     *
-     * @ORM\ManyToOne(targetEntity="Voiture")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id_voiture", referencedColumnName="id")
-     * })
-     */
+    
+    #[ORM\ManyToOne(targetEntity: Voiture::class)]
+    #[ORM\JoinColumn(name: 'id_voiture', referencedColumnName: 'id')]
     private $idVoiture;
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getDateMaintenance(): ?\DateTime
+    {
+        return $this->dateMaintenance;
+    }
+
+    public function setDateMaintenance(\DateTime $dateMaintenance): self
+    {
+        $this->dateMaintenance = $dateMaintenance;
+
+        return $this;
+    }
+
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    public function setType(string $type): self
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    public function getFinMaintenance(): ?\DateTime
+    {
+        return $this->finMaintenance;
+    }
+
+    public function setFinMaintenance(\DateTime $finMaintenance): self
+    {
+        $this->finMaintenance = $finMaintenance;
+
+        return $this;
+    }
+
+    public function getIdGarage(): ?Garage
+    {
+        return $this->idGarage;
+    }
+
+    public function setIdGarage(?Garage $idGarage): self
+    {
+        $this->idGarage = $idGarage;
+
+        return $this;
+    }
+
+    public function getIdVoiture(): ?Voiture
+    {
+        return $this->idVoiture;
+    }
+
+    public function setIdVoiture(?Voiture $idVoiture): self
+    {
+        $this->idVoiture = $idVoiture;
+
+        return $this;
+    }
+
 
 
 }

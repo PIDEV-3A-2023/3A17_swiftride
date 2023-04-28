@@ -7,17 +7,21 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Accident;
-
+use Carlosmg89\CaptchaBundle\Validator\Constraints as CaptchaAssert;
 use App\Entity\Voiture;
 use App\Form\AccidentType;
 use App\Form\UpdateaccidentType;
 use DateTime;
 use Doctrine\Persistence\ManagerRegistry;
+use Karser\Recaptcha3Bundle\Validator\Constraints\Recaptcha3Validator;
+use Karser\Recaptcha3Bundle\Validator\Constraints\Recaptcha3;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
+
 class GestionAccidentController extends AbstractController
 {
     #[Route('/gestionaccident', name: 'app_gestion_accident')]
     
-public function createaccident(ManagerRegistry $doctrine , Request $req): Response
+public function createaccident(ManagerRegistry $doctrine , Request $req, ValidatorInterface $validator): Response
     {
         $accident =$doctrine->getRepository(Accident::class)->findAll();
         // retrieve the latest accidents
@@ -34,26 +38,35 @@ $idvoiture =$doctrine->getRepository(Voiture::class)->findAvailableVoituresQuery
         $em=$doctrine->getManager();
        
 
-        if($form->isSubmitted() && $form->isValid()){
-
-            $em->persist($accident);
-
-            $em->flush();
-
-            return $this->redirectToRoute('app_homeadmin');
-
+        if ($form->isSubmitted() && $form->isValid()) {
+            $recaptchaResponse = $req->get('g-recaptcha-response');
+            $violations = $validator->validate($recaptchaResponse, [
+                new Recaptcha3([
+                    'message' => 'Please confirm that you are not a robot'
+                ])
+            ]);
+            
+            
+                // Handle validation success
+                $em = $doctrine->getManager();
+                $em->persist($accident);
+                $em->flush();
+                return $this->redirectToRoute('app_homeadmin');
+            
         }
-
         return $this->render('gestion_accident/index.html.twig', [
             'form'=>$form->createView(),
-            'accident'=>$accident
+            'accident'=>$accident,
+            'message' => 'Thank you, you have been verified as a human and are not a robot',
+           
 
             
         ]);
+       
     }
 
     
-    #[Route('/update/{id}', name: 'update')]
+    #[Route('gestionaccident/update/{id}', name: 'update')]
     public function update(Request $request, ManagerRegistry $doctrine, $id)
     {
         $accident = $doctrine->getRepository(Accident::class)->find($id);

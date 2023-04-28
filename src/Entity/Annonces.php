@@ -35,6 +35,11 @@ class Annonces
     maxMessage: 'il faut etre inferieur au :  {{ limit }} caractéres')]
 
     private $content;
+    
+    #[ORM\Column]
+    private ?\DateTime  $dateannonce ;
+    
+    
 
     public function getId(): ?string
     {
@@ -75,6 +80,15 @@ class Annonces
         return $this;
     }
     
-}
+    public function getDate(): ?\DateTime
+    {
+        return $this->dateannonce;
+    }
 
-   
+    public function setDate(\DateTime $dateannonce): self
+    {
+        $this->dateannonce = $dateannonce;
+
+        return $this;
+    }
+}

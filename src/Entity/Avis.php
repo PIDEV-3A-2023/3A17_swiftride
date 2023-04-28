@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="avis", indexes={@ORM\Index(name="id_voiture", columns={"id_voiture"}), @ORM\Index(name="id_client", columns={"id_client"})})
  * @ORM\Entity
  */
+
 class Avis
 {
     /**
@@ -36,16 +37,6 @@ class Avis
     private $etoile;
 
     /**
-     * @var \Utilisateur
-     *
-     * @ORM\ManyToOne(targetEntity="Utilisateur")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id_client", referencedColumnName="id")
-     * })
-     */
-    private $idClient;
-
-    /**
      * @var \Voiture
      *
      * @ORM\ManyToOne(targetEntity="Voiture")
@@ -54,6 +45,16 @@ class Avis
      * })
      */
     private $idVoiture;
+
+    /**
+     * @var \Utilisateur
+     *
+     * @ORM\ManyToOne(targetEntity="Utilisateur")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_client", referencedColumnName="id")
+     * })
+     */
+    private $idClient;
 
 
 }
