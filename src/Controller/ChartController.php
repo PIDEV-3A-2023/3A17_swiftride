@@ -28,11 +28,32 @@ class ChartController extends AbstractController
     
     $totalVoiture = $repository->countTotalVoiture();
     $totalEntreprise=$repository2->countTotalentreprise();
-   
-    
+    $countAnByyear = $repository->getCountByYear();
+    $years = array();
+    $counts = array();
+    foreach ($countAnByyear as $row) {
+        $years[] = $row['year'];
+        $counts[] = $row['count'];
+        
+    }
+
+    $result = $repository->getCountvoitureByMonth();
+    $months = array();
+    $countv = array();
+    foreach ($result as $row) {
+        $months[] = $row['month'];
+        $countv[] = $row['count'];
+        
+    }
+
+
         return $this->render('chart/index.html.twig', [
             'totalVoiture'=>$totalVoiture,
             'totalEntreprise'=>$totalEntreprise,
+            'years'=>$years,
+            'counts'=>$counts,
+            'months'=>$months,
+            'countv'=>$countv,
             
         ]);
        

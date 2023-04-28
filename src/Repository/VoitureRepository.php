@@ -52,22 +52,33 @@ class VoitureRepository extends ServiceEntityRepository
     {
         $qb = $this->createQueryBuilder('v');
 
-        $qb->select('YEAR(v.dateCirculation) AS year, COUNT(a.id) AS count')
+        $qb->select('YEAR(v.dateCirculation) AS year, COUNT(v.id) AS count')
            ->groupBy('year')
            ->orderBy('year');
 
         return $qb->getQuery()->getArrayResult();
     }
-    public function getCountByvoiture()
+    public function getCountBymodel()
     {
-        $qb = $this->createQueryBuilder('a');
+        $qb = $this->createQueryBuilder('v');
 
-        $qb->select('(a.idVoiture) AS voiture, COUNT(a.id) AS count')
-           ->groupBy('voiture')
-           ->orderBy('count', 'ASC');
+        $qb->select('v.model AS model, COUNT(v.id) AS count')
+           ->groupBy('model')
+           ->orderBy('model');
 
         return $qb->getQuery()->getArrayResult();
     }
+    public function getCountvoitureByMonth()
+    {
+        $qb = $this->createQueryBuilder('v');
+        $qb->select('MONTHNAME(v.dateCirculation) AS month')
+           ->addSelect('COUNT(v.id) AS count')
+           ->groupBy('month')
+           ->orderBy('month');
+        
+        return $qb->getQuery()->getArrayResult();
+    }
+    
     public function getmodelByvoiture()
     {
         $qb = $this->createQueryBuilder('a')

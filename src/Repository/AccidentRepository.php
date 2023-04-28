@@ -71,13 +71,12 @@ class AccidentRepository extends ServiceEntityRepository
         return $qb->getQuery()->getArrayResult();
     }
     public function countTotalAccidents(): int
-    {
-        $qb = $this->createQueryBuilder('a');
-        
-        $qb->select($qb->expr()->count('a.id'));
-        
-        return (int) $qb->getQuery()->getSingleScalarResult();
-    }
+{
+    $dql = 'SELECT COUNT(a.id) FROM App\Entity\Accident a';
+    
+    return (int) $this->_em->createQuery($dql)->getSingleScalarResult();
+}
+
     public function getCountByMonth()
     {
         $qb = $this->createQueryBuilder('a');
