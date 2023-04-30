@@ -3,6 +3,7 @@
 namespace App\Controller;
 use App\Entity\Utilisateur;
 use App\Form\ForgetPassType;
+use App\Form\HcaptchaType;
 use App\Form\UtilisateurType;
 use App\Form\ProfileType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -66,12 +67,11 @@ Filesystem $filesystem,MailerInterface $mailerInterface,
             $this->addFlash('error', 'Votre compte est bloqué');
             return $this->redirectToRoute('loginspace');
         }*/
-     
-           
         
         return $this->render('utilisateur/login.html.twig', [
             'last_username' => $lastUsername,
             'error' => $error,
+
         ]);
     }
     
@@ -230,7 +230,8 @@ Filesystem $filesystem,MailerInterface $mailerInterface,
 
     #[Route('/delete/{id}', name: 'user_delete', methods: ['GET','POST'])]
     public function delete(UtilisateurRepository $utilisateurRepository,$id,Request $request): Response
-    { $user=$utilisateurRepository->find($id);
+    { 
+        $user=$utilisateurRepository->find($id);
        // if ($this->isCsrfTokenValid('delete'.$utilisateurRepository->find($id)->getId(), $request->request->get('_token'))) {
         $this->deleteFile($user->getPhotoPersonel());
         $this->deleteFile($user->getPhotoPermis());

@@ -176,10 +176,13 @@ var formAction = '/EnableOrdisableInJs/' + userId + '/' + selectedOptionValue;
         form.appendTo('body').submit();
                         })
                         );                
-                            row.append($('<td>').html('<a href="#" class="text-danger" data-toggle="modal" data-target="#deleteModal-' + user.id + '"><i class="ti-trash"></i></a>'));
-                                       // Delete Modal
+                        row.append($('<td>').html(
+   '<form method="post" action="/delete/' + user.id + '" onsubmit="return confirm(\'Vous voulez vraiment supprimer lutilisateur ' +  user.login+ '\');">' + 
+    '<input type="hidden" name="_token" value="' + user.id + '">' + 
+    '<button class="btn">Delete</button>' + 
+    '</form>'
   
-    // End Delete Modal
+));         
                             $('#new_tab').append(row);
                         })
                 }
