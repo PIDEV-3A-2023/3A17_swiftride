@@ -17,16 +17,21 @@ class Comment
      */
     private $id;
 
-/**
- * @ORM\ManyToOne(targetEntity="App\Entity\avis", inversedBy="commentaires")
- * @ORM\JoinColumn(nullable=false)
- */
-private $avis;
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Avis", inversedBy="commentaires")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $avis;
 
     /**
      * @ORM\Column(type="string")
      */
     private $commentaire;
+
+    /**
+     * @ORM\Column(type="string")
+     */
+    private $userName;
 
     public function getId(): ?int
     {
@@ -37,13 +42,13 @@ private $avis;
     {
         return $this->avis;
     }
-    
+
     public function setAvis(?Avis $avis): self
     {
         $this->avis = $avis;
+
         return $this;
     }
-    
 
     public function getCommentaire(): ?string
     {
@@ -57,5 +62,15 @@ private $avis;
         return $this;
     }
 
-    
+    public function getUserName(): ?string
+    {
+        return $this->userName;
+    }
+
+    public function setUserName(string $userName): self
+    {
+        $this->userName = $userName;
+
+        return $this;
+    }
 }

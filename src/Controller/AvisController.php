@@ -26,15 +26,7 @@ class AvisController extends AbstractController
         // calculer le nombre total d'avis
         $totalAvis = count($avis);
      
-        // calculer la moyenne d'avis
-        $moyenneAvis = 0;
-        if ($totalAvis > 0) {
-            $sum = 0;
-            foreach ($avis as $a) {
-                $sum += $a->getEtoile();
-            }
-            $moyenneAvis = round($sum / $totalAvis, 1);
-        }
+
     
         // compter le nombre d'avis par étoile
         $countAvisEtoiles = array();
@@ -51,7 +43,6 @@ class AvisController extends AbstractController
         return $this->render('avis/index.html.twig', [
             'a' => $avis,
             'totalAvis' => $totalAvis,
-            'moyenneAvis' => $moyenneAvis,
             'countAvisEtoiles' => $countAvisEtoiles,
         ]);
     
@@ -70,13 +61,16 @@ class AvisController extends AbstractController
          $form->handleRequest($request);
          
          if($form->isSubmitted() && $form->isValid()) {
+            $user = $this->getUser();
+            if ($user !== null) {
+                $Avis->setUserName($user->getName());
+            }
+
             $etoile = $request->request->get('etoile');
 
             
             if ($etoile === null) {
-                // set a default value
                 $etoile = 0;
-                // or throw an exception
                 throw new Exception('Etoile field cannot be null.');
             }
              
@@ -117,7 +111,24 @@ class AvisController extends AbstractController
          $form->handleRequest($request);
  
          if($form->isSubmitted() && $form->isValid()) {
-             $em = $this->getDoctrine()->getManager();
+            $etoile = $request->request->get('etoile');
+            $user = $this->getUser();
+
+            if ($user !== null) {
+                $Avis->setUserName($user->getName());
+            }
+
+            if ($etoile === null) {
+                // set a default value
+                $etoile = 0;
+                // or throw an exception
+                throw new Exception('Etoile field cannot be null.');
+            }
+
+
+        $Avis->setEtoile($etoile);
+
+            $em = $this->getDoctrine()->getManager();
              $em->flush();
  
              return $this->redirectToRoute('app_avis'); 

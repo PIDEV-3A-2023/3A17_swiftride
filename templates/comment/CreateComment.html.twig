@@ -1,5 +1,8 @@
 {% extends 'front.html.twig' %}
 
+
+
+
 {% block body %}
 
     <!-- Topbar Start -->
@@ -46,29 +49,57 @@
                 <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="collapse navbar-collapse justify-content-between px-3" id="navbarCollapse">
-                    <div class="navbar-nav ml-auto py-0">
-                        <a href="index.html" class="nav-item nav-link active">Home</a>
-                        <a href="about.html" class="nav-item nav-link">About</a>
-                        <a href="service.html" class="nav-item nav-link">Service</a>
-                        <div class="nav-item dropdown">
-                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Cars</a>
-                            <div class="dropdown-menu rounded-0 m-0">
-                                <a href="car.html" class="dropdown-item">Car Listing</a>
-                                <a href="detail.html" class="dropdown-item">Car Detail</a>
-                                <a href="booking.html" class="dropdown-item">Car Booking</a>
-                            </div>
-                        </div>
-                        <div class="nav-item dropdown">
-                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Pages</a>
-                            <div class="dropdown-menu rounded-0 m-0">
-                                <a href="team.html" class="dropdown-item">The Team</a>
-                                <a href="testimonial.html" class="dropdown-item">Testimonial</a>
-                            </div>
-                        </div>
-                        <a href="contact.html" class="nav-item nav-link">Contact</a>
-                    </div>
-                </div>
+                <div class="collapse navbar-collapse justify-content-center px-3" id="navbarCollapse">
+    <div class="navbar-nav py-0">
+        <a href="index.html" class="nav-item nav-link active">Home</a>
+        <a href="about.html" class="nav-item nav-link">About</a>
+        <a href="service.html" class="nav-item nav-link">Service</a>
+        <div class="nav-item dropdown">
+            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Cars</a>
+            <div class="dropdown-menu rounded-0 m-0">
+                <a href="car.html" class="dropdown-item">Car Listing</a>
+                <a href="detail.html" class="dropdown-item">Car Detail</a>
+                <a href="booking.html" class="dropdown-item">Car Booking</a>
+            </div>
+        </div>
+        <div class="nav-item dropdown">
+            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Pages</a>
+            <div class="dropdown-menu rounded-0 m-0">
+                <a href="team.html" class="dropdown-item">The Team</a>
+                <a href="testimonial.html" class="dropdown-item">Testimonial</a>
+            </div>
+        </div>
+        <a href="contact.html" class="nav-item nav-link">Contact</a>
+    </div>
+</div>
+<div>
+<div class="nav-item dropdown pe-3">
+    <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+        <img src="{{ asset('assets/images/funny.jpg') }}" alt="Profile" class="rounded-circle" style="max-width: 50px; margin-right: 10px;">
+        {% if app.user is not null %}
+            <span class="d-none d-md-block dropdown-toggle">{{ app.user.name }}</span>
+        {% endif %}
+    </a><!-- End Profile Image Icon -->
+    
+    <!-- Dropdown Menu -->
+    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+        <!-- Dropdown Header -->
+        <li class="dropdown-header">
+            <h6>{{ app.user.username }}</h6>
+            <span>Utilisateur de SWIFTRIDE</span>
+        </li>
+        <li><hr class="dropdown-divider"></li>
+        <!-- Dropdown Items -->
+        <li><a class="dropdown-item d-flex align-items-center" href="users-profile.html"><i class="bi bi-person"></i> <span>My Profile</span></a></li>
+        <li><hr class="dropdown-divider"></li>
+        <li><a class="dropdown-item d-flex align-items-center" href="users-profile.html"><i class="bi bi-gear"></i> <span>Account Settings</span></a></li>
+        <li><hr class="dropdown-divider"></li>
+        <li><a class="dropdown-item d-flex align-items-center" href="pages-faq.html"><i class="bi bi-question-circle"></i> <span>FAQ</span></a></li>
+        <li><hr class="dropdown-divider"></li>
+        <li><a class="dropdown-item d-flex align-items-center" href="{{ path('app_logout') }}"><i class="bi bi-box-arrow-left"></i> <span>Log Out</span></a></li>
+    </ul>
+</div>
+
             </nav>
         </div>
     </div>
@@ -79,6 +110,7 @@
 <div class="col-3 mt-5 mr-5 pl-5">
   <img src="{{ asset('assets/images/Comment-256.png') }}" alt="Side Image" class="img-fluid">
 </div>
+
     <div class="col-6 mt-5">
       <div class="card">
         <div class="card-body">
@@ -128,6 +160,12 @@ line-height: 20px;
 
     <!-- JavaScript Libraries -->
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+
+ <!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Bootstrap JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.1/js/bootstrap.bundle.min.js"></script>
 
     <!-- Template Javascript -->
 

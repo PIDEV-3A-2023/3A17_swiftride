@@ -116,6 +116,7 @@
                         <table class="table table-striped text-center">
                             <thead class="text-uppercase">
                                 <tr>
+                                    <th scope="col">Utilisateur</th>
                                     <th scope="col">Note</th>
                                     <th scope="col">Avis</th>
                                     <th scope="col">Commentaire</th>
@@ -126,6 +127,9 @@
                             <tbody>
                                 {% for Avis in a %}
                                     <tr>
+                        <td style="color: orange; font-size: 18px;"><strong>{{ Avis.userName }}</strong></td>
+
+
                                         <td><div class="d-flex items-center mb-3">
                          {% if Avis.etoile != 0 %}
                          {% for i in range(1, Avis.etoile|round(0, 'floor') ) %}
@@ -140,39 +144,57 @@
                         
                          {% endif %}
                      </div></td>
+                                        
                                         <td>{{ Avis.getCommentaire }}</td>
                                         <td>
   <div id="comment-{{ Avis.id }}">
 {% for comment in Avis.commentaires %}
-    <div id="comment-{{ comment.id }}">
-        {{ comment.commentaire }}<br>
-        <a href="{{ path('supprimer_commentaire', {'id': comment.id}) }}" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce commentaire ?')">
-            <i class="fa fa-scissors" style="color: orange;"></i>
-        </a>
-    </div>
+                <div id="comment-{{ comment.id }}">
+                    <span style="color: orange;"><strong>{{ comment.userName }}:</strong></span> {{ comment.commentaire }}
+                    {% if app.user and app.user.name == 'admin' %}
+                        <a href="{{ path('supprimer_commentaire', {'id': comment.id}) }}" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce commentaire ?')"><i class="fas fa-trash-alt" style="color: orange;"></i></a>
+                        {% endif %}
+                    {% if app.user and app.user.name == comment.userName %}
+                        <a href="{{ path('supprimer_commentaire', {'id': comment.id}) }}" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce commentaire ?')"><i class="fas fa-trash-alt" style="color: orange;"></i></a>
+                    {% endif %}
+                    <br>
+                </div>
 {% endfor %}
 
-  </div>
-</td>
+                </div>
+                </td>
 
-                                        <td>
-<ul class="d-flex justify-content-center">
-  <li><a href="{{ path('addcommentaire',{'id':Avis.id}) }}" class="text-secondary"><i class="fa fa-comments" style="color: orange;"></i></a></li>
-</ul>
+                <td>
+                <ul class="d-flex justify-content-center">
+                {% if app.user and app.user.name == Avis.userName and app.user.name != 'admin' %}
+                      <li class="mr-3"><a href="{{ path('modifAvis',{'id':Avis.id}) }}" class="text-primary"><i class="fa fa-edit"></i></a></li>
+                      <li style="margin-right: 15px;"><a href="#" class="text-danger" onclick="confirmDelete('{{ path('supavis',{'id': Avis.id}) }}', '{{ Avis.getId }}')"><i class="ti-trash"></i></a></li>               
+                {% endif %} 
 
-                                        </td>
-                                    </tr>
-                                {% endfor %}
+                {% if app.user and app.user.name == 'admin' %}
+                     <li style="margin-right: 15px;"><a href="#" class="text-danger" onclick="confirmDelete('{{ path('supavis',{'id': Avis.id}) }}', '{{ Avis.getId }}')"><i class="ti-trash"></i></a></li>               
+               {% endif %} 
+
+                
+
+                {% if app.user and app.user.name != 'admin' %}
+                <li><a href="{{ path('addcommentaire',{'id':Avis.id}) }}" class="text-secondary"><i class="fa fa-comments" style="color: orange;"></i></a></li>
+                {% endif %}
+                </ul>
+
+                </td>
+                </tr>
+            {% endfor %}
+
                                 <script>
-                                    function confirmDelete(url, id) {
-                                        if (confirm("Are you sure you want to delete Avis '" + id + "' ?")) {
-                                            window.location.href = url;
-                                        }
-                                    }
+                                function confirmDelete(url, id) {
+                                if (confirm("Are you sure you want to delete Avis '" + id + "' ?")) {
+                                window.location.href = url;
+                                }
+                                }
                                 </script>
                             </tbody>
                         </table>
-
 
 
 <div class="container d-flex justify-content-center align-items-center">

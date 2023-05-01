@@ -27,6 +27,11 @@ public function addCommentaire(Request $request, Avis $avis)
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
+        $user = $this->getUser();
+        if ($user !== null) {
+            $comment->setUserName($user->getName());
+        }
+
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->persist($comment);
         $entityManager->flush();

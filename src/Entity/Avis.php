@@ -45,6 +45,11 @@ class Avis
  */
 private $commentaires;
 
+        /**
+     * @ORM\Column(type="string")
+     */
+    private $userName;
+
     public function __construct()
     {
         $this->id_voiture = 11212;
@@ -118,6 +123,18 @@ private $commentaires;
             $comment->setAvis($this);
         }
     
+        return $this;
+    }
+
+    public function getUserName(): ?string
+    {
+        return $this->userName;
+    }
+
+    public function setUserName(string $userName): self
+    {
+        $this->userName = $userName;
+
         return $this;
     }
 }
