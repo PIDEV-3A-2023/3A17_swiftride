@@ -148,7 +148,7 @@
                                         <td>{{ Avis.getCommentaire }}</td>
                                         <td>
   <div id="comment-{{ Avis.id }}">
-{% for comment in Avis.commentaires %}
+{% for comment in Avis.commentaires|reverse %}
                 <div id="comment-{{ comment.id }}">
                     <span style="color: orange;"><strong>{{ comment.userName }}:</strong></span> {{ comment.commentaire }}
                     {% if app.user and app.user.name == 'admin' %}
@@ -199,9 +199,11 @@
 
 <div class="container d-flex justify-content-center align-items-center">
   <form action="http://127.0.0.1:8000/addavis">
+    {% if app.user and app.user.name != 'admin' %}
     <div class="col-auto my-1">
       <button type="submit" class="btn btn-primary mt-4 pr-4 pl-4">ajouter un avis</button>
     </div>
+    {% endif %}
   </form>
 </div>
 
