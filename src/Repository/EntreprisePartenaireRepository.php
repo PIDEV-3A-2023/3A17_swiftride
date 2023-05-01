@@ -39,7 +39,7 @@ class EntreprisePartenaireRepository extends ServiceEntityRepository
         }
     }
 
-    
+
 
 
 }

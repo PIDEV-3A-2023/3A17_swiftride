@@ -19,45 +19,42 @@ class AvisController extends AbstractController
     public function index(AvisRepository $repository): Response
     {
         $a = $repository->findAllWithCommentaires();
-
-        $Avis = $this->getDoctrine()->getManager()->getRepository(Avis::class)->findAll();
-        //$form = $this->createForm(AvisType::class);
-
-// récupérer tous les avis
-$avis = $this->getDoctrine()->getRepository(Avis::class)->findAll();
-    
-// calculer le nombre total d'avis
-$totalAvis = count($avis);
- 
-// calculer la moyenne d'avis
-$moyenneAvis = 0;
-if ($totalAvis > 0) {
-    $sum = 0;
-    foreach ($avis as $a) {
-        $sum += $a->getEtoile();
-    }
-    $moyenneAvis = round($sum / $totalAvis, 1);
-}
-
-// trouver l'avis ayant 5 étoiles et le plus long
-$avis5etoilesLePlusLong = null;
-$longueurMax = 0;
-foreach ($avis as $a) {
-    if ($a->getEtoile() == 5) {
-        $longueur = strlen($a->getCommentaire());
-        if ($longueur > $longueurMax) {
-            $longueurMax = $longueur;
-            $avis5etoilesLePlusLong = $a;
+        
+        // récupérer tous les avis
+        $avis = $this->getDoctrine()->getRepository(Avis::class)->findAll();
+        
+        // calculer le nombre total d'avis
+        $totalAvis = count($avis);
+     
+        // calculer la moyenne d'avis
+        $moyenneAvis = 0;
+        if ($totalAvis > 0) {
+            $sum = 0;
+            foreach ($avis as $a) {
+                $sum += $a->getEtoile();
+            }
+            $moyenneAvis = round($sum / $totalAvis, 1);
         }
-    }
-}
-
-return $this->render('avis/index.html.twig', [
-    'a' => $avis,
-    'totalAvis' => $totalAvis,
-    'moyenneAvis' => $moyenneAvis,
-    'avis5etoilesLePlusLong' => $avis5etoilesLePlusLong,
-]);
+    
+        // compter le nombre d'avis par étoile
+        $countAvisEtoiles = array();
+        for ($i = 1; $i <= 5; $i++) {
+            $count = 0;
+            foreach ($avis as $a) {
+                if ($a->getEtoile() == $i) {
+                    $count++;
+                }
+            }
+            $countAvisEtoiles[] = $count;
+        }
+    
+        return $this->render('avis/index.html.twig', [
+            'a' => $avis,
+            'totalAvis' => $totalAvis,
+            'moyenneAvis' => $moyenneAvis,
+            'countAvisEtoiles' => $countAvisEtoiles,
+        ]);
+    
 
 
     }
