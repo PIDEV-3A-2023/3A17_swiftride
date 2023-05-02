@@ -54,7 +54,6 @@
                                                      <td> {{ m.idVoiture.matricule }} / {{ m.idVoiture.marque }} </td>
                                                      <td>
                                                         <ul class="d-flex justify-content-center">
-                                                            <li class="mr-3"><a href="{{ path('update_maintenance',{'id':m.id}) }}" class="text-primary"><i class="fa fa-edit"></i></a></li>
                                                             <li><a href="{{ path('delete_maintenance',{'id':m.id}) }}" onClick=" return confirm('Voulez vous Vraiment supprimer le maintenance N° {{ m.id }} ?')" class="text-danger"> 
                                                             <i class="ti-trash"></i>
                                                             

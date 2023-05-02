@@ -1,19 +1,44 @@
 {% extends 'base.html.twig' %}
 {% block booby %}
-<div class="col-lg-12 mt-5">
+
+ {% if isfound == true  %}
+
+
+        <!-- normal alert area start -->
+                        <div class="col-lg-8 mt-2">
+                                    <div class="alert-items">
+                                        <div class="alert alert-danger" role="alert">
+                                            <strong>OoOops!</strong> {{ erreur }}
+                                        </div>
+                            </div>
+                        </div>
+                        <!-- normal alert area end -->         
+                 
+  {% endif %}
+
+<div class="col-lg-12 mt-3">
 <div class="row">
  <!-- basic form start -->
-                            <div class="col-8 mt-5">
+                            <div class="col-8 mt-2">
                                 <div class="card">
                                     <div class="card-body">
                                     <div class="row">
                                     <div class="col-2">
                                     </div>
                                     <div class="col-8 mt-5">
-                                        <h4 class="header-title">Prenez un rendez-vous</h4>
+                                        <h4 class="header-title">Prenez un rendez-vous   {{ isfound }} </h4>
                                         {{form_start(form,{'attr': {'novalidate': 'novalidate'}} )}}
                                         <div class="form-group ">
                                                 <label>L'heur de maintenance  : </label>
+                                                {% if time|length == 0 %}
+                                                    <div class="col-lg-8 mt-2">
+                                    <div class="alert-items">
+                                        <div class="alert alert-danger" role="alert">
+                                            <strong>OoOops!</strong> COMPLET..
+                                        </div>
+                            </div>
+                        </div>
+                                                {% endif %}
                                                 {{ form_widget(form.temps,{'attr':{'class':'custom-radio'} }) }}
                                                   <div class="form-control-feedback" style="color: red;" >
                                         {{ form_errors(form.temps) }} 
@@ -31,7 +56,11 @@
                                     {{ form_end(form) }}
                                     </div>
                                     </div>
+ 
+
+
                                     <div class="col-2">
+
                                     </div>
                                     </div>
                                 </div>

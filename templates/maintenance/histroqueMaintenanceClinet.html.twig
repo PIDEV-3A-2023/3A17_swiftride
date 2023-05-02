@@ -46,10 +46,9 @@
                                                     {% else %}
                                                     <span style="color:black">
                                                    Aujourd'hui
-                                                   <a href="{{ path('supp_maint',{'id':m.id}) }} onClick=" return confirm('Voulez vous Vraiment Annuler le maintenance N° {{ m.id }} ?')"">(annuler)</a>
                                                     </span>
                                                     {% endif %}
-                                                    <a href="{{ path('app_detail_maint_client',{'id':m.id}) }}"> Détail! </a>
+                                                    <a href="{{ path('app_detail_maint_client',{'id':m.id}) }}" style="color:green;"> Détail! </a>
                                                     </td>
 
 

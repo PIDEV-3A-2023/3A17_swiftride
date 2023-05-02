@@ -2,8 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\EntreprisePartenaire;
 use App\Entity\Garage;
 use App\Entity\Maintenance;
+use App\Entity\Notification;
+use App\Entity\Utilisateur;
 use App\Entity\Voiture;
 use App\EventSubscriber\PdfService;
 use App\Form\MaintenanceType;
@@ -45,8 +48,9 @@ class MaintenanceController extends AbstractController
         return $this->redirectToRoute('app_maintenance');
     }
 
-    #[Route('/SupprimerMaintenace/{id}', name: 'supp_maint')]
-    public function deleteMaintenanceClient($id,ManagerRegistry $doctrine)
+    
+    #[Route('/deleteMaintenences/{id}', name: 'delete_maintenance_notif')]
+    public function deleteMaintenanceWithNOtif($id,ManagerRegistry $doctrine)
     {
 
         $maintenance=$doctrine->getRepository(Maintenance::class)->find($id);
@@ -57,6 +61,29 @@ class MaintenanceController extends AbstractController
         $em->remove($maintenance);
 
         $em->flush();
+
+        return $this->redirectToRoute('app_maintenance');
+    }
+
+    #[Route('/SupprimerMaintenace/{id}', name: 'supp_maint')]
+    public function deleteMaintenanceClient($id,ManagerRegistry $doctrine)
+    {
+
+        $maintenance=$doctrine->getRepository(Maintenance::class)->find($id);
+       $notification = new Notification(); 
+
+        $em=$doctrine->getManager();
+
+        $em->remove($maintenance);
+
+        $em->flush();
+
+        $notification->setEtat(false);
+        $notification->setContenu("Pour des raison administratif Votre Rendez-vous qui a été planifier le : ".
+    $maintenance->getDateMaintenance() ."pour votre " );
+        $notification->setEnvoyerAt(new DateTime());
+        $notification->setIdentreprise($doctrine->getRepository(EntreprisePartenaire::class)->find(1));
+        $doctrine->getRepository(Notification::class)->save($notification,true);
 
         return $this->redirectToRoute('histo_client');
     }
@@ -164,6 +191,36 @@ class MaintenanceController extends AbstractController
 
         $maintenances=$doctrine->getRepository(Maintenance::class)->getMaitenanceWithGarageAndDate($idg,$d);
 
+        $maintenancess=$doctrine->getRepository(Maintenance::class)->findAll();
+
+        $tabmain=[];
+
+        $carIsFound=false;
+
+        $showMsg=false;
+
+        $dateCarFourd = new DateTime();
+
+        $now = new DateTime($d);
+
+        $errorMsg="";
+
+        
+        foreach($maintenancess as $m){
+
+            if($m->getIdVoiture()->getId()==$id){
+                $carIsFound=true;
+                $dateCarFourd = new \DateTime($m->getDateMaintenance()->format('Y-m-d H:i:s'));
+            }
+        }
+
+        foreach($maintenances as $m){
+            $tabmain[]=$m->getDateMaintenance()->format('H:i:s');
+        }
+
+        
+  
+
         $length = count($maintenances);
         if($length==0){
             array_push($time,"08:00:00","10:30:00","13:00:00","15:30:00");
@@ -172,50 +229,15 @@ class MaintenanceController extends AbstractController
 
             $tabTimes=["08:00:00","10:30:00","13:00:00","15:30:00"];
             
-             
-           
-        foreach ( $maintenances as $m){
-            $time1=$m->getDateMaintenance()->format('H:i:s');
-            $found=false;
-             
-            foreach($tabTimes as $s){
 
-                $time2=DateTime::createFromFormat('H:i:s' , $s);
-
-                if($time1==$time2){
-                    $found=true;
-                    break;
-
+            foreach ($tabTimes as $key => $value) {
+                if (in_array($value, $tabmain)) {
+                    unset($tabTimes[$key]);
                 }
             }
 
-            
-            if(!$found && isset($time2)){
-                $time[]=$time2->format('H:i:s');
-            }
-
-            /*$val1=strcmp($m->getDateMaintenance()->format('H:i:s') , '08:00:00');
-            if($val1!=0){
-
-                array_push($time,"8:00:00");
-        }
-        $val2=strcmp($m->getDateMaintenance()->format('H:i:s') , '10:30:00');
-         if($val2!=0)
-        {
-            array_push($time,"10:30:00");
-        }
-        $val3=strcmp($m->getDateMaintenance()->format('H:i:s') , '13:00:00');
-         if($val3!=0){
-            array_push($time,"13:00:00");
-        }
-        $val4=strcmp($m->getDateMaintenance()->format('H:i:s') , '15:30:00');
-         if($val4!=0 ){
-            array_push($time,"15:30:00");
-        }
-*/
-        }
+            $time=$tabTimes;
     }
-
         $form=$this->createForm(SuiteRendezVousType::class ,null,[
             'myEntities' => $time,
         ]);
@@ -224,8 +246,17 @@ class MaintenanceController extends AbstractController
 
 
         $maintenance = new Maintenance();
+
+        $notification = new Notification();
         
          $em=$doctrine->getManager();
+
+         $diff= $dateCarFourd->diff($now)->days;
+
+
+         if( $carIsFound && $diff > 21 ){
+
+            $showMsg=false;
 
         if($form->isSubmitted() && $form->isValid()){
 
@@ -242,21 +273,89 @@ class MaintenanceController extends AbstractController
             $maintenance->setIdVoiture($voiture);
             $maintenance->setType($form->get('type')->getData());
             $maintenance->setFinMaintenance($date->modify('+2 hours'));
+            $maintenance->setIdentreprise($doctrine->getRepository(EntreprisePartenaire::class)->find(1));
+
+            $notification->setEtat(false);
+            $notification->setContenu("Une maintenance est planifier le : ".$d."de la part de votre partenaire '".
+            $doctrine->getRepository(EntreprisePartenaire::class)->find(1)->getNomEntreprise()."'
+            a été lieu dans l'un de vos Garage '".$garage->getMatriculeGarage()."' / ".$garage->getLocalisation());
+           /* $notification->setContenu("Votre voiture :".$voiture->getMarque()."/".$voiture->getMatricuel().
+        "a un Rendez-vous pour un maintenance le : ".$d."a été prise de la part de votre client");*/
+            $notification->setEnvoyerAt(new DateTime());
+            $notification->setIdentreprise($doctrine->getRepository(EntreprisePartenaire::class)->find(1));
+            $doctrine->getRepository(Notification::class)->save($notification,true);
 
             $em->persist($maintenance); 
 
             $em->flush(); 
 
-            return $this->redirectToRoute('app_maintenance');
-
+            return $this->redirectToRoute('histo_Entre');
         }
+
+
+      }
+      else if( $carIsFound && $diff < 21) {
+
+        $showMsg=true;
+
+        $errorMsg= ("Votre Voiture : " .$voiture->getMarque()."/".$voiture->getMatricule().
+        " doit depasser 21 jour pour prendre un autre Rendez-vous pour une maintenance");
+      }
+       else{
+
+        $showMsg=false;
+
+        if($form->isSubmitted() && $form->isValid()){
+
+            //concatiner date + heur 
+            $t=$form->get('temps')->getData();
+
+            $dateHeure = \DateTime::createFromFormat('Y-m-d H:i:s', $d . ' ' . $t);
+
+
+            $date = new \DateTime($dateHeure->format('Y-m-d H:i:s'));
+
+            $maintenance->setDateMaintenance($dateHeure);
+            $maintenance->setIdGarage($garage);
+            $maintenance->setIdVoiture($voiture);
+            $maintenance->setType($form->get('type')->getData());
+            $maintenance->setFinMaintenance($date->modify('+2 hours'));
+            $maintenance->setIdentreprise($doctrine->getRepository(EntreprisePartenaire::class)->find(1));
+
+            $em->persist($maintenance); 
+            $em->flush();
+
+            $notification->setEtat(false);
+            $notification->setContenu("Une maintenance est planifier le : ".$d."de la part de votre partenaire '".
+            $doctrine->getRepository(EntreprisePartenaire::class)->find(1)->getNomEntreprise()."'
+            a été lieu dans l'un de vos Garage '".$garage->getMatriculeGarage()."' / ".$garage->getLocalisation());
+            $notification->setEnvoyerAt(new DateTime());
+            $notification->setIdentreprise($doctrine->getRepository(EntreprisePartenaire::class)->find(1));
+            $doctrine->getRepository(Notification::class)->save($notification,true);
+
+          //  $maintenance->setIdentreprise($this->getUser())
+           
+
+             
+
+            return $this->redirectToRoute('histo_Entre');
+        }
+
+               
+            }
+        
 
         return $this->render('maintenance/suiteRende-vous.html.twig', [
             'form'=>$form->createView(),
-            'v'=>$voiture
+            'v'=>$voiture,
+            'isfound'=>$showMsg,
+            "erreur"=>$errorMsg,
+            "time"=>$time,
+            
         ]);
 
-    }
+    
+}
 
     #[Route('/passerRendez-vous/{id}', name: 'client_rv')]
     public function passerRendezVousClient( ManagerRegistry $doctrine , Request $req , $id){
@@ -287,6 +386,7 @@ class MaintenanceController extends AbstractController
             return $this->redirectToRoute('final_client',['idv'=>$idv,'da'=>$datev , 'idgr'=>$idg]);
         }
 
+
         return $this->render('maintenance/rendez-vouMaintClient.html.twig', [
             'form'=>$form->createView(),
             'v'=>$voiture
@@ -306,56 +406,52 @@ class MaintenanceController extends AbstractController
 
         $maintenances=$doctrine->getRepository(Maintenance::class)->getMaitenanceWithGarageAndDate($idgr,$da);
 
+        $tabmain=[];
+
+        $carIsFound=true;
+
+        $showMsg=false;
+
+        $dateCarFourd = new DateTime();
+
+
+        $now = new DateTime($da);
+
+        $maintenancess=$doctrine->getRepository(Maintenance::class)->findAll();
+
+        
+        foreach($maintenancess as $m){
+
+            if($m->getIdVoiture()->getId()==$voiture->getId()){
+
+                $carIsFound=true;
+
+                $dateCarFourd = new \DateTime($m->getDateMaintenance()->format('Y-m-d H:i:s'));
+            }
+        }
+
+        $diff= $dateCarFourd->diff($now)->days;
+
+        foreach($maintenances as $m){
+            $tabmain[]=$m->getDateMaintenance()->format('H:i:s');
+        }
+
         $length = count($maintenances);
+
         if($length==0){
-            array_push($time,"8:00:00","10:30","13:00","15:30");
+            array_push($time,"8:00:00","10:30:00","13:00:00","15:30:00");
         }
         else{
             $tabTimes=["08:00:00","10:30:00","13:00:00","15:30:00"];
-           
-        foreach ( $maintenances as $m){
 
-            $time1=$m->getDateMaintenance()->format('H:i:s');
-            $found=false;
-             
-            foreach($tabTimes as $s){
-
-                $time2=DateTime::createFromFormat('H:i:s' , $s);
-
-                if($time1==$time2){
-                    $found=true;
-                    break;
-
+            foreach ($tabTimes as $key => $value) {
+                if (in_array($value, $tabmain)) {
+                    unset($tabTimes[$key]);
                 }
             }
 
-            
-            if(!$found && isset($time2)){
-                $time[]=$time2->format('H:i:s');
-            }
-
-
-       /*     $val1=strcmp($m->getDateMaintenance()->format('H:i:s') , '08:00:00');
-            if($val1!=0){
-
-                array_push($time,"8:00:00");
-        }
-        $val2=strcmp($m->getDateMaintenance()->format('H:i:s') , '10:30:00');
-         if($val2!=0)
-        {
-            array_push($time,"10:30:00");
-        }
-        $val3=strcmp($m->getDateMaintenance()->format('H:i:s') , '13:00:00');
-         if($val3!=0){
-            array_push($time,"13:00:00");
-        }
-        $val4=strcmp($m->getDateMaintenance()->format('H:i:s') , '15:30:00');
-         if($val4!=0 ){
-            array_push($time,"15:30:00");
-        }
-*/
-        }
-    }
+            $time=$tabTimes;
+}
 
         $form=$this->createForm(SuiteRendezVousType::class ,null,[
             'myEntities' => $time,
@@ -365,8 +461,14 @@ class MaintenanceController extends AbstractController
 
 
         $maintenance = new Maintenance();
+
+        $notification=new Notification();
         
          $em=$doctrine->getManager();
+
+        
+
+         if( $carIsFound && $diff > 21 ){
 
         if($form->isSubmitted() && $form->isValid()){
 
@@ -383,6 +485,14 @@ class MaintenanceController extends AbstractController
             $maintenance->setIdVoiture($voiture);
             $maintenance->setType($form->get('type')->getData());
             $maintenance->setFinMaintenance($date->modify('+2 hours'));
+            $maintenance->setIdutilisateur($doctrine->getRepository(Utilisateur::class)->find(1));
+
+            $notification->setEtat(false);
+            $notification->setContenu("Votre voiture :".$voiture->getMarque()."/".$voiture->getMatricule().
+        "a un Rendez-vous pour un maintenance le : ".$da."a été prise de la part de votre client : ".$doctrine->getRepository(Utilisateur::class)->find(1)->getNom());
+            $notification->setEnvoyerAt(new DateTime());
+            $notification->setIdutilisateur($doctrine->getRepository(Utilisateur::class)->find(1));
+            $doctrine->getRepository(Notification::class)->save($notification,true);
 
             $em->persist($maintenance); 
 
@@ -392,13 +502,56 @@ class MaintenanceController extends AbstractController
 
         }
 
-        return $this->render('maintenance/suiteRendez-vousClient.html.twig', [
-            'form'=>$form->createView(),
-            'v'=>$voiture
-        ]);
+    }
+    else if( $carIsFound && $diff < 21) {
 
+        $showMsg=true;
+      }
+    else{
+
+        $showMsg=false;
+        if($form->isSubmitted() && $form->isValid()){
+
+            //concatiner date + heur 
+            $t=$form->get('temps')->getData();
+
+            $dateHeure = \DateTime::createFromFormat('Y-m-d H:i:s', $da . ' ' . $t);
+
+
+            $date = new \DateTime($dateHeure->format('Y-m-d H:i:s'));
+
+            $maintenance->setDateMaintenance($dateHeure);
+            $maintenance->setIdGarage($garage);
+            $maintenance->setIdVoiture($voiture);
+            $maintenance->setType($form->get('type')->getData());
+            $maintenance->setFinMaintenance($date->modify('+2 hours'));
+
+            notification->setEtat(false);
+            $notification->setContenu("Votre voiture :".$voiture->getMarque()."/".$voiture->getMatricule().
+        "a un Rendez-vous pour un maintenance le : ".$da."a été prise de la part de votre client : ".$doctrine->getRepository(Utilisateur::class)->find(1)->getNom());
+            $notification->setEnvoyerAt(new DateTime());
+            $notification->setIdutilisateur($doctrine->getRepository(Utilisateur::class)->find(1));
+            $doctrine->getRepository(Notification::class)->save($notification,true);
+
+            $em->persist($maintenance); 
+
+            $em->flush(); 
+
+            return $this->redirectToRoute('histo_client');
+
+        }
     }
 
+        return $this->render('maintenance/suiteRendez-vousClient.html.twig', [
+            'form'=>$form->createView(),
+            'v'=>$voiture,
+            'time'=>$time,
+            'isfound'=>$showMsg,
+            "diff"=>$diff
+        ]);
+
+    
+    }
 
     #[Route('/calendrier', name: 'app_calender')]
     public function calendrierDesMaintenance(){
@@ -447,7 +600,7 @@ class MaintenanceController extends AbstractController
     #[Route('/clientMaintHisto', name: 'histo_client')]
     public function historiqueMaintenanceClient(ManagerRegistry $doctrine){
 
-        $id = 4;
+        $id = 1;
 
         //if($this->getUser()->getRole()->getId()==2 );
         $maint=$doctrine->getRepository(Maintenance::class)->getHistoMaintForClient($id);
@@ -462,10 +615,10 @@ class MaintenanceController extends AbstractController
     #[Route('/historiqueMaintenance', name: 'histo_Entre')]
     public function historiqueMaintenance(ManagerRegistry $doctrine){
 
-        $id = 4; //$this->getUser()->getId();
+        $id = 2; //$this->getUser()->getId();
 
         //if($this->getUser()->getRole()->getId()!=1 && $this->getUser()->getRole()->getId()!=2 );
-        $maint=$doctrine->getRepository(Maintenance::class)->getHistoMaintForClient($id);
+        $maint=$doctrine->getRepository(Maintenance::class)->getHistoMaintForEntreprise($id);
 
         return $this->render('maintenance/histoMaintenance.html.twig',[
             "maintenances"=>$maint

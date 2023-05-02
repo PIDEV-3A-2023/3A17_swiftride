@@ -20,12 +20,12 @@ class PdfService {
 
     $this->dompdf->setOptions($pdfopt);
 
+   
+
    }
 
    public function showPdfFile($html){
-
     $this->dompdf->loadHtml($html);
-
     $this->dompdf->render();
 
     $this->dompdf->stream("deatail.pdf",[
@@ -39,12 +39,7 @@ class PdfService {
 
     $this->dompdf->render();
 
-    $imageUrl = '/assets/images/icon/logo1.png';
-    $imageOptions = [
-        'width' => 100,
-        'height' => 100,
-    ];
-    $this->dompdf->getCanvas()->image($imageUrl, 10, 10, $imageOptions,0);
+    
 
     $this->dompdf->output();
    }

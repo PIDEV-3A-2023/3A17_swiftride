@@ -56,11 +56,12 @@
                                                         <ul class="d-flex justify-content-center">
                                                    
 
-                                                    {% if date(m.dateMaintenance|date('Y-m-d')) >= date("now"|date("Y-m-d"))%}
+                                                    {% if date(m.dateMaintenance|date('Y-m-d')) > date("now"|date("Y-m-d"))%}
                                                     
-                                                      <li><a href="{{ path('delete_maintenance',{'id':m.id}) }}" onClick=" return confirm('Voulez vous Vraiment Annuler le maintenance N° {{ m.id }} ?')" class="text-danger"> 
+                                                      <li class="mr-3"><a href="{{ path('delete_maintenance',{'id':m.id}) }}" onClick=" return confirm('Voulez vous Vraiment Annuler le maintenance N° {{ m.id }} ?')" class="text-danger"> 
                                                            <i class="fa fa-close"></i><span style="color:red;">Annuler</span> </li>
-                                                  
+                                                  </a></li>
+                                                   <li class="mr-3"><a href="{{ path('update_maintenance',{'id':m.id}) }}" class="text-primary"><i class="fa fa-edit"></i></a></li></br>
                                                     {% endif %}
 
                                                             
@@ -84,8 +85,10 @@
                                     </div>
                                 </div> -->
                     <!-- basic modal end -->
-                                        </a></li>
-                                        <li> <a href=" {{ path('app_detail_maint',{'id':m.id}) }} "  style="color:green; weight:11xp;"><i class="fa fa-search-plus" ></i></a></li>
+                                        
+                                        
+                                                           
+                                        <li class="mr-3"> <a href=" {{ path('app_detail_maint',{'id':m.id}) }} "  style="color:green; weight:11xp;"><i class="fa fa-search-plus" ></i></a></li></br>
                                                         </ul>
                                                     </td>
                                                 </tr>

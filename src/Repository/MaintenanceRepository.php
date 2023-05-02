@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Maintenance;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query\Expr\OrderBy;
 use Doctrine\Persistence\ManagerRegistry;
 
 
@@ -62,6 +63,18 @@ use Doctrine\Persistence\ManagerRegistry;
         ->join('m.idutilisateur','u')
         ->where('u.id= :id')
         ->setParameter('id',$id)
+        ->getQuery()
+        ->getResult();
+    }
+
+    public function getHistoMaintForEntreprise($id , $orde='ASC'){
+
+        return $this->createQueryBuilder('m')
+        ->join('m.identreprise','u')
+        ->where('u.id= :id')
+        ->OrderBy('m.dateMaintenance',$orde)
+        ->setParameter('id',$id)
+        
         ->getQuery()
         ->getResult();
     }
