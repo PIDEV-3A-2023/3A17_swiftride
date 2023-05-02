@@ -3,22 +3,28 @@
 {% block title %}Hello ListeAnnoncesController!{% endblock %}
 
 {% block body %}
+
+
+<div class="col-lg-6 mt-5">
+<div class="text-primary">
+<p class="display-2" ><abbr title="attribute">Les Annonces </abbr></p>>
+  </div>
+  </div>
+   <br><br><br>
    <div class="container">
 
                                     <div class="table-responsive">
                                     <div class="table-wrapper">
                                         <table class="table text-center">
-                                        <div class="table-title">
-					                  
-							             <h2>les Annonces </h2>
-						                 </div>
+                                       
                                          
-                                             <thead class="text-uppercase bg-warning">
+                                             <thead class="text-uppercase bg-primary">
                                                 <tr class="text-white">
                                                     <th scope="col">ID</th>
                                                     <th scope="col">Title</th>
                                                     <th scope="col">Image</th>
                                                     <th scope="col">Content</th>
+                                                    <th scope="col">Date D'annonce</th>
                                                     <th scope="col">action</th>
                                                 </tr>
                                             </thead>
@@ -27,10 +33,11 @@
                                                 <tr>
                                                     <th scope="row">{{ annonce.id }}</th>
                                                     <td>{{ annonce.title }}</td>
+                                                     <td>{{ annonce.date | date('Y-m-d H:i:s') }}</td>
                                                     <td> <img  src="{{ asset('images/' ~ annonce.getImage()) }}" alt="Image"></td>
                                                     <td>{{ annonce.Content }}</td>
                                                 <td>
-                                                <a  href="{{ path('update', {'id': annonce.id}) }}" class="btn btn-danger">Update</a>
+                                                <a  href="{{ path('gestionannonceupdate', {'id': annonce.id}) }}" class="btn btn-danger">Update</a>
                                                 <a class="ti-trash" class="btn btn-danger" href="#" data-toggle="modal" data-target="#confirm-delete-modal" data-id="{{ annonce.id }}">Delete</a>
                                                 
                                                 </td>

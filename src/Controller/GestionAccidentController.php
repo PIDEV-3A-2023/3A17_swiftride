@@ -39,14 +39,7 @@ $idvoiture =$doctrine->getRepository(Voiture::class)->findAvailableVoituresQuery
        
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $recaptchaResponse = $req->get('g-recaptcha-response');
-            $violations = $validator->validate($recaptchaResponse, [
-                new Recaptcha3([
-                    'message' => 'Please confirm that you are not a robot'
-                ])
-            ]);
-            
-            
+           
                 // Handle validation success
                 $em = $doctrine->getManager();
                 $em->persist($accident);

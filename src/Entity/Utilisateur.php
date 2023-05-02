@@ -75,9 +75,7 @@ class Utilisateur
     #[ORM\Column(length:50)]
     private ?string $photo_permis=null;
     #[ORM\JoinColumn(name: 'idrole', referencedColumnName: 'id')]
-    #[ORM\OneToOne(targetEntity: Role::class )]
-    private ?Role $role = null;
-   
+    
 
 public function setId(int $id){
     $this->id = $id;
@@ -248,17 +246,7 @@ public function setPhotoPermis(string $photo_permis): self
     return $this;
 }
 
-public function getRole(): ?Role
-{
-    return $this->role;
-}
 
-public function setRole(?Role $role): self
-{
-    $this->role = $role;
-
-    return $this;
-}
 
   
 
@@ -281,11 +269,7 @@ public function setRole(?Role $role): self
      * @see UserInterface
      */
     
-    public function setRoles($role): self
-    {
-        $this->setRole($role);
-        return $this;
-    }
+    
 
      /**
      * Returning a salt is only needed if you are not using a modern

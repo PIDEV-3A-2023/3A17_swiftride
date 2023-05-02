@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use App\Entity\Annonces;
 use App\Entity\Utilisateur;
 use App\Form\AnnonceType;
+use App\Form\UpdateannonceType;
 use DateTime;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -62,18 +63,18 @@ class AnnoncesController extends AbstractController
             
         ]);
     }
-    #[Route('/update/{id}', name: 'update')]
+    #[Route('gestionannonce/update/{id}', name: 'gestionannonceupdate')]
     public function update(Request $request, ManagerRegistry $doctrine, $id)
     {
         $annonce = $doctrine->getRepository(Annonces::class)->find($id);
-        $form = $this->createForm(AnnonceType::class, $annonce);
+        $form = $this->createForm(UpdateannonceType::class, $annonce);
     
         $form->handleRequest($request);
     
         if ($form->isSubmitted() && $form->isValid()) {
             $doctrine->getManager()->flush();
             $this->addFlash('success', 'Annonce updated successfully!');
-            return $this->redirectToRoute('app_annonces');
+            return $this->redirectToRoute('app_liste_annonces');
         }
     
         return $this->render('annonces/editannonce.html.twig', [

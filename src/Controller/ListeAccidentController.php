@@ -39,10 +39,10 @@ class ListeAccidentController extends AbstractController
     #[Route('/delete/{id}', name: 'delete')]
     public function delete(ManagerRegistry $doctrine ,$id){
        
-        $accidentid = $doctrine->getRepository(Accident::class)->find($id);
+        $accidentidenity = $doctrine->getRepository(Accident::class)->find($id);
     
         $em=$doctrine->getManager();
-        $em->remove($accidentid); 
+        $em->remove($accidentidenity); 
         $em->flush();
         $this->addFlash('notice','succcefully deleted');
         return $this->redirectToRoute('app_homeadmin');
