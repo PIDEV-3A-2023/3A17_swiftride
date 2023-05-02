@@ -33,6 +33,7 @@ class AnnonceType extends AbstractType
             ])
            
             ->add('content')
+            
             ->add('voiture', ChoiceType::class, [
                 'choices' => $this->getmodelVoitures($myEntities), // This should return an array of available voitures
                 'expanded' => true, // This makes the field a radio button instead of a dropdown list

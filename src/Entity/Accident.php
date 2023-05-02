@@ -35,9 +35,7 @@ class Accident
 
     #[ORM\Column(length:40)]
     #[Assert\NotBlank(message:"lieu est requis")]
-    #[Assert\Length( 
-        min: 10,
-    minMessage: 'le lieu doit etre superieure au :  {{ limit }} caractéres')]
+ 
     private $lieu;
 
    
