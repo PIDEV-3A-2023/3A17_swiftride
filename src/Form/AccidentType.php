@@ -34,7 +34,23 @@ class AccidentType extends AbstractType
     {
         $myEntities = $options['myEntities'];
         $builder
-            ->add('type', TextType::class, ['required' => true])
+        ->add('type', ChoiceType::class, [
+            'required' => true,
+            'choices' => [
+                'Collisions frontales' => 'Collisions frontales',
+                'Collisions arrière' => 'Collisions arrière',
+                'Accidents latéraux' => 'Accidents latéraux',
+                'Réactions en chaîne' => 'Réactions en chaîne',
+                'Roulements' => 'Roulements',
+                'collisions avec des obstacles fixes' => 'collisions avec des obstacles fixes',
+                'Accidents avec délit de fuite' => 'Accidents avec délit de fuite',
+                'Accident de voiture chez les conducteurs adolescents' => 'Accident de voiture chez les conducteurs adolescents',
+                'Accident de voiture liés aux personnes âgées' => 'Accident de voiture liés aux personnes âgées',
+                'Accidents de voiture dans les parkings' => 'Accidents de voiture dans les parkings',
+                'Accidents Uber et Lyft' => 'Accidents Uber et Lyft',
+                'Accidents avec taxi' => 'Accidents avec taxi',
+            ],
+        ])
             
             ->add('date',DateTimeType::class, [
                 'widget' => 'single_text',
