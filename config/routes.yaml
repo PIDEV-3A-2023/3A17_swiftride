@@ -1,6 +1,7 @@
 #index:
 #    path: /
 #    controller: App\Controller\DefaultController::index
+
 app_reservation_m:
     path: '/reservation'
     controller: App\Controller\ReservationMController::index
@@ -8,3 +9,4 @@ app_reservation_m:
 app_login:
     path: /login
     controller: App\Controller\SecurityController::login
+
