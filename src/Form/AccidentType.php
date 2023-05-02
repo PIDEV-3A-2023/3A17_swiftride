@@ -64,7 +64,7 @@ class AccidentType extends AbstractType
         $choices = [];
 
         foreach ($myEntities as $entity) {
-            $choices[$entity->getId()] = $entity;
+            $choices[$entity->getMatricule()] = $entity;
         }
 
         return $choices;

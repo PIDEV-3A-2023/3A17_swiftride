@@ -27,7 +27,11 @@ class UpdateannonceType extends AbstractType
                 'min' => (new \DateTime())->format('Y-m-d')
             ]
         ])
-       
+        ->add('image', FileType::class, [
+            'label' => 'Image (JPG or PNG file)',
+            'required' => false,
+            'data_class' => null, // add this line to allow string value
+        ])
         ->add('content')
         ->add("recaptcha", ReCaptchaType::class)
         ;

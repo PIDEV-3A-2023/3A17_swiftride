@@ -54,20 +54,20 @@ class Message
      *
      * @ORM\ManyToOne(targetEntity="Utilisateur")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="recipient_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="sender_id", referencedColumnName="id")
      * })
      */
-    private $recipient;
+    private $sender;
 
     /**
      * @var \Utilisateur
      *
      * @ORM\ManyToOne(targetEntity="Utilisateur")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="sender_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="recipient_id", referencedColumnName="id")
      * })
      */
-    private $sender;
+    private $recipient;
 
 
 }

@@ -42,7 +42,7 @@ class VoitureRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('v')
             ->andWhere('v.etat = :etat')
-            ->setParameter('etat', 'available')
+            ->setParameter('etat', 'Bonne etat')
             ->orderBy('v.marque', 'ASC')
             ->getQuery()
             ->getResult();

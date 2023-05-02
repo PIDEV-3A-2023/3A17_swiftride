@@ -39,7 +39,9 @@ class Annonces
     #[ORM\Column]
     private ?\DateTime  $dateannonce ;
     
-    
+   #[ORM\ManyToOne(targetEntity: Voiture::class)]
+    #[ORM\JoinColumn(name: 'voiture', referencedColumnName: 'id')]
+    private $Voiture;
 
     public function getId(): ?string
     {
@@ -91,4 +93,16 @@ class Annonces
 
         return $this;
     }
+    public function getVoiture(): ?Voiture
+    {
+        return $this->Voiture;
+    }
+
+    public function setVoiture(?Voiture $Voiture): self
+    {
+        $this->Voiture = $Voiture;
+
+        return $this;
+    }
 }
+

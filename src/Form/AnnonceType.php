@@ -18,6 +18,7 @@ class AnnonceType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $myEntities = $options['myEntities'];
         $builder
             ->add('title')
             ->add('image', FileType::class, [
@@ -32,9 +33,26 @@ class AnnonceType extends AbstractType
             ])
            
             ->add('content')
+            ->add('voiture', ChoiceType::class, [
+                'choices' => $this->getmodelVoitures($myEntities), // This should return an array of available voitures
+                'expanded' => true, // This makes the field a radio button instead of a dropdown list
+                'multiple' => false, // This allows only one voiture to be selected at a time
+                
+            ])
+            
             ->add("recaptcha", ReCaptchaType::class)
            
         ;
+    }
+    private function getmodelVoitures($myEntities)
+    {
+        $choices = [];
+
+        foreach ($myEntities as $entity) {
+            $choices[$entity->getModel()] = $entity;
+        }
+
+        return $choices;
     }
     
 
@@ -44,6 +62,7 @@ class AnnonceType extends AbstractType
             'data_class' => Annonces::class,
             
         ]);
-       
+        $resolver->setRequired('myEntities');
+        $resolver->setAllowedTypes('myEntities', 'array');
     }
 }
