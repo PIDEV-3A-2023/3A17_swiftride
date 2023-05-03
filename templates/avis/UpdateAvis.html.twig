@@ -197,6 +197,9 @@ line-height: 20px;
        .submit_star {
            cursor: pointer;
        }
+        .star-golden {
+        color:#ffa30f;
+       }
    </style>
 {% endblock %}
 
@@ -210,7 +213,7 @@ line-height: 20px;
     function reset_background() {
         for(let count = 1; count <= 5; count++) {
             $('#submit_star_'+count).addClass('star-light');
-            $('#submit_star_'+count).removeClass('text-yellow-400');
+            $('#submit_star_'+count).removeClass('star-golden');
         }
     }
 
@@ -219,7 +222,7 @@ $(document).on('mouseenter mouseleave', '.submit_star', function(){
     reset_background();
     for(let count = 1; count <= rating_data; count++) {
         $('#submit_star_'+count).removeClass('star-light');
-        $('#submit_star_'+count).addClass('text-yellow-400');
+        $('#submit_star_'+count).addClass('star-golden');
     }
     $('input[name="etoile"]').val(rating_data); // update the hidden input field
 });
