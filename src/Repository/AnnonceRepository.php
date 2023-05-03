@@ -46,26 +46,69 @@ class AnnonceRepository extends ServiceEntityRepository
         
         return (int) $qb->getQuery()->getSingleScalarResult();
     }
-    public function getCountannoncementByMonth()
-    {
-        $qb = $this->createQueryBuilder('a');
-        $qb->select('MONTHNAME(a.dateannonce) AS monthname')
-           ->addSelect('COUNT(a.id) AS counta')
-           ->groupBy('monthname')
-           ->orderBy('monthname');
-        
-        return $qb->getQuery()->getArrayResult();
-    }
-    public function getCountannoncementByYEAR()
-    {
-        $qb = $this->createQueryBuilder('a');
-        $qb->select('YEAR(a.dateannonce) AS years')
-           ->addSelect('COUNT(a.id) AS count')
-           ->groupBy('years')
-           ->orderBy('years');
-        
-        return $qb->getQuery()->getArrayResult();
-    }
+    public function getCountByYear()
+{
+    $qb = $this->createQueryBuilder('a');
+
+    $qb->select('YEAR(a.dateannonce) AS year, COUNT(a.id) AS count')
+       ->groupBy('year')
+       ->orderBy('year');
+
+    return $qb->getQuery()->getArrayResult();
+}
+
+public function getCountByVoiture()
+{
+    $qb = $this->createQueryBuilder('a');
+
+    $qb->select('(a.Voiture) AS voiture, COUNT(a.id) AS count')
+       ->groupBy('voiture')
+       ->orderBy('count', 'ASC');
+
+    return $qb->getQuery()->getArrayResult();
+}
+
+public function getModelByVoiture()
+{
+    $qb = $this->createQueryBuilder('a')
+       ->select('v.marque AS marque, COUNT(a.id) AS count')
+       ->leftJoin('App\Entity\Voiture', 'v', 'WITH', 'a.Voiture = v.id')
+       ->groupBy('marque')
+       ->orderBy('count', 'DESC');
+
+    return $qb->getQuery()->getArrayResult();
+}
+
+public function countTotalAccidents(): int
+{
+    $dql = 'SELECT COUNT(a.id) FROM App\Entity\Accident a';
+
+    return (int) $this->_em->createQuery($dql)->getSingleScalarResult();
+}
+
+public function getCountByMonth()
+{
+    $qb = $this->createQueryBuilder('a');
+    $qb->select('MONTHNAME(a.dateannonce) AS month')
+       ->addSelect('COUNT(a.id) AS count')
+       ->groupBy('month')
+       ->orderBy('month');
+
+    return $qb->getQuery()->getArrayResult();
+}
+
+public function getCountByYearMonth()
+{
+    $qb = $this->createQueryBuilder('a');
+    $qb->select('YEAR(a.dateannonce) AS year')
+       ->addSelect('MONTHNAME(a.dateannonce) AS month')
+       ->addSelect('COUNT(a.id) AS count')
+       ->groupBy('year, month')
+       ->orderBy('year, month');
+
+    return $qb->getQuery()->getArrayResult();
+}
+
 
 //    /**
 //     * @return Accident[] Returns an array of Accident objects

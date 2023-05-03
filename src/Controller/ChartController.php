@@ -45,6 +45,7 @@ class ChartController extends AbstractController
         $countv[] = $row['count'];
         
     }
+    
 
 
         return $this->render('chart/index.html.twig', [

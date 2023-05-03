@@ -79,19 +79,12 @@ foreach ($result as $row) {
     $countsbymonthandyear[] = $row['count'];
 }
 
-$countAnBymonth = $repository2->getCountannoncementByMonth();
-$yearannoncement = array();
-$countsA = array();
-foreach ($countAnBymonth as $row) {
-    $yearannoncement[] = $row['monthname'];
-    $countsA[] = $row['counta'];
-    
-}
-$countAnByyear = $repository2->getCountannoncementByYEAR();
+
+$countAnByyear = $repository2->getCountByYear();
 $yeara = array();
 $countsa = array();
 foreach ($countAnByyear as $row) {
-    $yeara[] = $row['years'];
+    $yeara[] = $row['year'];
     $countsa[] = $row['count'];
     
 }
@@ -119,8 +112,8 @@ for ($i = 0; $i < count($years); $i++) {
              'countsbymonth'=>$countsbymonth,
              'countsbymonthandyear'=>$countsbymonthandyear,
              'labels'=>$labels,
-             'yearannoncement'=>$yearannoncement,
-             'countsA'=>$countsA,
+            
+           
              'totalutilisateur'=>$totalutilisateur,
         ]);
     }
