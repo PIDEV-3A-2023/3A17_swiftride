@@ -79,5 +79,20 @@ use Doctrine\Persistence\ManagerRegistry;
         ->getResult();
     }
 
+    
+    public function getMaitenanceWithGarageAndDateCar( $date , $idv){
+
+        return $this->createQueryBuilder('m')
+        ->join('m.idGarage','g')
+        ->join('m.idVoiture','v')
+        ->where('v.id LIKE :idv')
+        ->andWhere('m.dateMaintenance LIKE :date')
+        ->setParameter('date',$date)
+        ->setParameter('idv',$idv)
+        ->getQuery()
+        ->getResult();
+
+    }
+
 
  }

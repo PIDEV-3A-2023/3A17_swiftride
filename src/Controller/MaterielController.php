@@ -6,11 +6,13 @@ use App\Entity\Garage;
 use App\Entity\Materiel;
 use App\Form\MaterielType;
 use App\Form\UpdateMaterielType;
+use App\Repository\MaterielRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class MaterielController extends AbstractController
 {
@@ -26,6 +28,18 @@ class MaterielController extends AbstractController
            'garages'=>$garages,
            'materiels'=>$materiels
         ]);
+    }
+
+    #[Route('/materielmobile', name: 'app_materiel_mobile')]
+    public function indexMobile(ManagerRegistry $doctrine , SerializerInterface $serializer): Response
+    {
+        $repm=$doctrine->getRepository(Materiel::class);
+
+        $materiels=$repm->findAll();
+
+        $json = $serializer->serialize($materiels , 'json');
+
+        return new Response($json);
     }
 
 
@@ -68,6 +82,32 @@ class MaterielController extends AbstractController
 
     }
 
+
+
+    
+    #[Route('/addMaterielmobile/{id}', name:'materiel_g_mobile')]
+    public function goToMaterielMobile($id , ManagerRegistry $mngr , Request $req , SerializerInterface $serializer ){
+
+        $materiel = new Materiel();
+        $garage = $mngr->getRepository(Garage::class)->find($id);
+
+        $em=$mngr->getManager();
+
+            $materiel->setIdGarage($garage);
+            $materiel->setDisponibilite(true);
+            $materiel->setDescription($req->get('description'));
+            $materiel->setNom($req->get('nom'));
+            $materiel->setPhoto($req->get('photo'));
+
+            $em->persist($materiel);
+
+            $em->flush();
+        
+            $json = $serializer->serialize($materiel,'json');
+
+        return new Response(200);
+
+    }
     
     #[Route('/deleteMateriel/{id}', name:'app_deleteM')]
     public function deletMateriel($id , ManagerRegistry $doctrine)
@@ -82,6 +122,23 @@ class MaterielController extends AbstractController
         $em->flush();
 
         return  $this->redirectToRoute('app_materiel');
+
+    }
+
+
+    #[Route('/deleteMaterielmobile', name:'app_deleteM_mobile')]
+    public function deletMaterielMobile(Request $req , ManagerRegistry $doctrine)
+    {
+
+        $em=$doctrine->getManager();
+
+        $materiel=$doctrine->getRepository(Materiel::class)->find($req->get('id'));
+
+        $em->remove($materiel);
+
+        $em->flush();
+
+        return  new Response(200);
 
     }
 
@@ -106,6 +163,44 @@ class MaterielController extends AbstractController
         ]);
 
     }
+
+
+
+    #[Route('/updateMaterielmobile/{id}', name:'app_updateM_mobile')]
+    public function updateMaterielMobile($id , ManagerRegistry $doctrine , Request $req , SerializerInterface $serializer)
+    {
+
+        $materiel=$doctrine->getRepository(Materiel::class)->find($id);
+
+        $garage=$doctrine->getRepository(Garage::class)->find($req->get('idgarage'));
+        $materiel->setIdGarage($garage);
+        $materiel->setDisponibilite(true);
+        $materiel->setDescription($req->get('description'));
+        $materiel->setNom($req->get('nom'));
+        $materiel->setPhoto($req->get('photo'));
+
+
+            $em=$doctrine->getManager();
+            $em->flush();
+
+
+        $json=$serializer->serialize($materiel,'json');
+
+        return new Response($json);
+
+    }
+
+    #[Route('/getOnemobile/{id}', name:'app_getone_mobile')]
+    public function getOneByid($id , MaterielRepository $repo , SerializerInterface $serial){
+
+        $materiel = $repo->find($id);
+
+        $json = $serial->serialize($materiel,'json');
+
+        return new Response($json);
+
+    }
+
 
 
 }

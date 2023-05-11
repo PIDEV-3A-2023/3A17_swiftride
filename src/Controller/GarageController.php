@@ -6,12 +6,14 @@ use App\Entity\Garage;
 use App\Entity\Materiel;
 use App\Form\GarageType;
 use App\Form\MaterielType;
+use App\Repository\GarageRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use SebastianBergmann\Environment\Console;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class GarageController extends AbstractController
 {
@@ -42,6 +44,25 @@ class GarageController extends AbstractController
     }
 
 
+    #[Route('/garagemobile', name: 'app_garage_mobile', methods:'post')]
+    public function indexMobile(ManagerRegistry $doctrine , Request $req , SerializerInterface $serializer): Response
+    {
+        $em=$doctrine->getManager();
+        $garage = new Garage();
+
+        $garage->setMatriculeGarage($req->get('matriculeGarage'));
+        $garage->setLocalisation($req->get('localisation'));
+        $garage->setSurface($req->get('surface'));
+
+        $em->persist($garage);
+        $em->flush();
+
+            $json=$serializer->serialize($garage,'json');
+
+        return new Response($json);
+    }
+
+
     #[Route('/deleteGarage/{id}', name:'app_deleteg')]
     public function deleteGarage($id , ManagerRegistry $mngr){
 
@@ -54,6 +75,22 @@ class GarageController extends AbstractController
         $em->flush();
 
         return $this->redirectToRoute('app_garage');
+
+    }
+
+    #[Route('/deleteGaragemobile', name:'app_deleteg_mobile')]
+    public function deleteGarageMobile( Request $req  , ManagerRegistry $mngr){
+
+        $garage = $mngr->getRepository(Garage::class)->find($req->get('id'));
+
+        $em=$mngr->getManager();
+
+        $em->remove($garage);
+
+        $em->flush();
+
+
+        return new Response(200);
 
     }
 
@@ -80,10 +117,34 @@ class GarageController extends AbstractController
        
     }
 
-    #[Route('/', name:'app_main')]
-    public function indexx(){
 
-        return $this->render('base.html.twig');
+    #[Route('/updateGaragemobile/{id}', name:'app_updateg_mobile')]
+    public function udpateGarageMobile($id , ManagerRegistry $mngr , Request $req , SerializerInterface $serialize) : Response
+    {
+        $garage = $mngr->getRepository(Garage::class)->find($id);
+
+        $garage->setMatriculeGarage($req->get('matricule'));
+        $garage->setLocalisation($req->get('localisation'));
+        $garage->setSurface($req->get('surface'));
+
+            $em = $mngr->getManager();
+            $em->flush();
+
+       $json= $serialize->serialize($garage,'json');
+
+        return new Response($json);
+       
+    }
+
+    #[Route('/garageMobileList', name:'app_garage_list_mobile')]
+    public function listGarageMobile(GarageRepository $rep , SerializerInterface $serialize){
+
+        $garages=$rep->findAll();
+
+        $json=$serialize->serialize($garages,'json');
+
+        return new Response($json);
+        
     }
 
 

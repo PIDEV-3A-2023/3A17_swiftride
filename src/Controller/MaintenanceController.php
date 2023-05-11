@@ -12,12 +12,15 @@ use App\EventSubscriber\PdfService;
 use App\Form\MaintenanceType;
 use App\Form\RendezVousType;
 use App\Form\SuiteRendezVousType;
+use App\Repository\MaintenanceRepository;
 use DateTime;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class MaintenanceController extends AbstractController
 {
@@ -29,6 +32,16 @@ class MaintenanceController extends AbstractController
         return $this->render('maintenance/index.html.twig', [
             'maintenances'=>$maintenances
         ]);
+    }
+
+    #[Route('/maintenancemobile', name: 'app_maintenance')]
+    public function indexMobile(ManagerRegistry $doctrine , SerializerInterface $serializer): Response
+    {
+        $maintenances = $doctrine->getRepository(Maintenance::class)->findAll();
+
+        $json=$serializer->serialize($maintenances , 'json');
+
+        return new Response($json);
     }
 
 
@@ -48,6 +61,21 @@ class MaintenanceController extends AbstractController
         return $this->redirectToRoute('app_maintenance');
     }
 
+    #[Route('/deleteMaintenencemobile', name: 'delete_maintenance')]
+    public function deleteMaintenanceMoble(Request $req,ManagerRegistry $doctrine  , SerializerInterface $serializer)
+    {
+
+        $maintenance=$doctrine->getRepository(Maintenance::class)->find($req->get('id'));
+        
+
+        $em=$doctrine->getManager();
+
+        $em->remove($maintenance);
+
+        $em->flush();
+
+        return new Response(200);
+    }
     
     #[Route('/deleteMaintenences/{id}', name: 'delete_maintenance_notif')]
     public function deleteMaintenanceWithNOtif($id,ManagerRegistry $doctrine)
@@ -65,7 +93,7 @@ class MaintenanceController extends AbstractController
         return $this->redirectToRoute('app_maintenance');
     }
 
-    #[Route('/SupprimerMaintenace/{id}', name: 'supp_maint')]
+    #[Route('/SupprimerMaintenace/{id}', name: 'supp_maint' , methods:'post')]
     public function deleteMaintenanceClient($id,ManagerRegistry $doctrine)
     {
 
@@ -623,6 +651,57 @@ class MaintenanceController extends AbstractController
         return $this->render('maintenance/histoMaintenance.html.twig',[
             "maintenances"=>$maint
         ]);
+
+    }
+
+
+    #[Route('/addmaintenancemovile', name: 'app_mobile_maint')]
+    public function addMaintenanceMobile(ManagerRegistry $doctrine , Request $req){
+
+        $garage=$doctrine->getRepository(Garage::class)->find($req->get('idGarage'));
+        $voiture =$doctrine->getRepository(Voiture::class)->find($req->get('idVoiture'));
+
+        $maintenance = new Maintenance();
+
+
+        
+        $dateHeure = \DateTime::createFromFormat('Y-m-d H:i:s', $req->get('dateMaintenance'));
+
+
+        $date = new \DateTime($dateHeure->format('Y-m-d H:i:s'));
+
+        $maintenance->setDateMaintenance($dateHeure);
+        $maintenance->setFinMaintenance($date->modify('+2 hours'));
+        $maintenance->setType($req->get('type'));
+        $maintenance->setIdGarage($garage);
+        $maintenance->setIdVoiture($voiture);
+
+        $all = $doctrine->getRepository(Maintenance::class)->getMaitenanceWithGarageAndDateCar( $dateHeure , $req->get('idVoiture'));
+
+        $l = count($all);
+        if( $l>0){
+            return new Response(206);
+        }
+        else{
+
+            $em = $doctrine->getManager();
+
+            $em->persist($maintenance);
+
+            $em->flush();
+
+            return new Response(200);
+        }
+
+    }
+    #[Route('/getOneMaint', name: 'app_mobile_get_one')]
+    public function getOneMaintMobile(Request $req , MaintenanceRepository $repo , SerializerInterface $ser){
+
+        $maintenance =$repo->find($req->get('id'));
+
+        $json = $ser->serialize($maintenance,'json');
+
+        return new Response($json);
 
     }
 
