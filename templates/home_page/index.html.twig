@@ -55,7 +55,7 @@
                         <div class="nav-item dropdown">
                             <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Cars</a>
                             <div class="dropdown-menu rounded-0 m-0">
-                                <a href="car.html" class="dropdown-item">Car Listing</a>
+                                <a href="/homepage/annonces" class="dropdown-item">Annonces</a>
                                 <a href="detail.html" class="dropdown-item">Car Detail</a>
                                 <a href="booking.html" class="dropdown-item">Car Booking</a>
                             </div>
@@ -133,8 +133,8 @@
           <img class="d-block w-100" src="{{ asset('images/' ~ annonce.getImage()) }}" alt="Image">
           <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
             <div class="p-3" style="max-width: 500px;">
-              <h4 class="text-white text-uppercase mb-md-3">{{ annonce.getTitle() }}</h4>
-              <h1 class="display-1 text-white mb-md-4">{{ annonce.getContent() }}</h1>
+              <h4 class="text-white text-uppercase mb-md-3">{{ annonce.getVoiture().prix }} DT</h4>
+              <h1 class="display-1 text-white mb-md-4">{{ annonce.getVoiture().marque }}</h1>
               <a href="" class="btn btn-primary py-md-3 px-md-5 mt-2">Reserve Now</a>
             </div>
           </div>
@@ -285,162 +285,24 @@
 
 
     <!-- Banner Start -->
-     {% for annonce in list %}
+     {% for annonce in list|slice(0, 2) %}
     <div class="container-fluid py-5">
         <div class="container py-5">
-
             <div class="bg-banner py-5 px-4 text-center">
                 <div class="py-5">
-               
-             
                     <h1 class="display-1 text-uppercase text-primary mb-4">{{ annonce.getTitle() }}</h1>
                     <h1 class="text-uppercase text-light mb-4"> {{ annonce.getContent() }}</h1>
-                  
-                    <a class="btn btn-primary mt-2 py-3 px-5" href="">Register Now</a>
-                    
                 </div>
             </div>
         </div>
     </div>
-      {% endfor %}
+{% endfor %}
+
     <!-- Banner End -->
 
 
     <!-- Rent A Car Start -->
-    <div class="container-fluid py-5">
-        <div class="container pt-5 pb-3">
-            <h1 class="display-1 text-primary text-center">03</h1>
-            <h1 class="display-4 text-uppercase text-center mb-5">Find Your Car</h1>
-            <div class="row">
-                <div class="col-lg-4 col-md-6 mb-2">
-                    <div class="rent-item mb-4">
-                        <img class="img-fluid mb-4" src="img/car-rent-1.png" alt="">
-                        <h4 class="text-uppercase mb-4">Mercedes Benz R3</h4>
-                        <div class="d-flex justify-content-center mb-4">
-                            <div class="px-2">
-                                <i class="fa fa-car text-primary mr-1"></i>
-                                <span>2015</span>
-                            </div>
-                            <div class="px-2 border-left border-right">
-                                <i class="fa fa-cogs text-primary mr-1"></i>
-                                <span>AUTO</span>
-                            </div>
-                            <div class="px-2">
-                                <i class="fa fa-road text-primary mr-1"></i>
-                                <span>25K</span>
-                            </div>
-                        </div>
-                        <a class="btn btn-primary px-3" href="">$99.00/Day</a>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 mb-2">
-                    <div class="rent-item active mb-4">
-                        <img class="img-fluid mb-4" src="img/car-rent-2.png" alt="">
-                        <h4 class="text-uppercase mb-4">Mercedes Benz R3</h4>
-                        <div class="d-flex justify-content-center mb-4">
-                            <div class="px-2">
-                                <i class="fa fa-car text-primary mr-1"></i>
-                                <span>2015</span>
-                            </div>
-                            <div class="px-2 border-left border-right">
-                                <i class="fa fa-cogs text-primary mr-1"></i>
-                                <span>AUTO</span>
-                            </div>
-                            <div class="px-2">
-                                <i class="fa fa-road text-primary mr-1"></i>
-                                <span>25K</span>
-                            </div>
-                        </div>
-                        <a class="btn btn-primary px-3" href="">$99.00/Day</a>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 mb-2">
-                    <div class="rent-item mb-4">
-                        <img class="img-fluid mb-4" src="img/car-rent-3.png" alt="">
-                        <h4 class="text-uppercase mb-4">Mercedes Benz R3</h4>
-                        <div class="d-flex justify-content-center mb-4">
-                            <div class="px-2">
-                                <i class="fa fa-car text-primary mr-1"></i>
-                                <span>2015</span>
-                            </div>
-                            <div class="px-2 border-left border-right">
-                                <i class="fa fa-cogs text-primary mr-1"></i>
-                                <span>AUTO</span>
-                            </div>
-                            <div class="px-2">
-                                <i class="fa fa-road text-primary mr-1"></i>
-                                <span>25K</span>
-                            </div>
-                        </div>
-                        <a class="btn btn-primary px-3" href="">$99.00/Day</a>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 mb-2">
-                    <div class="rent-item mb-4">
-                        <img class="img-fluid mb-4" src="img/car-rent-4.png" alt="">
-                        <h4 class="text-uppercase mb-4">Mercedes Benz R3</h4>
-                        <div class="d-flex justify-content-center mb-4">
-                            <div class="px-2">
-                                <i class="fa fa-car text-primary mr-1"></i>
-                                <span>2015</span>
-                            </div>
-                            <div class="px-2 border-left border-right">
-                                <i class="fa fa-cogs text-primary mr-1"></i>
-                                <span>AUTO</span>
-                            </div>
-                            <div class="px-2">
-                                <i class="fa fa-road text-primary mr-1"></i>
-                                <span>25K</span>
-                            </div>
-                        </div>
-                        <a class="btn btn-primary px-3" href="">$99.00/Day</a>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 mb-2">
-                    <div class="rent-item mb-4">
-                        <img class="img-fluid mb-4" src="img/car-rent-5.png" alt="">
-                        <h4 class="text-uppercase mb-4">Mercedes Benz R3</h4>
-                        <div class="d-flex justify-content-center mb-4">
-                            <div class="px-2">
-                                <i class="fa fa-car text-primary mr-1"></i>
-                                <span>2015</span>
-                            </div>
-                            <div class="px-2 border-left border-right">
-                                <i class="fa fa-cogs text-primary mr-1"></i>
-                                <span>AUTO</span>
-                            </div>
-                            <div class="px-2">
-                                <i class="fa fa-road text-primary mr-1"></i>
-                                <span>25K</span>
-                            </div>
-                        </div>
-                        <a class="btn btn-primary px-3" href="">$99.00/Day</a>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 mb-2">
-                    <div class="rent-item mb-4">
-                        <img class="img-fluid mb-4" src="img/car-rent-6.png" alt="">
-                        <h4 class="text-uppercase mb-4">Mercedes Benz R3</h4>
-                        <div class="d-flex justify-content-center mb-4">
-                            <div class="px-2">
-                                <i class="fa fa-car text-primary mr-1"></i>
-                                <span>2015</span>
-                            </div>
-                            <div class="px-2 border-left border-right">
-                                <i class="fa fa-cogs text-primary mr-1"></i>
-                                <span>AUTO</span>
-                            </div>
-                            <div class="px-2">
-                                <i class="fa fa-road text-primary mr-1"></i>
-                                <span>25K</span>
-                            </div>
-                        </div>
-                        <a class="btn btn-primary px-3" href="">$99.00/Day</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+ 
     <!-- Rent A Car End -->
 
 
@@ -448,56 +310,20 @@
     <div class="container-fluid py-5">
         <div class="container py-5">
             <h1 class="display-1 text-primary text-center">04</h1>
-            <h1 class="display-4 text-uppercase text-center mb-5">Meet Our Team</h1>
+            <h1 class="display-4 text-uppercase text-center mb-5">notre Annonces</h1>
             <div class="owl-carousel team-carousel position-relative" style="padding: 0 30px;">
+             {% for annonce in list %}
                 <div class="team-item">
-                    <img class="img-fluid w-100" src="img/team-1.jpg" alt="">
+                    <img class="d-block w-100" src="{{ asset('images/' ~ annonce.getImage()) }}" alt="Image">
                     <div class="position-relative py-4">
-                        <h4 class="text-uppercase">Full Name</h4>
-                        <p class="m-0">Designation</p>
-                        <div class="team-social position-absolute w-100 h-100 d-flex align-items-center justify-content-center">
-                            <a class="btn btn-lg btn-primary btn-lg-square mx-1" href="#"><i class="fab fa-twitter"></i></a>
-                            <a class="btn btn-lg btn-primary btn-lg-square mx-1" href="#"><i class="fab fa-facebook-f"></i></a>
-                            <a class="btn btn-lg btn-primary btn-lg-square mx-1" href="#"><i class="fab fa-linkedin-in"></i></a>
-                        </div>
+                        <h4 class="text-uppercase">{{ annonce.title }}</h4>
+                        <h1 class="display-1 text-white mb-md-4">{{ annonce.getVoiture().marque }}</h1>
+                        <h2 class="text-white">{{ annonce.getVoiture().prix }} DT/jour</h2>
+
                     </div>
                 </div>
-                <div class="team-item">
-                    <img class="img-fluid w-100" src="img/team-2.jpg" alt="">
-                    <div class="position-relative py-4">
-                        <h4 class="text-uppercase">Full Name</h4>
-                        <p class="m-0">Designation</p>
-                        <div class="team-social position-absolute w-100 h-100 d-flex align-items-center justify-content-center">
-                            <a class="btn btn-lg btn-primary btn-lg-square mx-1" href="#"><i class="fab fa-twitter"></i></a>
-                            <a class="btn btn-lg btn-primary btn-lg-square mx-1" href="#"><i class="fab fa-facebook-f"></i></a>
-                            <a class="btn btn-lg btn-primary btn-lg-square mx-1" href="#"><i class="fab fa-linkedin-in"></i></a>
-                        </div>
-                    </div>
-                </div>
-                <div class="team-item">
-                    <img class="img-fluid w-100" src="img/team-3.jpg" alt="">
-                    <div class="position-relative py-4">
-                        <h4 class="text-uppercase">Full Name</h4>
-                        <p class="m-0">Designation</p>
-                        <div class="team-social position-absolute w-100 h-100 d-flex align-items-center justify-content-center">
-                            <a class="btn btn-lg btn-primary btn-lg-square mx-1" href="#"><i class="fab fa-twitter"></i></a>
-                            <a class="btn btn-lg btn-primary btn-lg-square mx-1" href="#"><i class="fab fa-facebook-f"></i></a>
-                            <a class="btn btn-lg btn-primary btn-lg-square mx-1" href="#"><i class="fab fa-linkedin-in"></i></a>
-                        </div>
-                    </div>
-                </div>
-                <div class="team-item">
-                    <img class="img-fluid w-100" src="img/team-4.jpg" alt="">
-                    <div class="position-relative py-4">
-                        <h4 class="text-uppercase">Full Name</h4>
-                        <p class="m-0">Designation</p>
-                        <div class="team-social position-absolute w-100 h-100 d-flex align-items-center justify-content-center">
-                            <a class="btn btn-lg btn-primary btn-lg-square mx-1" href="#"><i class="fab fa-twitter"></i></a>
-                            <a class="btn btn-lg btn-primary btn-lg-square mx-1" href="#"><i class="fab fa-facebook-f"></i></a>
-                            <a class="btn btn-lg btn-primary btn-lg-square mx-1" href="#"><i class="fab fa-linkedin-in"></i></a>
-                        </div>
-                    </div>
-                </div>
+                  {% endfor %}
+                
             </div>
         </div>
     </div>

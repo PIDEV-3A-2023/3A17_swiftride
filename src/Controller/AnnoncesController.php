@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Controller;
-
+use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -65,6 +65,35 @@ class AnnoncesController extends AbstractController
             
         ]);
     }
+
+    #[Route('/createannonceJSON', name: 'addannonceJSON')]
+    
+    public function createannonceJSON(ManagerRegistry $doctrine , Request $req, SerializerInterface $serializer)
+        {
+
+               
+                    // Handle validation success
+                    $em = $doctrine->getManager();
+                    $annonce=new Annonces();
+                    $annonce->setContent($req->get('content'));
+                   
+                    $annonce->setImage($req->get('image'));
+                    $annonce->setDate(new \DateTime );
+                    $annonce->setTitle($req->get('title'));
+                   
+                    $idVoiture = $req->get('idVoiture');
+                    $voiture = $em->getRepository(Voiture::class)->find($idVoiture);
+                    $annonce->setVoiture($voiture);
+                    $em->persist($annonce);
+                    $em->flush();
+                    $json=$serializer->serialize($annonce,'json',['groups'=>"annonce"]);
+                    return new Response($json);
+
+                
+            
+            
+           
+        }
 #[Route('gestionannonce/update/{id}', name: 'gestionannonceupdate')]
 public function update(Request $request, ManagerRegistry $doctrine, $id)
 {
@@ -103,5 +132,21 @@ public function update(Request $request, ManagerRegistry $doctrine, $id)
         'form' => $form->createView(),
     ]);
 }
-
+#[Route('updateannonceJSON/{id}', name: 'updateAnnonce')]
+    public function updateAJSON(Request $req, ManagerRegistry $doctrine, $id, SerializerInterface $serializer)
+    {
+        $annonce = $doctrine->getRepository(Annonces::class)->find(($id));
+        $em = $doctrine->getManager();
+        $annonce=new Annonces();
+        $annonce->setContent($req->get('content'));
+       
+       
+        $annonce->setDate(new \DateTime );
+        $annonce->setTitle($req->get('title'));
+                    
+                  
+                    $em->flush();
+                    $json=$serializer->serialize($annonce,'json',['groups'=>"annonce"]);
+                    return new Response("Annonce updated successfully" . $json);
+    }
 }

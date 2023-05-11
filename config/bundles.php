@@ -24,4 +24,5 @@ return [
     Aldaflux\FineDiffBundle\FineDiffBundle::class => ['all' => true],
     Evirma\Bundle\AutotextBundle\AutotextBundle::class => ['all' => true],
     JMS\TranslationBundle\JMSTranslationBundle::class => ['all' => true],
+    League\FlysystemBundle\FlysystemBundle::class => ['all' => true],
 ];

@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Annonces;
+use App\Entity\Voiture;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -15,9 +16,21 @@ class HomePageController extends AbstractController
     public function index(ManagerRegistry $doctrine): Response
     {
         $annonce =$doctrine->getRepository(Annonces::class)->findAll();
-
+        
+        
         return $this->render('home_page/index.html.twig', [
-            'list' => $annonce
+            'list' => $annonce,
+       
         ]);
     }
+    #[Route('/homepage/annonces', name: 'app_home_page_annonces')]
+    public function list(ManagerRegistry $doctrine): Response
+{
+    $annonce =$doctrine->getRepository(Annonces::class)->findAll();
+    $voiture =$doctrine->getRepository(Voiture::class)->findAll();
+    return $this->render('home_page/annonces.html.twig', [
+        'list' => $annonce,
+        'list'=>  $voiture,
+    ]);
+}
 }

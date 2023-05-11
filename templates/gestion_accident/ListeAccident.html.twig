@@ -49,9 +49,10 @@
                                                     {% endfor %}
                                             </tbody>
                                         </table>
+                                       
                                     </div>
                                 </div>
-                                
+                                {{ knp_pagination_render(accidentpager) }} 
                                 
                             </div>
 
@@ -85,10 +86,7 @@
 
 </div>
            
-<div class="navigation">
-    {{ knp_pagination_render(pagination) }}
-</div>
-</div>           
+         
                         <a href="{{ path('app_gestion_accident') }}" class="btn btn-primary">Add Accident</a>
 {% block javascripts %}
     {{ parent() }}

@@ -5,7 +5,7 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\AnnonceRepository;
 use Symfony\Component\Validator\Constraints as Assert;
-
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: AnnonceRepository::class)]
 class Annonces
@@ -13,6 +13,7 @@ class Annonces
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups("annonce")]
     private $id;
 
     #[ORM\Column(length:255)]
@@ -20,14 +21,17 @@ class Annonces
    #[Assert\Length( 
     min: 3,
     minMessage: 'le title doit etre superieure au :  {{ limit }} caractéres')]
+    #[Groups("annonce")]
     private $title;
 
     #[ORM\Column(length:255)]
     #[Assert\NotBlank(message:" image est requis")]
+    #[Groups("annonce")]
     private $image;
     
     #[ORM\Column(length:65535)]
     #[Assert\NotBlank(message:"content est requis")]
+    #[Groups("annonce")]
     #[Assert\Length( 
         min: 5,
         max: 2555,
@@ -37,10 +41,11 @@ class Annonces
     private $content;
     
     #[ORM\Column]
-    private ?\DateTime  $dateannonce ;
+    private ?\DateTime $dateannonce ;
     
    #[ORM\ManyToOne(targetEntity: Voiture::class)]
     #[ORM\JoinColumn(name: 'voiture', referencedColumnName: 'id')]
+    #[Groups("annonce")]
     private $Voiture;
 
     public function getId(): ?string

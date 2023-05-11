@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -57,7 +58,34 @@ $idvoiture =$doctrine->getRepository(Voiture::class)->findAvailableVoituresQuery
         ]);
        
     }
+    #[Route('/createaccidentJSON', name: 'addaccidentJSON')]
+    
+    public function createaccidentJSON(ManagerRegistry $doctrine , Request $req, SerializerInterface $serializer)
+        {
 
+               
+                    // Handle validation success
+                    $em = $doctrine->getManager();
+                    $accident=new Accident();
+                    $accident->setType($req->get('type'));
+                   
+                   
+                    $accident->setDate(new \DateTime );
+                    $accident->setLieu($req->get('lieu'));
+                    $accident->setDescription($req->get('description'));
+                    $idVoiture = $req->get('idVoiture');
+                    $voiture = $em->getRepository(Voiture::class)->find($idVoiture);
+                    $accident->setIdVoiture($voiture);
+                    $em->persist($accident);
+                    $em->flush();
+                    $json=$serializer->serialize($accident,'json',['groups'=>"accidents"]);
+                    return new Response($json);
+
+                
+            
+            
+           
+        }
     
     #[Route('gestionaccident/update/{id}', name: 'update')]
     public function update(Request $request, ManagerRegistry $doctrine, $id)
@@ -76,6 +104,27 @@ $idvoiture =$doctrine->getRepository(Voiture::class)->findAvailableVoituresQuery
         return $this->render('gestion_accident/update.html.twig', [
             'form' => $form->createView(),
         ]);
+    }
+
+
+
+
+
+    #[Route('/updateJSON/{id}', name: 'update')]
+    public function updateJSON(Request $req, ManagerRegistry $doctrine, $id, SerializerInterface $serializer)
+    {
+        $accident = $doctrine->getRepository(Accident::class)->find(($id));
+                     $accident->setType($req->get('type'));
+                   
+                    $em = $doctrine->getManager();
+                    $accident->setDescription($req->get('description'));
+                    $accident->setLieu($req->get('lieu'));
+                  
+                    
+                  
+                    $em->flush();
+                    $json=$serializer->serialize($accident,'json',['groups'=>"accidents"]);
+                    return new Response("Accident updated successfully" . $json);
     }
     
 }

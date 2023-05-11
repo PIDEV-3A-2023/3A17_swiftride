@@ -98,6 +98,17 @@ class AccidentRepository extends ServiceEntityRepository
     
     return $qb->getQuery()->getArrayResult();
 }
+public function getAvgAccidentsPerYearByType()
+{
+    $qb = $this->createQueryBuilder('a');
+    $qb->select('a.type AS type')
+       ->addSelect('AVG(COUNT(a.id)) AS avg')
+       ->addSelect('YEAR(a.date) AS year')
+       ->groupBy('year, type')
+       ->orderBy('type, year');
+    
+    return $qb->getQuery()->getArrayResult();
+}
 
   
 

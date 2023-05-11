@@ -9,7 +9,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Captcha\Bundle\CaptchaBundle\Validator\Constraints\ValidSimpleCaptchaValidator;
-
+use Symfony\Component\Serializer\SerializerInterface;
 
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -43,4 +43,41 @@ class ListeAnnoncesController extends AbstractController
          $this->addFlash('notice','succcefully deleted');
          return $this->redirectToRoute('app_homeadmin');
     }
+   
+    #[Route('/listeannoncesJSON', name: 'listeannonces')]
+   public function listeAnnonceJSON(ManagerRegistry $doctrine ,SerializerInterface $serializer )
+    {
+       
+        $annonce =$doctrine->getRepository(Annonces::class)->findAll();
+        
+        $json=$serializer->serialize($annonce,'json',['groups'=>"annonce"]);
+        return new Response($json);
+    }
+    #[Route('/deleteAnnonceJSON/{id}', name: 'deleteJSON')]
+    public function deleteJSON(ManagerRegistry $doctrine ,$id,SerializerInterface $serializer){
+       
+        $annoncetidenity = $doctrine->getRepository(Annonces::class)->find($id);
+    
+        $em=$doctrine->getManager();
+        $em->remove($annoncetidenity); 
+        $em->flush();
+
+        $json=$serializer->serialize($annoncetidenity,'json',['groups'=>"annonce"]);
+
+
+        return new Response("Annonce deleted successfully" . $json);
+        
+    }
+    #[Route('/detailannonce/{id}', name: 'accident')]
+  
+public function annonceJSONid($id,ManagerRegistry $doctrine,SerializerInterface $serializer )
+{
+    $annonce =$doctrine->getRepository(Annonces::class)->find($id);
+    
+
+    $json=$serializer->serialize($annonce,'json',['groups'=>"annonce"]);
+
+
+    return new Response($json);
+}
 }

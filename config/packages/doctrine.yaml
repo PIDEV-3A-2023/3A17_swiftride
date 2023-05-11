@@ -17,7 +17,8 @@ doctrine:
                 alias: App
         dql:
             string_functions:
-                YEAR:  DoctrineExtensions\Query\Mysql\Year
+                AVG:  App\Functions\Average
+                YEAR:  App\Functions\Year
                 MONTH: App\Functions\Month
                 MONTHNAME: App\Functions\Month
                 

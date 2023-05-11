@@ -5,7 +5,7 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\AccidentRepository;
 use Symfony\Component\Validator\Constraints as Assert;
-
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: AccidentRepository::class)]
 class Accident
@@ -13,14 +13,16 @@ class Accident
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups("accidents")]
     private $id;
 
     #[ORM\Column]
     #[Assert\NotBlank(message:"le type est requis")]
-    
+    #[Groups("accidents")]
     private $type;
 
     #[ORM\Column]
+    #[Groups("accidents")]
     private ?\DateTime $date ;
 
     
@@ -31,16 +33,18 @@ class Accident
         max: 2555,
     minMessage: 'il faut etre superieure au :  {{ limit }} caractéres',
     maxMessage: 'il faut etre inferieur au :  {{ limit }} caractéres')]
+    #[Groups("accidents")]
     private $description;
 
     #[ORM\Column(length:40)]
     #[Assert\NotBlank(message:"lieu est requis")]
- 
+    #[Groups("accidents")]
     private $lieu;
 
    
     #[ORM\ManyToOne(targetEntity: Voiture::class)]
     #[ORM\JoinColumn(name: 'id_voiture', referencedColumnName: 'id')]
+    #[Groups("accidents")]
     private $idVoiture;
 
     public function getId(): ?string
@@ -96,6 +100,7 @@ class Accident
 
         return $this;
     }
+    
     public function getIdVoiture(): ?Voiture
     {
         return $this->idVoiture;

@@ -22,7 +22,7 @@ class HomeAdminController extends AbstractController
     
     public function accidentChart(ManagerRegistry $doctrine ,EntityManagerInterface $em, PaginatorInterface $paginator, Request $request,FlashyNotifier $flashy):Response{
     // retrieve the latest accidents
-    
+   
     $utilisateurRepository = $em->getRepository(Utilisateur::class);
     $repository = $em->getRepository(Accident::class);
     $repository2 = $em->getRepository(Annonces::class);
